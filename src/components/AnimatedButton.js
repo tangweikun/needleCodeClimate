@@ -50,11 +50,6 @@ export default class PressMeButton extends React.Component {
   onPressOut = () => this.setState({ isPressed: false })
 
   render() {
-    const buttonScale = this.state.buttonPulse.interpolate({
-      inputRange: [0, 1],
-      outputRange: [1, this.props.pulseMagnitude],
-    })
-
     return (
       <TouchableWithoutFeedback
         onPress={this.props.onPress}
@@ -82,23 +77,26 @@ export default class PressMeButton extends React.Component {
               borderTopWidth: 1 / PixelRatio.get(),
               borderLeftWidth: 1 / PixelRatio.get(),
               borderRightWidth: 1 / PixelRatio.get(),
-              borderColor: color(this.props.backgroundColor).darken(0.15).toString(),
+              borderColor: color(this.props.backgroundColor)
+                .darken(0.15)
+                .toString(),
             }}
           >
-            <Text style={this.props.titleStyle}>
-              {this.props.title}
-            </Text>
+            <Text style={this.props.titleStyle}>{this.props.title}</Text>
           </View>
-          {!this.state.isPressed &&
+          {!this.state.isPressed && (
             <View
               style={{
-                backgroundColor: color(this.props.backgroundColor).darken(0.3).toString(),
+                backgroundColor: color(this.props.backgroundColor)
+                  .darken(0.3)
+                  .toString(),
                 flexGrow: 0,
                 height: this.props.edgeHeight,
                 borderBottomLeftRadius: this.props.bottomRadius,
                 borderBottomRightRadius: this.props.bottomRadius,
               }}
-            />}
+            />
+          )}
         </View>
       </TouchableWithoutFeedback>
     )

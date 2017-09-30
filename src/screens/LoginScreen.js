@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { AsyncStorage, Keyboard, ActivityIndicator, Alert } from 'react-native'
+import { AsyncStorage, Keyboard, ActivityIndicator } from 'react-native'
 import styled from 'styled-components/native'
-import Icon from 'react-native-vector-icons/FontAwesome'
 import { connect } from 'react-redux'
 import { graphql } from 'react-apollo'
 import { NickButton, InternetError } from '../components'

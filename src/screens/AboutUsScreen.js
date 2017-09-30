@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Image, View, Alert } from 'react-native'
+import { Image, View } from 'react-native'
 import styled from 'styled-components/native'
 import { connect } from 'react-redux'
 import { toggleDevMode } from '../ducks/actions'

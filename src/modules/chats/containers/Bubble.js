@@ -7,7 +7,6 @@ import {
   TouchableWithoutFeedback,
   View,
   ViewPropTypes,
-  TouchableOpacity,
 } from 'react-native'
 import {
   MessageText,
@@ -19,9 +18,6 @@ import {
 import MessageAudio from './MessageAudio'
 
 const { isSameUser, isSameDay, warnDeprecated } = utils
-
-console.log({ MessageText, MessageImage, Time, utils })
-console.log({ isSameUser, isSameDay, warnDeprecated })
 
 export default class Bubble extends React.Component {
   constructor(props) {

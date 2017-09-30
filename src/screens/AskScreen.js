@@ -7,13 +7,11 @@ import { setPatient } from '../ducks/actions'
 
 import {
   LIGHT_THEME_ALT_BACKGROUND_COLOR,
-  LIGHT_THEME_BACKGROUND_COLOR,
   DARK_THEME_BACKGROUND_COLOR,
   DARK_THEME_TEXT_COLOR,
   LIGHT_THEME_ALT_TEXT_COLOR,
   DigestiveStateLabel,
   DayLabel,
-  LIGHT_THEME_GRAY_TEXT_COLOR,
   PRIMARY_COLOR,
 } from '../constants'
 import { MeasureDays } from '../modules/advice/containers/MeasureDays'
@@ -198,10 +196,10 @@ const Title = styled.Text`
 const Avatar = styled.View`
   height: 60;
   width: 60;
-  margin: 10;
+  margin: 10px;
 `
 
-const measureDays = times => Object.entries(times).filter(x => x[1].length)
-const displayMeasureTimes = measureDay =>
-  `${DayLabel[measureDay[0]]}:  ${digestiveStateArrayToString(measureDay[1])}`
-const digestiveStateArrayToString = array => array.map(x => DigestiveStateLabel[x]).join(',  ')
+// const measureDays = times => Object.entries(times).filter(x => x[1].length)
+// const displayMeasureTimes = measureDay =>
+//   `${DayLabel[measureDay[0]]}:  ${digestiveStateArrayToString(measureDay[1])}`
+// const digestiveStateArrayToString = array => array.map(x => DigestiveStateLabel[x]).join(',  ')

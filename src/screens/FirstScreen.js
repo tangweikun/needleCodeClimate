@@ -56,11 +56,6 @@ const RootView = styled.View`
   flex: 1;
   justify-content: center;
 `
-const CheckingStorageText = styled.Text`
-  text-align: center;
-  font-size: ${LARGE_FONT};
-  color: ${LIGHT_THEME_TEXT_COLOR};
-`
 
 const SplashScreen = () => (
   <LogoView>

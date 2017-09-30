@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons'
 import { TouchableWithoutFeedback, View } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import MeasurementHistory from '../modules/measurement/containers/HistoryTable'
-import { LIGHT_THEME_BACKGROUND_COLOR, PRIMARY_COLOR } from '../constants'
+import { PRIMARY_COLOR } from '../constants'
 import { bloodGlucosesAndTreatmentPlansQuery } from '../graphql'
 
 function getStartOfWeek(page) {
