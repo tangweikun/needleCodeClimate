@@ -1,0 +1,16 @@
+{
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
+  "prettier.trailingComma": "all",
+  "prettier.jsonEnable": [],
+  "editor.formatOnSave": true,
+  "prettier.eslintIntegration": true,
+  "eslint.options": {
+    "arrow-parens": [
+      "error"
+    ],
+    "no-unused-vars": "error"
+  },
+  "prettier.useTabs": false,
+  "prettier.tabWidth": 2
+}
