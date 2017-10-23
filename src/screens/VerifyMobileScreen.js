@@ -1,32 +1,84 @@
 import * as React from 'react'
 import {
-  Text,
   View,
   TouchableOpacity,
   TextInput,
-  Dimensions,
-  StatusBar,
   AsyncStorage,
   Alert,
+  ActivityIndicator,
+  Keyboard,
 } from 'react-native'
 import styled from 'styled-components/native'
-import EntypoIcon from 'react-native-vector-icons/Entypo'
-import { gql, graphql, withApollo } from 'react-apollo'
-import { NavigationActions } from 'react-navigation'
-import { PRIMARY_COLOR } from '../constants'
+import { withApollo } from 'react-apollo'
+import { connect } from 'react-redux'
+import { Observable } from 'rxjs'
+import { get } from 'lodash'
+import { logInOrSignUpMutation, sendVerificationCodeMutation } from '../graphql'
+import { PRIMARY_COLOR, SMALL_FONT } from '../constants'
 import { NickButton } from '../components'
+import { setPatient } from '../ducks/actions'
+
+const cooldown = 60
 @withApollo
-export class VerifyMobileScreen extends React.Component {
+class _VerifyMobileScreen extends React.Component {
+  static navigationOptions = () => ({
+    title: '登录',
+  })
+
   state = {
     mobile: '',
     verificationCode: '',
+    delayUntilNextSend: 0,
+    loading: false,
   }
+
   onSendVerificationCodePress = () => {
-    console.log('send')
+    this.props.client
+      .mutate({
+        mutation: sendVerificationCodeMutation,
+        variables: { mobile: this.state.mobile },
+      })
+      .catch(() => null)
+
+    this.setState({ delayUntilNextSend: cooldown })
+
+    Observable.interval(1000)
+      .take(cooldown)
+      .subscribe(x => this.setState({ delayUntilNextSend: cooldown - x - 1 }))
   }
+
+  loginPress = async () => {
+    this.setState({ loading: true })
+    Keyboard.dismiss()
+    try {
+      const variables = {
+        mobile: this.state.mobile,
+        verificationCode: this.state.verificationCode,
+        wechatOpenId: get(this.props.navigation, 'state.params.wechatOpenId', ''),
+      }
+
+      const response = await this.props.client.mutate({
+        mutation: logInOrSignUpMutation,
+        variables,
+      })
+      const { avatar, nickname, patientId, patientState } = response.data.loginOrSignUp
+
+      await AsyncStorage.setItem(
+        'userInfo',
+        JSON.stringify({ patientId, nickname, avatar, patientState }),
+      )
+      this.props.navigation.navigate('First')
+      this.props.setPatient({ patientId, nickname, avatar, patientState })
+      this.setState({ loading: false })
+    } catch (e) {
+      Alert.alert('提示', '请输入正确的手机号和验证码')
+      this.setState({ loading: false })
+    }
+  }
+
   render() {
     return (
-      <Root>
+      <RootView>
         <Green>
           <TextInput
             style={{
@@ -42,7 +94,7 @@ export class VerifyMobileScreen extends React.Component {
             selectionColor="white"
             keyboardType="numeric"
             value={this.state.mobile}
-            onChangeText={mobile => this.setState({ mobile })}
+            onChangeText={mobile => mobile.length < 12 && this.setState({ mobile })}
           />
           <View
             style={{
@@ -67,25 +119,45 @@ export class VerifyMobileScreen extends React.Component {
               value={this.state.verificationCode}
               onChangeText={verificationCode => this.setState({ verificationCode })}
             />
-            <TouchableOpacity onPress={this.onSendVerificationCodePress}>
-              <Text style={{ color: 'white', fontSize: 17 }}>获取验证码</Text>
+            <TouchableOpacity
+              onPress={this.onSendVerificationCodePress}
+              disabled={!!this.state.delayUntilNextSend || this.state.mobile.length < 11}
+            >
+              <TextButton muted={!!this.state.delayUntilNextSend || this.state.mobile.length < 11}>
+                {this.state.delayUntilNextSend ? `${this.state.delayUntilNextSend}秒` : '获取验证码'}
+              </TextButton>
             </TouchableOpacity>
           </View>
         </Green>
-        <White>
-          <NickButton dark>登录</NickButton>
-        </White>
-      </Root>
+        <View style={{ paddingTop: 25 }}>
+          {this.state.loading ? (
+            <View>
+              <ActivityIndicator animating size="large" color={PRIMARY_COLOR} />
+            </View>
+          ) : (
+            <NickButton dark onPress={this.loginPress}>
+              登录
+            </NickButton>
+          )}
+        </View>
+      </RootView>
     )
   }
 }
-const Root = styled.View`flex: 1;`
+
+const mapStateToProps = () => ({})
+
+const mapDispatchToProps = dispatch => ({ setPatient: g => dispatch(setPatient(g)) })
+
+export const VerifyMobileScreen = connect(mapStateToProps, mapDispatchToProps)(_VerifyMobileScreen)
+
+const RootView = styled.View`flex: 1;`
 const Green = styled.View`
-  flex: 1;
   background-color: ${PRIMARY_COLOR};
-  padding: 50px;
+  padding-left: 50;
+  padding-right: 50;
 `
-const White = styled.View`
-  flex: 4;
-  padding-top: 30px;
+const TextButton = styled.Text`
+  color: ${p => (p.muted ? 'rgba(255,255,255,.6)' : 'white')};
+  font-size: ${SMALL_FONT};
 `

@@ -149,3 +149,37 @@ export const bloodGlucosesAndTreatmentPlansQuery = gql`
     }
   }
 `
+
+export const logInOrSignUpMutation = gql`
+  mutation loginOrSignUp($mobile: String!, $verificationCode: String!, $wechatOpenId: ID) {
+    loginOrSignUp(
+      mobile: $mobile
+      verificationCode: $verificationCode
+      wechatOpenId: $wechatOpenId
+    ) {
+      patientId
+      nickname
+      avatar
+      patientState
+    }
+  }
+`
+
+export const sendVerificationCodeMutation = gql`
+  mutation sendMobileVerificationCode($mobile: String!) {
+    sendMobileVerificationCode(mobile: $mobile)
+  }
+`
+
+export const wechatLoginMutation = gql`
+  mutation wechatLoginOrSignUp($wechatCode: String!) {
+    wechatLoginOrSignUp(wechatCode: $wechatCode) {
+      wechatOpenId
+      patientId
+      nickname
+      avatar
+      patientState
+      didCreateNewPatient
+    }
+  }
+`

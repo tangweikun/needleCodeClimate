@@ -1,41 +1,41 @@
 import React from 'react'
 import { AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
+import { NavigationActions } from 'react-navigation'
 import styled from 'styled-components/native'
-import { LoginScreen } from './LoginScreen'
+import { VerifyMobileScreen } from '.'
 import { setPatient } from '../ducks/actions'
-import {
-  LARGE_FONT,
-  LIGHT_THEME_TEXT_COLOR,
-  REGULAR_FONT,
-  DARK_THEME_BUTTON_TEXT_COLOR,
-} from '../constants'
+import { REGULAR_FONT, DARK_THEME_BUTTON_TEXT_COLOR } from '../constants'
 import Navigation from '../modules/Navigator'
 
 class _FirstScreen extends React.Component {
-  state = { patientId: '', loading: false }
-  componentDidMount() {
-    this.setState({ loading: true })
-    AsyncStorage.getItem('userInfo', (err, userInfo) => {
-      this.setState({ loading: false })
+  async componentDidMount() {
+    await AsyncStorage.getItem('userInfo', (err, userInfo) => {
       this.props.setPatient(JSON.parse(userInfo) || {})
     })
-  }
-  render() {
-    const { patientId, manualRecord, digestiveState, measureResult } = this.props.appData
 
-    if (this.state.loading) {
-      return (
-        <RootView>
-          {/* <ActivityIndicator />
-        <CheckingStorageText>Resuming...</CheckingStorageText> */}
-          <SplashScreen />
-        </RootView>
-      )
+    if (!this.props.appData.patientId) {
+      this.props.navigation.navigate('LoginNavigation')
+    } else {
+      this.props.navigation.navigate('HomeTab', {
+        patientId: this.props.appData.patientId,
+        manualRecord: this.props.appData.manualRecord,
+        digestiveState: this.props.appData.digestiveState,
+        measureResult: this.props.appData.measureResult,
+      })
     }
-    if (!patientId) return <LoginScreen />
+  }
 
-    return <Navigation screenProps={{ patientId, measureResult, digestiveState, manualRecord }} />
+  render() {
+    return (
+      <RootView>
+        <SplashScreen />
+      </RootView>
+    )
+
+    // if (!patientId) return <VerifyMobileScreen />
+
+    // return <Navigation screenProps={{ patientId, measureResult, digestiveState, manualRecord }} />
   }
 }
 

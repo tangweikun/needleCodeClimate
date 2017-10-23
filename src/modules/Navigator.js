@@ -1,5 +1,4 @@
 import { StackNavigator, NavigationActions, TabBarBottom, TabNavigator } from 'react-navigation'
-import { Platform } from 'react-native'
 import {
   HistoryScreen,
   LoginScreen,
@@ -12,46 +11,31 @@ import {
   IntroductionScreen,
   AgreementScreen,
   ChatScreen,
+  VerifyMobileScreen,
+  FirstScreen,
 } from '../screens'
 import { PRIMARY_COLOR } from '../constants'
-
-const headerStyle = {
-  backgroundColor: PRIMARY_COLOR,
-  justifyContent: 'center',
-  borderBottomWidth: 0,
-  elevation: 0,
-}
 
 const navigationOptions = {
   headerTintColor: 'white',
   headerBackTitle: null,
-  headerTitleStyle: {
-    color: 'white',
-    fontWeight: 'bold',
-    alignSelf: 'center',
-    textAlign: 'center',
-  },
 }
+
 const navigationOptionsWithoutHeader = {
   headerTintColor: 'white',
   headerBackTitle: null,
   header: null,
 }
 
-const navigationWithHeaderStyle =
-  Platform.OS === 'android'
-    ? {
-      ...navigationOptions,
-      headerStyle,
-      headerLeft: null,
-    }
-    : {
-      ...navigationOptions,
-      headerStyle,
-    }
-
-const navigationOptionsWithOutHeaderStyle =
-  Platform.OS === 'android' ? { ...navigationOptions, headerLeft: null } : navigationOptions
+const navigationWithHeaderStyle = {
+  ...navigationOptions,
+  headerStyle: {
+    backgroundColor: PRIMARY_COLOR,
+    justifyContent: 'center',
+    borderBottomWidth: 0,
+    elevation: 0,
+  },
+}
 
 const MainTabs = TabNavigator(
   {
@@ -60,6 +44,7 @@ const MainTabs = TabNavigator(
     PreferencesTab: { screen: PreferencesScreen },
   },
   {
+    swipeEnabled: false,
     tabBarComponent: TabBarBottom,
     tabBarPosition: 'bottom',
     // Disable animation so that iOS/Android have same behaviors
@@ -74,27 +59,38 @@ const MainTabs = TabNavigator(
     },
   },
 )
+
+const LoginNavigation = StackNavigator({
+  LoginOrSignUp: {
+    screen: LoginScreen,
+    navigationOptions: navigationOptionsWithoutHeader,
+  },
+  VerifyMobile: {
+    screen: VerifyMobileScreen,
+    navigationOptions: { ...navigationWithHeaderStyle, headerBackTitle: null },
+  },
+})
+
 const NeedleStackNavigation = StackNavigator(
   {
     First: {
       screen: MainTabs,
-      navigationOptions: { ...navigationOptions, headerStyle },
+      navigationOptions: {
+        ...navigationWithHeaderStyle,
+        headerTitleStyle: { alignSelf: 'center' },
+      },
     },
     History: {
       screen: HistoryScreen,
       navigationOptions: navigationWithHeaderStyle,
     },
-    Login: {
-      screen: LoginScreen,
-      navigationOptions: navigationWithHeaderStyle,
-    },
     Measure: {
       screen: MeasureScreen,
-      navigationOptions: navigationOptionsWithOutHeaderStyle,
+      navigationOptions,
     },
     ManualRecord: {
       screen: ManualRecordScreen,
-      navigationOptions: navigationOptionsWithOutHeaderStyle,
+      navigationOptions,
     },
     AboutUs: {
       screen: AboutUsScreen,
@@ -118,17 +114,40 @@ const NeedleStackNavigation = StackNavigator(
   },
 )
 
-// Prevents double taps navigating twice
+const InitialNavigation = StackNavigator(
+  {
+    Initial: { screen: FirstScreen },
+  },
+  {
+    headerMode: 'none',
+  },
+)
+
+const AppNavigation = TabNavigator(
+  {
+    InitialScreen: { screen: InitialNavigation },
+    LoginNavigation: { screen: LoginNavigation },
+    MainStackNavigator: { screen: NeedleStackNavigation },
+  },
+  {
+    animationEnabled: false,
+    swipeEnabled: false,
+    navigationOptions: {
+      tabBarVisible: false,
+    },
+    // backBehavior: 'none',
+  },
+)
+
+// Prevents double taps navigating twice (just work on ios)
 const navigateOnce = getStateForAction => (action, state) => {
   const { type, routeName } = action
   return state &&
-  type === NavigationActions.NAVIGATE &&
-  routeName === state.routes[state.routes.length - 1].routeName
+    type === NavigationActions.NAVIGATE &&
+    routeName === state.routes[state.routes.length - 1].routeName
     ? state
     : getStateForAction(action, state)
 }
-NeedleStackNavigation.router.getStateForAction = navigateOnce(
-  NeedleStackNavigation.router.getStateForAction,
-)
+AppNavigation.router.getStateForAction = navigateOnce(AppNavigation.router.getStateForAction)
 
-export default NeedleStackNavigation
+export default AppNavigation

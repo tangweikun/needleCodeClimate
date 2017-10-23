@@ -1,11 +1,12 @@
 import React from 'react'
 import { AsyncStorage, Image, View, Text } from 'react-native'
 import styled from 'styled-components/native'
+import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { toggleDevMode, setPatient } from '../ducks/actions'
 import { FlatListWithIcons } from '../modules/preferences/FlatListWithIcons'
 
-import { PRIMARY_COLOR, defaultAvatar } from '../constants'
+import { PRIMARY_COLOR, defaultAvatar, LIGHT_THEME_ALT_BACKGROUND_COLOR } from '../constants'
 
 export class _PreferencesScreen extends React.Component {
   static navigationOptions = () => ({
@@ -27,6 +28,7 @@ export class _PreferencesScreen extends React.Component {
   logout = () => {
     this.props.setPatient({})
     AsyncStorage.removeItem('userInfo')
+    this.props.navigation.navigate('LoginNavigation')
   }
   aboutUs = () => {
     this.props.navigation.navigate('AboutUs')
@@ -73,4 +75,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 export const PreferencesScreen = connect(mapStateToProps, mapDispatchToProps)(_PreferencesScreen)
-const RootView = styled.View`flex: 1;`
+const RootView = styled.View`
+  flex: 1;
+  background-color: ${LIGHT_THEME_ALT_BACKGROUND_COLOR};
+`

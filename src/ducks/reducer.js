@@ -60,6 +60,7 @@ export default function bg1Reducer(state = initialState, action) {
         patientId: userInfo.patientId,
         nickname: userInfo.nickname,
         avatar: userInfo.avatar,
+        patientState: userInfo.patientState,
       }
 
     case 'RESET_DEVICE':

@@ -1,19 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {
-  Text,
-  Clipboard,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-  ViewPropTypes,
-} from 'react-native'
-import {
-  MessageText,
-  MessageImage,
-  Time,
-  utils,
-} from 'react-native-gifted-chat'
+import { Text, Clipboard, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
+import { MessageText, MessageImage, Time, utils } from 'react-native-gifted-chat'
 
 import MessageAudio from './MessageAudio'
 
@@ -110,10 +98,8 @@ export default class Bubble extends React.Component {
     if (currentMessage.sent || currentMessage.received) {
       return (
         <View style={styles.tickView}>
-          {currentMessage.sent &&
-            <Text style={[styles.tick, this.props.tickStyle]}>✓</Text>}
-          {currentMessage.received &&
-            <Text style={[styles.tick, this.props.tickStyle]}>✓</Text>}
+          {currentMessage.sent && <Text style={[styles.tick, this.props.tickStyle]}>✓</Text>}
+          {currentMessage.received && <Text style={[styles.tick, this.props.tickStyle]}>✓</Text>}
         </View>
       )
     }
@@ -140,21 +126,20 @@ export default class Bubble extends React.Component {
   onLongPress() {
     if (this.props.onLongPress) {
       this.props.onLongPress(this.context, this.props.currentMessage)
-    } else {
-      if (this.props.currentMessage.text) {
-        const options = ['Copy Text', 'Cancel']
-        const cancelButtonIndex = options.length - 1
-        this.context.actionSheet().showActionSheetWithOptions({
-          options,
-          cancelButtonIndex,
-        }, buttonIndex => {
-          switch (buttonIndex) {
-            case 0:
-              Clipboard.setString(this.props.currentMessage.text)
-              break
-          }
-        })
-      }
+    } else if (this.props.currentMessage.text) {
+      const options = ['Copy Text', 'Cancel']
+      const cancelButtonIndex = options.length - 1
+      this.context.actionSheet().showActionSheetWithOptions({
+        options,
+        cancelButtonIndex,
+      },
+      buttonIndex => {
+        switch (buttonIndex) {
+          case 0:
+            Clipboard.setString(this.props.currentMessage.text)
+            break
+        }
+      })
     }
   }
 
@@ -184,12 +169,7 @@ export default class Bubble extends React.Component {
               {this.renderMessageImage()}
               {this.renderMessageText()}
               {this.renderMessageAudio()}
-              <View
-                style={[
-                  styles.bottom,
-                  this.props.bottomContainerStyle[this.props.position],
-                ]}
-              >
+              <View style={[styles.bottom, this.props.bottomContainerStyle[this.props.position]]}>
                 {this.renderTime()}
                 {this.renderTicks()}
               </View>
@@ -208,7 +188,7 @@ const styles = {
       alignItems: 'flex-start',
     },
     wrapper: {
-      borderRadius: 15,
+      borderRadius: 4,
       backgroundColor: '#f0f0f0',
       marginRight: 60,
       minHeight: 20,
@@ -227,7 +207,7 @@ const styles = {
       alignItems: 'flex-end',
     },
     wrapper: {
-      borderRadius: 15,
+      borderRadius: 4,
       backgroundColor: '#0084ff',
       marginLeft: 60,
       minHeight: 20,
@@ -280,44 +260,7 @@ Bubble.defaultProps = {
   tickStyle: {},
   containerToNextStyle: {},
   containerToPreviousStyle: {},
-  //TODO: remove in next major release
+  // TODO: remove in next major release
   isSameDay: warnDeprecated(isSameDay),
   isSameUser: warnDeprecated(isSameUser),
-}
-
-Bubble.propTypes = {
-  touchableProps: PropTypes.object,
-  onLongPress: PropTypes.func,
-  renderMessageImage: PropTypes.func,
-  renderMessageText: PropTypes.func,
-  renderCustomView: PropTypes.func,
-  renderTime: PropTypes.func,
-  position: PropTypes.oneOf(['left', 'right']),
-  currentMessage: PropTypes.object,
-  nextMessage: PropTypes.object,
-  previousMessage: PropTypes.object,
-  containerStyle: PropTypes.shape({
-    left: ViewPropTypes.style,
-    right: ViewPropTypes.style,
-  }),
-  wrapperStyle: PropTypes.shape({
-    left: ViewPropTypes.style,
-    right: ViewPropTypes.style,
-  }),
-  bottomContainerStyle: PropTypes.shape({
-    left: ViewPropTypes.style,
-    right: ViewPropTypes.style,
-  }),
-  tickStyle: Text.propTypes.style,
-  containerToNextStyle: PropTypes.shape({
-    left: ViewPropTypes.style,
-    right: ViewPropTypes.style,
-  }),
-  containerToPreviousStyle: PropTypes.shape({
-    left: ViewPropTypes.style,
-    right: ViewPropTypes.style,
-  }),
-  //TODO: remove in next major release
-  isSameDay: PropTypes.func,
-  isSameUser: PropTypes.func,
 }

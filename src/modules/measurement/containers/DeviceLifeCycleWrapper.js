@@ -1,13 +1,13 @@
 import React from 'react'
-import { View, StatusBar, ActivityIndicator } from 'react-native'
+import { View, StatusBar } from 'react-native'
 import { graphql } from 'react-apollo'
 import { get } from 'lodash'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import { uri } from '../../../endpoint'
 import { measureError, measureSuccess, measureEvent } from '../../../ducks/actions'
-import Navigation from '../../../modules/Navigator'
-import { FirstScreen } from '../../../screens'
+// import Navigation from '../../../modules/Navigator'
+import AppNavigation from '../../Navigator'
 import {
   startDiscovery,
   stopDiscovery,
@@ -23,7 +23,7 @@ import {
   ACTION_BG1_MEASURE_RESULT,
   Event_Notify,
 } from '../utils/SDK'
-import { getUsefulDeviceContext } from '../utils/deviceContext'
+import { getUsefulDeviceContext } from '../../../utils/deviceContext'
 import { FloatingEventLog } from '../../../components'
 import {
   saveBloodGlucoseMeasurement,
@@ -152,7 +152,7 @@ class _Wrapper extends React.Component {
       this.setState({ events: [...this.state.events, getEventNameWithErrorCode(x)] }),
     )
     // NOTE: logs everything to the console
-    events$.subscribe(x => console.log(JSON.stringify(x)))
+    // events$.subscribe(x => console.log(JSON.stringify(x)))
   }
 
   // onFail = response => {
@@ -166,7 +166,14 @@ class _Wrapper extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <StatusBar />
-        <FirstScreen />
+        <AppNavigation
+          screenProps={{
+            patientId: this.props.appData.patientId,
+            manualRecord: this.props.appData.manualRecord,
+            digestiveState: this.props.appData.digestiveState,
+            measureResult: this.props.appData.measureResult,
+          }}
+        />
         {this.props.appData.devMode && (
           <FloatingEventLog events={this.state.events} env={this.props.appData.env} />
         )}

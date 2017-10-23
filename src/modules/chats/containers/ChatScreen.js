@@ -1,11 +1,13 @@
 import * as React from 'react'
 import get from 'lodash/get'
 import orderBy from 'lodash/orderBy'
-
+import DeviceInfo from 'react-native-device-info'
+import { ActivityIndicator, View } from 'react-native'
 import { withApollo } from 'react-apollo'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { ExpandingView } from 'react-native-jans-common-components'
 import Bubble from './Bubble'
+import Message from './Message'
 import { PRIMARY_COLOR, defaultAvatar } from '../../../constants'
 import { messagesQuery, sendNeedleTextChatMessage, updateLastSeenAt } from '../../../graphql'
 
@@ -14,11 +16,12 @@ export class Chat extends React.Component {
   state = {
     chatRoomId: '',
     messages: [],
+    loading: true,
   }
 
   async componentDidMount() {
     this.fetchMessages()
-    this.intervalId = setInterval(this.fetchMessages, 3000)
+    if (!DeviceInfo.isEmulator()) this.intervalId = setInterval(this.fetchMessages, 3000)
   }
 
   componentWillUnmount() {
@@ -65,26 +68,29 @@ export class Chat extends React.Component {
   }
 
   fetchMessages = async () => {
-    const result = await this.props.client.query({
-      query: messagesQuery,
-      variables: {
-        userId: this.props.patientId,
-      },
-      fetchPolicy: 'network-only',
-    })
-
-    const { fetchOrCreateNeedleChatRoom, loading, error } = result.data
-
-    if (!error && !loading && fetchOrCreateNeedleChatRoom) {
-      const chatRoomId = get(fetchOrCreateNeedleChatRoom, '_id')
-      const messages = this.sortMessagesByCreatedAt(
-        get(fetchOrCreateNeedleChatRoom, 'messages', []),
-      )
-
-      this.setState({
-        chatRoomId,
-        messages,
+    if (this.props.patientId) {
+      const result = await this.props.client.query({
+        query: messagesQuery,
+        variables: {
+          userId: this.props.patientId,
+        },
+        fetchPolicy: 'network-only',
       })
+
+      const { fetchOrCreateNeedleChatRoom, loading, error } = result.data
+
+      if (!error && !loading && fetchOrCreateNeedleChatRoom) {
+        const chatRoomId = get(fetchOrCreateNeedleChatRoom, '_id')
+        const messages = this.sortMessagesByCreatedAt(
+          get(fetchOrCreateNeedleChatRoom, 'messages', []),
+        )
+
+        this.setState({
+          chatRoomId,
+          messages,
+          loading: false,
+        })
+      }
     }
   }
 
@@ -102,7 +108,16 @@ export class Chat extends React.Component {
     />
   )
 
+  renderMessage = props => <Message {...props} />
+
   render() {
+    if (this.state.loading) {
+      return (
+        <View>
+          <ActivityIndicator animating size="large" color={PRIMARY_COLOR} />
+        </View>
+      )
+    }
     return (
       <ExpandingView>
         <GiftedChat
@@ -115,6 +130,8 @@ export class Chat extends React.Component {
           renderBubble={this.renderBubble}
           placeholder="请输入..."
           label="发送"
+          renderAvatarOnTop
+          renderMessage={this.renderMessage}
         />
       </ExpandingView>
     )

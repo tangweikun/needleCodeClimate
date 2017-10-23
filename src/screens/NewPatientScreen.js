@@ -1,29 +1,12 @@
 import * as React from 'react'
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  TextInput,
-  Dimensions,
-  StatusBar,
-  AsyncStorage,
-  Alert,
-  Image,
-} from 'react-native'
+import { Text, Image } from 'react-native'
 import DatePicker from 'react-native-datepicker'
 import styled from 'styled-components/native'
-import EntypoIcon from 'react-native-vector-icons/Entypo'
-import { gql, graphql, withApollo } from 'react-apollo'
-import RadioForm, {
-  RadioButton,
-  RadioButtonInput,
-  RadioButtonLabel,
-} from 'react-native-simple-radio-button'
+import RadioForm from 'react-native-simple-radio-button'
 
-import { NavigationActions } from 'react-navigation'
 import { PRIMARY_COLOR, REGULAR_FONT, SMALL_FONT } from '../constants'
 import { NickButton } from '../components'
-@withApollo
+
 export class NewPatientScreen extends React.Component {
   state = {
     name: '',

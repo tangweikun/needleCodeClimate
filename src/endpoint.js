@@ -1,8 +1,8 @@
 import DeviceInfo from 'react-native-device-info'
 
-const devUri = 'https://pigeon.gtzh-play.51ijk.com/'
-const stgUri = 'https://pigeon.gtzh.ihealthcn.com/'
-const prodUri = 'https://pigeon.gtzh.ihealthcn.com/'
+const devUri = 'http://localhost:3080/'
+const stgUri = 'https://pigeon.gtzh-play.51ijk.com/'
+const prodUri = 'https://pigeon.ihealthlabs.com.cn/'
 
 // NOTE: should default to prod not staging here, but need to check async storage first
 const getDefaultEnv = {

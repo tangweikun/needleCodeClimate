@@ -8,7 +8,9 @@ import {
   LIGHT_THEME_TEXT_COLOR,
   DARK_THEME_BACKGROUND_COLOR,
 } from '../constants'
+import { getUsefulDeviceContext } from '../utils/deviceContext'
 
+const device = getUsefulDeviceContext()
 export class _AboutUsScreen extends React.Component {
   static navigationOptions = () => ({
     title: '软件版本',
@@ -43,18 +45,15 @@ export class _AboutUsScreen extends React.Component {
         <ProductName>护血糖</ProductName>
         <Regular>服务电话</Regular>
         <PhoneNumber>400-000-6813</PhoneNumber>
-        <Regular>客户端版本0.1</Regular>
+        <Regular>{`客户端版本${device.readableVersion}`}</Regular>
         <Small>北京爱和健康科技有限公司版权所有</Small>
         <Small>Copyright 2017</Small>
       </RootView>
     )
   }
 }
-function mapStateToProps(state) {
-  return {
-    appData: state.appData,
-  }
-}
+
+const mapStateToProps = state => ({ appData: state.appData })
 function mapDispatchToProps(dispatch) {
   return {
     toggleDevMode: () => dispatch(toggleDevMode()),

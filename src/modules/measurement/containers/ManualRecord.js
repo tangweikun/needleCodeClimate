@@ -11,7 +11,7 @@ import {
 } from '../../../graphql'
 import { inputValidation } from '../utils/inputValidation'
 import { MeasureSuccess } from '../components'
-import { getDeviceContext } from '../utils/deviceContext'
+import { getDeviceContext } from '../../../utils/deviceContext'
 import { saveManualRecord, resetManualRecord } from '../../../ducks/actions'
 
 import { SelectBloodGlucoseMeasurement, SelectDigestiveState } from '../components/ManualRecord'
@@ -93,11 +93,12 @@ export class _ManualRecord extends Component {
 
   render() {
     const { digestiveState, inputValue, isSave, date } = this.state
-    const { navigation } = this.props
+    const { navigation, patientState } = this.props
 
     if (isSave) {
       return (
         <MeasureSuccess
+          patientState={patientState}
           measureResult={inputValue.replace(/\.$/, '')}
           digestiveState={digestiveState}
           measuredAt={date}
@@ -126,20 +127,17 @@ export class _ManualRecord extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    patientId: state.appData.patientId,
-    manualRecord: state.appData.manualRecord,
-  }
-}
+const mapStateToProps = state => ({
+  patientId: state.appData.patientId,
+  manualRecord: state.appData.manualRecord,
+  patientState: state.appData.patientState,
+})
 
-function mapDispatchToProps(dispatch) {
-  return {
-    saveManualRecord: (digestiveState, measureResult, measuredAt) =>
-      dispatch(saveManualRecord(digestiveState, measureResult, measuredAt)),
-    resetManualRecord: () => dispatch(resetManualRecord()),
-  }
-}
+const mapDispatchToProps = dispatch => ({
+  saveManualRecord: (digestiveState, measureResult, measuredAt) =>
+    dispatch(saveManualRecord(digestiveState, measureResult, measuredAt)),
+  resetManualRecord: () => dispatch(resetManualRecord()),
+})
 
 const ManualRecordWithSave = graphql(saveBloodGlucoseMeasurement, {
   options: props => ({

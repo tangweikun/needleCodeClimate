@@ -51,7 +51,7 @@ function getGoalText(digestiveState) {
   ].upper}`
 }
 
-export const MeasureSuccess = ({ measureResult, digestiveState, goAskTab }) => (
+export const MeasureSuccess = ({ measureResult, digestiveState, goAskTab, patientState }) => (
   <RootView measureResult={measureResult} digestiveState={digestiveState}>
     <WrapperView>
       <PlainCircle>
@@ -85,9 +85,18 @@ export const MeasureSuccess = ({ measureResult, digestiveState, goAskTab }) => (
           />
         </View>
       )}
-      <StickyBottom>
-        <NickButton dark title="问医生" onPress={() => goAskTab()} withoutMargin />
-      </StickyBottom>
+      {patientState === 'ACTIVE' && (
+        <StickyBottom>
+          <NickButton
+            icon={require('../../../assets/images/icon-chat2.png')}
+            withIcon
+            dark
+            title="问医生"
+            onPress={() => goAskTab()}
+            withoutMargin
+          />
+        </StickyBottom>
+      )}
     </WhiteView>
   </RootView>
 )

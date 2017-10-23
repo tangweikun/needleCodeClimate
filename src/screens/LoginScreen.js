@@ -1,62 +1,61 @@
 import React, { Component } from 'react'
-import { AsyncStorage, Keyboard, ActivityIndicator } from 'react-native'
 import styled from 'styled-components/native'
+import * as wechat from 'react-native-wechat'
+import { withApollo } from 'react-apollo'
+import { AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
-import { graphql } from 'react-apollo'
-import { NickButton, InternetError } from '../components'
+
+import { NickButton } from '../components'
+import { DARK_THEME_BUTTON_TEXT_COLOR, REGULAR_FONT } from '../constants'
+import { wechatLoginMutation } from '../graphql'
 import { setPatient } from '../ducks/actions'
-import { patientQuery } from '../graphql'
-import { DARK_THEME_BUTTON_TEXT_COLOR, REGULAR_FONT, SMALL_FONT } from '../constants'
 
-const HiddenLoginButton = ({ data, handleSignIn }) => {
-  if (data && data.error) {
-    return (
-      <RootView>
-        <ErrorText>{JSON.stringify(data.error)}</ErrorText>
-      </RootView>
-    )
-  }
-  if (!data || !data.patient) {
-    return (
-      <RootView>
-        <NickButton title="登录" onPress={() => console.log('nothing')} />
-        {/* <NickButton
-          title="dev登录"
-          dark
-          onPress={() =>
-            handleSignIn({
-              _id: 'f5af0a03b9dd397c9b2666f8',
-              nickname: 'Nick',
-              avatar: 'https://api.ihealthlabs.com.cn:8443/logos/201612/b2871ded.jpg',
-            })}
-        />
-        <NickButton dark onPress={() => Alert.alert('未完成')}>
-          <Icon name="wechat" size={REGULAR_FONT} /> 微信登录
-        </NickButton> */}
-      </RootView>
-    )
-  }
-  if (data.loading) return <ActivityIndicator />
-  if (data.error) return <InternetError error={JSON.stringify(data.error.message)} />
-  return <NickButton title="登录" dark onPress={() => handleSignIn(data.patient)} />
-}
+@withApollo
+class _LoginScreen extends Component {
+  state = { isWXAppInstalled: false }
 
-export class _LoginScreen extends Component {
-  state = {
-    telephone: '',
+  componentWillMount() {
+    wechat.isWXAppInstalled().then(installed => this.setState({ isWXAppInstalled: installed }))
   }
 
-  handleSignIn = ({ _id, nickname, avatar }) => {
-    AsyncStorage.setItem('userInfo', JSON.stringify({ patientId: _id, nickname, avatar }))
-    this.props.setPatient({ patientId: _id, nickname, avatar })
-    Keyboard.dismiss()
+  onWechatLoginPress = async () => {
+    const scope = 'snsapi_userinfo'
+    const state = 'wechat_sdk_demo'
+    try {
+      const wxResp = await wechat.sendAuthRequest(scope, state)
+
+      if (wxResp.errCode !== 0) return
+
+      const response = await this.props.client.mutate({
+        mutation: wechatLoginMutation,
+        variables: { wechatCode: wxResp.code },
+      })
+
+      const {
+        wechatOpenId,
+        patientId,
+        nickname,
+        avatar,
+        patientState,
+        didCreateNewPatient,
+      } = response.data.wechatLoginOrSignUp
+
+      if (didCreateNewPatient) {
+        this.props.navigation.navigate('VerifyMobile', { wechatOpenId })
+      } else {
+        await AsyncStorage.setItem(
+          'userInfo',
+          JSON.stringify({ patientId, nickname, avatar, patientState }),
+        )
+        this.props.navigation.navigate('First')
+        this.props.setPatient({ patientId, nickname, avatar, patientState })
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   render() {
-    const { telephone } = this.state
-    const ViewWithData = graphql(patientQuery, {
-      options: { variables: { telephone } },
-    })(HiddenLoginButton)
     return (
       <RootView>
         <MainView>
@@ -65,39 +64,29 @@ export class _LoginScreen extends Component {
             <LogoText>护血糖</LogoText>
           </LogoView>
           <LoginView>
-            <LoginInput
-              onChangeText={value => {
-                this.setState({ telephone: value })
-              }}
-              value={this.state.text}
-              autoCorrect={false}
-              maxLength={11}
-              keyboardType={'phone-pad'}
-              placeholder="手机号"
-              underlineColorAndroid="transparent"
-            />
-
-            {this.state.telephone.length === 11 ? (
-              <ViewWithData handleSignIn={this.handleSignIn} />
-            ) : (
-              <HiddenLoginButton handleSignIn={this.handleSignIn} />
+            {this.state.isWXAppInstalled && (
+              <NickButton
+                dark
+                title="微信登录"
+                onPress={() => {
+                  this.onWechatLoginPress()
+                }}
+              />
             )}
+            <NickButton
+              title="手机号登录"
+              onPress={() => this.props.navigation.navigate('VerifyMobile')}
+            />
           </LoginView>
         </MainView>
       </RootView>
     )
   }
 }
-function mapStateToProps(state) {
-  return {
-    appData: state.appData,
-  }
-}
-function mapDispatchToProps(dispatch) {
-  return {
-    setPatient: g => dispatch(setPatient(g)),
-  }
-}
+
+const mapStateToProps = () => ({})
+
+const mapDispatchToProps = dispatch => ({ setPatient: g => dispatch(setPatient(g)) })
 
 export const LoginScreen = connect(mapStateToProps, mapDispatchToProps)(_LoginScreen)
 
@@ -110,6 +99,7 @@ const MainView = styled.View`
 const Logo = styled.Image`
   width: 70;
   height: 70;
+  margin-bottom: 7;
 `
 const LogoView = styled.View`
   flex: 1;
@@ -118,21 +108,9 @@ const LogoView = styled.View`
 `
 
 const LoginView = styled.View`flex: 2;`
-const ErrorText = styled.Text`
-  font-size: ${SMALL_FONT};
-  text-align: center;
-  color: ${DARK_THEME_BUTTON_TEXT_COLOR};
-`
+
 const LogoText = styled.Text`
   font-size: ${REGULAR_FONT};
   text-align: center;
   color: ${DARK_THEME_BUTTON_TEXT_COLOR};
-`
-const LoginInput = styled.TextInput`
-  font-size: ${REGULAR_FONT};
-  margin-left: 50;
-  margin-right: 50;
-  border-bottom-width: 2;
-  border-bottom-color: lightgray;
-  margin-bottom: 20;
 `

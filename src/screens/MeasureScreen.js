@@ -63,7 +63,7 @@ class _MeasureScreen extends Component {
 
   render() {
     const { appData } = this.props
-    const { digestiveState, fail, success, measureResult, latestEvent } = appData
+    const { digestiveState, fail, success, measureResult, latestEvent, patientState } = appData
     if (fail) {
       return <MeasureError />
     }
@@ -75,6 +75,7 @@ class _MeasureScreen extends Component {
       if (success) {
         return (
           <MeasureSuccess
+            patientState={patientState}
             measureResult={measureResult}
             digestiveState={digestiveState}
             goAskTab={this.goAskTab}

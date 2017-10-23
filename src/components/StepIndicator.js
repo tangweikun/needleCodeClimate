@@ -1,4 +1,4 @@
-import React, { PureComponent, PropTypes } from 'react'
+import React, { PureComponent } from 'react'
 import { View, Text, StyleSheet, Animated, TouchableWithoutFeedback } from 'react-native'
 
 const STEP_STATUS = {
@@ -147,7 +147,7 @@ export class StepIndicator extends PureComponent {
 
   renderStepIndicator = () => {
     const steps = []
-    const { labels, stepCount, direction } = this.props
+    const { stepCount, direction } = this.props
     for (let position = 0; position < stepCount; position++) {
       steps.push(
         <TouchableWithoutFeedback key={position} onPress={() => this.stepPressed(position)}>
@@ -217,14 +217,10 @@ export class StepIndicator extends PureComponent {
     )
   }
 
-  renderStep = position => {
-    const { currentPosition, stepCount, direction } = this.props
+  renderStep = pos => {
     let stepStyle
     let indicatorLabelStyle
-    const separatorStyle =
-      direction === 'vertical'
-        ? { width: this.customStyles.separatorStrokeWidth, zIndex: 10 }
-        : { height: this.customStyles.separatorStrokeWidth }
+    const position = pos
     switch (this.getStepStatus(position)) {
       case STEP_STATUS.CURRENT: {
         stepStyle = {
@@ -296,12 +292,16 @@ export class StepIndicator extends PureComponent {
     return STEP_STATUS.UNFINISHED
   }
 
-  onCurrentPositionChanged = position => {
+  onCurrentPositionChanged = pos => {
+    let position = pos
     const { stepCount } = this.props
-    if (position > stepCount - 1) {
-      position = stepCount - 1
+    const stepMinusOne = stepCount - 1
+    if (position > stepMinusOne) {
+      position = stepMinusOne
     }
-    const animateToPosition = this.state.progressBarSize / (stepCount - 1) * position
+    const ratio = this.state.progressBarSize / stepMinusOne
+    const animateToPosition = ratio * position
+
     this.sizeAnim.setValue(this.customStyles.stepIndicatorSize)
     this.borderRadiusAnim.setValue(this.customStyles.stepIndicatorSize / 2)
     Animated.sequence([
@@ -356,15 +356,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 })
-
-StepIndicator.propTypes = {
-  currentPosition: PropTypes.number,
-  stepCount: PropTypes.number,
-  customStyles: PropTypes.object,
-  direction: PropTypes.oneOf(['vertical', 'horizontal']),
-  labels: PropTypes.array,
-  onPress: PropTypes.func,
-}
 
 StepIndicator.defaultProps = {
   currentPosition: 0,

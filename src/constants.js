@@ -16,7 +16,7 @@ export const isSmallScreen = Dimensions.get('screen').width < 375
 
 export const MINI_FONT = isSmallScreen ? 10 : 12
 export const SMALL_FONT = isSmallScreen ? 14 : 16
-export const REGULAR_FONT = isSmallScreen ? 22 : 26
+export const REGULAR_FONT = isSmallScreen ? 18 : 22
 export const LARGE_FONT = isSmallScreen ? 34 : 40
 export const GIANT_FONT = isSmallScreen ? 50 : 60
 
@@ -70,3 +70,5 @@ export const DayLabel = {
 }
 
 export const defaultAvatar = 'https://api.ihealthlabs.com.cn:8443/images/default/Avatar.png'
+
+export const WX_APP_ID = 'wx915efa8b538a4df4'
