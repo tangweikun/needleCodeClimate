@@ -59,6 +59,25 @@ export const DigestiveStateLabel = {
   MIDNIGHT: '凌晨',
   // BEFORE_BED: '睡前',
 }
+
+export const DigestiveStatePairLabel = [
+  {
+    BEFORE_BREAKFAST: '早餐前',
+    AFTER_BREAKFAST: '早餐后',
+  },
+  {
+    BEFORE_LUNCH: '午餐前',
+    AFTER_LUNCH: '午餐后',
+  },
+  {
+    BEFORE_DINNER: '晚餐前',
+    AFTER_DINNER: '晚餐后',
+  },
+  {
+    BEFORE_SLEEP: '睡前',
+    MIDNIGHT: '凌晨',
+  },
+]
 export const DayLabel = {
   monday: '周一',
   tuesday: '周二',
@@ -69,6 +88,6 @@ export const DayLabel = {
   sunday: '周日',
 }
 
-export const defaultAvatar = 'https://api.ihealthlabs.com.cn:8443/images/default/Avatar.png'
+export const defaultAvatar = require('./assets/images/icon-doctor.png')
 
 export const WX_APP_ID = 'wx915efa8b538a4df4'

@@ -4,13 +4,30 @@ import { View } from 'react-native'
 
 import {
   LIGHT_THEME_BACKGROUND_COLOR,
-  DigestiveStateLabel,
+  DigestiveStatePairLabel,
   LIGHT_THEME_BUTTON_COLOR,
   DARK_THEME_BUTTON_TEXT_COLOR,
   LARGE_FONT,
 } from '../constants'
 
-export const DigestiveButton = ({ title, onPress, borderRightWidth = 0 }) => (
+export const DigestiveStateButtons = ({ onPress }) => (
+  <RootView>
+    {DigestiveStatePairLabel.map((item, i) => (
+      <RowView key={`digestiveState-${i}`}>
+        {Object.entries(item).map(([key, value], index) => (
+          <DigestiveButton
+            key={key}
+            title={value}
+            borderRightWidth={1 - index}
+            onPress={() => onPress(key)}
+          />
+        ))}
+      </RowView>
+    ))}
+  </RootView>
+)
+
+const DigestiveButton = ({ title, onPress, borderRightWidth = 0 }) => (
   <View style={{ flex: 1, borderRightWidth, borderColor: LIGHT_THEME_BUTTON_COLOR }}>
     <TouchButton onPress={onPress}>
       <ButtonView>
@@ -18,52 +35,6 @@ export const DigestiveButton = ({ title, onPress, borderRightWidth = 0 }) => (
       </ButtonView>
     </TouchButton>
   </View>
-)
-
-export const DigestiveStateButtons = ({ onPress }) => (
-  <RootView>
-    <RowView>
-      <DigestiveButton
-        title={DigestiveStateLabel.BEFORE_BREAKFAST}
-        borderRightWidth={1}
-        onPress={() => onPress('BEFORE_BREAKFAST')}
-      />
-      <DigestiveButton
-        title={DigestiveStateLabel.AFTER_BREAKFAST}
-        onPress={() => onPress('AFTER_BREAKFAST')}
-      />
-    </RowView>
-    <RowView>
-      <DigestiveButton
-        title={DigestiveStateLabel.BEFORE_LUNCH}
-        borderRightWidth={1}
-        onPress={() => onPress('BEFORE_LUNCH')}
-      />
-      <DigestiveButton
-        title={DigestiveStateLabel.AFTER_LUNCH}
-        onPress={() => onPress('AFTER_LUNCH')}
-      />
-    </RowView>
-    <RowView>
-      <DigestiveButton
-        title={DigestiveStateLabel.BEFORE_DINNER}
-        borderRightWidth={1}
-        onPress={() => onPress('BEFORE_DINNER')}
-      />
-      <DigestiveButton
-        title={DigestiveStateLabel.AFTER_DINNER}
-        onPress={() => onPress('AFTER_DINNER')}
-      />
-    </RowView>
-    <RowView>
-      <DigestiveButton
-        title={DigestiveStateLabel.BEFORE_SLEEP}
-        borderRightWidth={1}
-        onPress={() => onPress('BEFORE_SLEEP')}
-      />
-      <DigestiveButton title={DigestiveStateLabel.MIDNIGHT} onPress={() => onPress('MIDNIGHT')} />
-    </RowView>
-  </RootView>
 )
 
 const RootView = styled.View`
