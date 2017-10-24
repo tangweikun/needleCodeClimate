@@ -68,9 +68,9 @@ class _LoginScreen extends Component {
               <NickButton
                 dark
                 title="微信登录"
-                onPress={() => {
-                  this.onWechatLoginPress()
-                }}
+                withIcon
+                icon={require('../assets/images/icon-wechat.png')}
+                onPress={() => this.onWechatLoginPress()}
               />
             )}
             <NickButton

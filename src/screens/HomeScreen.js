@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { View, Image, TouchableWithoutFeedback, Text } from 'react-native'
+import { View, TouchableWithoutFeedback, Text } from 'react-native'
 import styled from 'styled-components/native'
 
-import { PulsingCircle } from '../components'
+import { PulsingCircle, TabBarIcon } from '../components'
 import { WeeklyProgress } from '../modules/advice/containers/WeeklyProgress'
 import {
   LIGHT_THEME_ALT_BACKGROUND_COLOR,
@@ -14,7 +14,6 @@ import {
 export class _HomeScreen extends Component {
   static navigationOptions = ({ navigation, screenProps }) => ({
     headerLeft: <View />,
-
     headerRight: (
       <TouchableWithoutFeedback
         onPress={() => navigation.navigate('History', { patientId: screenProps.patientId })}
@@ -25,25 +24,25 @@ export class _HomeScreen extends Component {
       </TouchableWithoutFeedback>
     ),
     title: '测血糖',
-    tabBarIcon: ({ focused }) =>
-      (focused ? (
-        <Image
-          style={{ height: 20, width: 20 }}
-          source={require('../assets/images/tab-icon-measuring-1.png')}
-        />
-      ) : (
-        <Image
-          style={{ height: 20, width: 20 }}
-          source={require('../assets/images/tab-icon-measuring-2.png')}
-        />
-      )),
+    tabBarIcon: ({ focused }) => (
+      <TabBarIcon
+        source={
+          focused
+            ? require('../assets/images/tab-icon-measuring-1.png')
+            : require('../assets/images/tab-icon-measuring-2.png')
+        }
+      />
+    ),
   })
+
   onPressHistory = () => {
     this.props.navigation.navigate('History', { patientId: this.props.appData.patientId })
   }
+
   onPressManualRecord = () => {
     this.props.navigation.navigate('ManualRecord', { patientId: this.props.appData.patientId })
   }
+
   render() {
     return (
       <RootView>

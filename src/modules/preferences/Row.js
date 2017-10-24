@@ -1,17 +1,21 @@
 import React from 'react'
-import { Image } from 'react-native'
+import { Image, View, Text } from 'react-native'
 import styled from 'styled-components/native'
 import Icon from 'react-native-vector-icons/Entypo'
+
+import { GRAY85, SMALL_FONT, GRAY206, GRAY136 } from '../../constants'
 
 export const RowWithValueAndDisclosureIndicator = ({ title, value, onPress }) => (
   <Row title={title} onPress={onPress}>
     <Value>{value}</Value>
-    <Icon
-      style={{ marginTop: 3, marginRight: 6 }}
-      name="chevron-small-right"
-      size={25}
-      color="#bbb"
-    />
+    <ChevronRightIcon />
+  </Row>
+)
+
+export const RowWithRightIconAndDisclosureIndicator = ({ title, image, onPress }) => (
+  <Row title={title} onPress={onPress} height={110}>
+    <Image source={image} style={{ height: 60, width: 60, borderRadius: 30 }} />
+    <ChevronRightIcon />
   </Row>
 )
 
@@ -19,56 +23,84 @@ export const RowWithIconAndDisclosureIndicator = ({ iconName, title, onPress }) 
   <Container onPress={onPress}>
     <Image source={iconName} style={{}} />
     <Title style={{ marginLeft: 10 }}>{title}</Title>
-    <Icon
-      style={{ marginTop: 3, marginRight: 6 }}
-      name="chevron-small-right"
-      size={25}
-      color="#bbb"
-    />
+    <ChevronRightIcon />
   </Container>
 )
 
-export const RowWithValue = ({ title, value, onPress }) => (
+export const RowWithValue = ({ title, value, onPress, color }) => (
   <Row title={title} onPress={onPress}>
-    <Value>{value}</Value>
-    <Icon style={{ marginTop: 3, marginRight: 15 }} />
+    <Value color={color}>{value}</Value>
   </Row>
 )
 
 export const RowWithDisclosureIndicator = ({ title, onPress }) => (
   <Row title={title} onPress={onPress}>
-    <Icon
-      style={{ marginTop: 3, marginRight: 6 }}
-      name="chevron-small-right"
-      size={25}
-      color="#bbb"
-    />
+    <ChevronRightIcon />
   </Row>
 )
 
-export const Row = ({ title, onPress, children }) => (
-  <Container onPress={onPress}>
+export const Row = ({ title, onPress, children, height }) => (
+  <Container onPress={onPress} height={height}>
     <Title>{title}</Title>
     {children}
   </Container>
 )
 
+export const RowWithIcons = ({ title, icons }) => (
+  <View>
+    <Row title={title} />
+    <IconContainer>
+      {icons.map(item => (
+        <IconWrapper key={item.text} onPress={item.onPress}>
+          <ImageView source={item.icon} />
+          <Text>{item.text}</Text>
+        </IconWrapper>
+      ))}
+    </IconContainer>
+  </View>
+)
+
+const ChevronRightIcon = () => (
+  <Icon style={{ marginRight: -7 }} name="chevron-small-right" size={25} color={GRAY206} />
+)
+
+const ImageView = styled.Image`
+  width: 44;
+  height: 38;
+  margin-bottom: 4px;
+  resize-mode: contain;
+`
+
+const IconContainer = styled.View`
+  height: 80;
+  background-color: white;
+  flex-direction: row;
+  justify-content: space-around;
+`
+
+const IconWrapper = styled.TouchableOpacity`
+  justify-content: center;
+  width: 66;
+  align-items: center;
+`
+
 const Container = styled.TouchableOpacity`
   background-color: white;
-  padding-left: 15;
-  height: 44;
+  padding-left: 16;
+  padding-right: 16;
+  height: ${({ height }) => height || 50};
   flex-direction: row;
   align-items: center;
 `
 
 const Title = styled.Text`
-  color: black;
-  font-size: 17;
+  color: ${GRAY85};
+  font-size: ${SMALL_FONT};
   margin-right: auto;
 `
 
 const Value = styled.Text`
-  color: gray;
-  font-size: 17;
+  color: ${({ color }) => color || GRAY136};
+  font-size: ${SMALL_FONT};
   margin-right: 0;
 `

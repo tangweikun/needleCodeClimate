@@ -7,6 +7,9 @@ import MessageAudio from './MessageAudio'
 
 const { isSameUser, isSameDay, warnDeprecated } = utils
 
+const isSameDayAndSameUser = (currentMessage, nextMessage) =>
+  isSameUser(currentMessage, nextMessage) && isSameDay(currentMessage, nextMessage)
+
 export default class Bubble extends React.Component {
   constructor(props) {
     super(props)
@@ -14,10 +17,7 @@ export default class Bubble extends React.Component {
   }
 
   handleBubbleToNext() {
-    if (
-      isSameUser(this.props.currentMessage, this.props.nextMessage) &&
-      isSameDay(this.props.currentMessage, this.props.nextMessage)
-    ) {
+    if (isSameDayAndSameUser(this.props.currentMessage, this.props.nextMessage)) {
       return StyleSheet.flatten([
         styles[this.props.position].containerToNext,
         this.props.containerToNextStyle[this.props.position],
@@ -27,10 +27,7 @@ export default class Bubble extends React.Component {
   }
 
   handleBubbleToPrevious() {
-    if (
-      isSameUser(this.props.currentMessage, this.props.previousMessage) &&
-      isSameDay(this.props.currentMessage, this.props.previousMessage)
-    ) {
+    if (isSameDayAndSameUser(this.props.currentMessage, this.props.nextMessage)) {
       return StyleSheet.flatten([
         styles[this.props.position].containerToPrevious,
         this.props.containerToPreviousStyle[this.props.position],
@@ -63,28 +60,9 @@ export default class Bubble extends React.Component {
 
   renderMessageAudio() {
     if (this.props.currentMessage.audioUrl) {
-      return (
-        <MessageAudio {...this.props} />
-        // <TouchableOpacity
-        //   onPress={() => {
-        //     console.log(this.props.currentMessage.audioUrl)
-        //     const sound = new Sound(this.props.currentMessage.audioUrl, undefined, error => {
-        //       if (error) {
-        //         console.log(error)
-        //       } else {
-        //         console.log('Playing sound')
-        //         sound.play(() => {
-        //           // Release when it's done so we're not using up resources
-        //           sound.release()
-        //         })
-        //       }
-        //     })
-        //   }}
-        // >
-        //   <Text>Blabla</Text>
-        // </TouchableOpacity>
-      )
+      return <MessageAudio {...this.props} />
     }
+    return null
   }
 
   renderTicks() {
@@ -93,7 +71,7 @@ export default class Bubble extends React.Component {
       return this.props.renderTicks(currentMessage)
     }
     if (currentMessage.user._id !== this.props.user._id) {
-      return
+      return null
     }
     if (currentMessage.sent || currentMessage.received) {
       return (
@@ -103,6 +81,7 @@ export default class Bubble extends React.Component {
         </View>
       )
     }
+    return null
   }
 
   renderTime() {
@@ -127,17 +106,15 @@ export default class Bubble extends React.Component {
     if (this.props.onLongPress) {
       this.props.onLongPress(this.context, this.props.currentMessage)
     } else if (this.props.currentMessage.text) {
-      const options = ['Copy Text', 'Cancel']
+      const options = ['复制', '取消']
       const cancelButtonIndex = options.length - 1
       this.context.actionSheet().showActionSheetWithOptions({
         options,
         cancelButtonIndex,
       },
       buttonIndex => {
-        switch (buttonIndex) {
-          case 0:
-            Clipboard.setString(this.props.currentMessage.text)
-            break
+        if (buttonIndex === 0) {
+          Clipboard.setString(this.props.currentMessage.text)
         }
       })
     }

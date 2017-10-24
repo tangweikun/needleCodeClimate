@@ -24,24 +24,22 @@ import {
 } from '../constants'
 import { MeasureDays } from '../modules/advice/containers/MeasureDays'
 import { unreadMessagesQuery } from '../graphql'
+import { TabBarIcon } from '../components'
 
 @withApollo
 export class _AskScreen extends React.Component {
   static navigationOptions = () => ({
     title: '问医生',
     headerLeft: null,
-    tabBarIcon: ({ focused }) =>
-      (focused ? (
-        <Image
-          style={{ height: 20, width: 22 }}
-          source={require('../assets/images/tab-icon-doctor-2.png')}
-        />
-      ) : (
-        <Image
-          style={{ height: 20, width: 22 }}
-          source={require('../assets/images/tab-icon-doctor-1.png')}
-        />
-      )),
+    tabBarIcon: ({ focused }) => (
+      <TabBarIcon
+        source={
+          focused
+            ? require('../assets/images/tab-icon-doctor-2.png')
+            : require('../assets/images/tab-icon-doctor-1.png')
+        }
+      />
+    ),
   })
 
   state = {}

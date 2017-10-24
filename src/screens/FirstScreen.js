@@ -1,18 +1,18 @@
 import React from 'react'
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, Platform, Alert, Linking, NativeModules, Image } from 'react-native'
 import { connect } from 'react-redux'
-import { NavigationActions } from 'react-navigation'
 import styled from 'styled-components/native'
-import { VerifyMobileScreen } from '.'
 import { setPatient } from '../ducks/actions'
-import { REGULAR_FONT, DARK_THEME_BUTTON_TEXT_COLOR } from '../constants'
-import Navigation from '../modules/Navigator'
+import { APP_UPGRADE_API } from '../constants'
+import { getUsefulDeviceContext } from '../utils/deviceContext'
 
+const device = getUsefulDeviceContext()
 class _FirstScreen extends React.Component {
   async componentDidMount() {
     await AsyncStorage.getItem('userInfo', (err, userInfo) => {
       this.props.setPatient(JSON.parse(userInfo) || {})
     })
+    this.checkAppNewVersion()
 
     if (!this.props.appData.patientId) {
       this.props.navigation.navigate('LoginNavigation')
@@ -26,68 +26,79 @@ class _FirstScreen extends React.Component {
     }
   }
 
+  checkAppNewVersion = () => {
+    let reqBody = Platform.OS === 'ios' ? 'app=com.ihealthlabs.HuTang' : 'app=com.ihealth.HuTang'
+    reqBody += `&current=${device.readableVersion}`
+
+    fetch(APP_UPGRADE_API, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: reqBody,
+    })
+      .then(response => response.json())
+      .then(response => {
+        const responeaData = response.data
+        if (responeaData && responeaData.upgrade) {
+          Alert.alert('是否下载新版本App?', '', [
+            {
+              text: '取消',
+              onPress: () => this.denyUpgrade(responeaData.required_version === 1),
+            },
+            {
+              text: '下载',
+              onPress: () => this.allowUpgrade(responeaData),
+            },
+          ])
+        }
+      })
+      .catch(e => {
+        console.log('error', e)
+      })
+  }
+
+  allowUpgrade = responeaData => {
+    if (Platform.OS === 'ios') {
+      Linking.openURL('https://itunes.apple.com/us/app/护血糖/id1284007492?l=zh&ls=1&mt=8')
+    } else {
+      NativeModules.upgrade.upgrade(responeaData.target_link)
+    }
+
+    if (responeaData.required_version === 1) {
+      console.log('close app')
+    }
+  }
+
+  denyUpgrade = isForceUpdate => {
+    if (isForceUpdate) {
+      console.log('close app')
+    }
+  }
+
   render() {
     return (
       <RootView>
-        <SplashScreen />
+        <Image
+          style={{ flex: 1 }}
+          resizeMode="contain"
+          source={require('../assets/images/splash.jpg')}
+        />
       </RootView>
     )
-
-    // if (!patientId) return <VerifyMobileScreen />
-
-    // return <Navigation screenProps={{ patientId, measureResult, digestiveState, manualRecord }} />
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    appData: state.appData,
-  }
-}
-function mapDispatchToProps(dispatch) {
-  return {
-    setPatient: g => dispatch(setPatient(g)),
-  }
-}
+const mapStateToProps = state => ({ appData: state.appData })
+
+const mapDispatchToProps = dispatch => ({
+  setPatient: g => dispatch(setPatient(g)),
+})
 
 export const FirstScreen = connect(mapStateToProps, mapDispatchToProps)(_FirstScreen)
 
 const RootView = styled.View`
   flex: 1;
   justify-content: center;
-`
-
-const SplashScreen = () => (
-  <LogoView>
-    <LogoText>{junk}</LogoText>
-    <Logo source={require('../assets/images/splash-icon.png')} resizeMode="contain" />
-    <LogoText>{name}</LogoText>
-  </LogoView>
-)
-const junk = `优
-质
-的
-健
-康
-生
-活
-来
-自`
-const name = `护
-糖`
-const Logo = styled.Image`
-  width: 80;
-  height: 100;
-`
-const LogoView = styled.View`
-  flex: 1;
-  justify-content: center;
   align-items: center;
-`
-
-const LogoText = styled.Text`
-  font-size: ${REGULAR_FONT};
-  text-align: center;
-  color: ${DARK_THEME_BUTTON_TEXT_COLOR};
-  line-height: 30;
 `

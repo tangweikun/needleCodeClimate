@@ -13,6 +13,7 @@ import {
   ChatScreen,
   VerifyMobileScreen,
   FirstScreen,
+  AboutMeScreen,
 } from '../screens'
 import { PRIMARY_COLOR } from '../constants'
 
@@ -106,6 +107,10 @@ const NeedleStackNavigation = StackNavigator(
     },
     Chat: {
       screen: ChatScreen,
+      navigationOptions: navigationWithHeaderStyle,
+    },
+    AboutMe: {
+      screen: AboutMeScreen,
       navigationOptions: navigationWithHeaderStyle,
     },
   },

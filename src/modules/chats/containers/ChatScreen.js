@@ -8,7 +8,7 @@ import { GiftedChat } from 'react-native-gifted-chat'
 import { ExpandingView } from 'react-native-jans-common-components'
 import Bubble from './Bubble'
 import Message from './Message'
-import { PRIMARY_COLOR, defaultAvatar } from '../../../constants'
+import { PRIMARY_COLOR, defaultDoctorAvatar } from '../../../constants'
 import { messagesQuery, sendNeedleTextChatMessage, updateLastSeenAt } from '../../../graphql'
 
 @withApollo
@@ -60,7 +60,7 @@ export class Chat extends React.Component {
       user: {
         _id: message.sender._id,
         name: message.sender.nickname,
-        avatar: message.sender.avatar || defaultAvatar,
+        avatar: message.sender.avatar || defaultDoctorAvatar,
       },
     }))
 
