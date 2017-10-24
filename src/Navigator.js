@@ -14,6 +14,13 @@ import {
   VerifyMobileScreen,
   FirstScreen,
   AboutMeScreen,
+  LaboratoryExaminationScreen,
+  PhysicalExaminationScreen,
+  DietTokenScreen,
+  OutpatientServiceScreen,
+  FeedbackScreen,
+  UserGuidanceScreen,
+  AccountBindingScreen,
 } from './screens'
 import { PRIMARY_COLOR, MINI_FONT, GRAY230, REGULAR_FONT } from './constants'
 
@@ -82,52 +89,75 @@ const LoginNavigation = StackNavigator({
   },
 })
 
-const NeedleStackNavigation = StackNavigator(
-  {
-    First: {
-      screen: MainTabs,
-      navigationOptions: {
-        ...navigationWithHeaderStyle,
-        headerTitleStyle: { alignSelf: 'center', fontSize: REGULAR_FONT },
-      },
-    },
-    History: {
-      screen: HistoryScreen,
-      navigationOptions: navigationWithHeaderStyle,
-    },
-    Measure: {
-      screen: MeasureScreen,
-      navigationOptions,
-    },
-    ManualRecord: {
-      screen: ManualRecordScreen,
-      navigationOptions,
-    },
-    AboutUs: {
-      screen: AboutUsScreen,
-      navigationOptions: navigationWithHeaderStyle,
-    },
-    Introduction: {
-      screen: IntroductionScreen,
-      navigationOptions: navigationOptionsWithoutHeader,
-    },
-    Agreement: {
-      screen: AgreementScreen,
-      navigationOptions: navigationWithHeaderStyle,
-    },
-    Chat: {
-      screen: ChatScreen,
-      navigationOptions: navigationWithHeaderStyle,
-    },
-    AboutMe: {
-      screen: AboutMeScreen,
-      navigationOptions: navigationWithHeaderStyle,
+const NeedleStackNavigation = StackNavigator({
+  First: {
+    screen: MainTabs,
+    navigationOptions: {
+      ...navigationWithHeaderStyle,
+      headerTitleStyle: { alignSelf: 'center', fontSize: REGULAR_FONT },
     },
   },
-  {
-    // headerMode: 'none'
+  History: {
+    screen: HistoryScreen,
+    navigationOptions: navigationWithHeaderStyle,
   },
-)
+  Measure: {
+    screen: MeasureScreen,
+    navigationOptions,
+  },
+  ManualRecord: {
+    screen: ManualRecordScreen,
+    navigationOptions,
+  },
+  AboutUs: {
+    screen: AboutUsScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  Introduction: {
+    screen: IntroductionScreen,
+    navigationOptions: navigationOptionsWithoutHeader,
+  },
+  Agreement: {
+    screen: AgreementScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  Chat: {
+    screen: ChatScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  AboutMe: {
+    screen: AboutMeScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  LaboratoryExamination: {
+    screen: LaboratoryExaminationScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  PhysicalExamination: {
+    screen: PhysicalExaminationScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  DietToken: {
+    screen: DietTokenScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  OutpatientService: {
+    screen: OutpatientServiceScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  Feedback: {
+    screen: FeedbackScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  UserGuidance: {
+    screen: UserGuidanceScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  AccountBinding: {
+    screen: AccountBindingScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+})
 
 const InitialNavigation = StackNavigator(
   {

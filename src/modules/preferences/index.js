@@ -48,7 +48,10 @@ class _Preferences extends React.Component {
         </TopView>
 
         <MarginTopView>
-          <RowWithDisclosureIndicator title="我的门诊" onPress={() => console.log('my clinical')} />
+          <RowWithDisclosureIndicator
+            title="我的门诊"
+            onPress={() => this.props.navigation.navigate('OutpatientService')}
+          />
         </MarginTopView>
 
         <MarginTopView>
@@ -58,17 +61,17 @@ class _Preferences extends React.Component {
               {
                 icon: require('../../assets/images/icon-token.png'),
                 text: '饮食代币',
-                onPress: () => this.props.navigation.navigate('AboutUs'),
+                onPress: () => this.props.navigation.navigate('DietToken'),
               },
               {
                 icon: require('../../assets/images/icon-bodydata.png'),
                 text: '身体检查',
-                onPress: () => console.log('1'),
+                onPress: () => this.props.navigation.navigate('PhysicalExamination'),
               },
               {
                 icon: require('../../assets/images/icon-laboratory.png'),
                 text: '化验检查',
-                onPress: () => console.log('1'),
+                onPress: () => this.props.navigation.navigate('LaboratoryExamination'),
               },
             ]}
           />
@@ -79,15 +82,15 @@ class _Preferences extends React.Component {
             data={[
               {
                 key: '使用指南',
-                onPress: () => console.log('my guidance'),
+                onPress: () => this.props.navigation.navigate('UserGuidance'),
               },
               {
                 key: '账号绑定',
-                onPress: () => console.log('my clinical'),
+                onPress: () => this.props.navigation.navigate('AccountBinding'),
               },
               {
                 key: '意见反馈',
-                onPress: () => console.log('my clinical'),
+                onPress: () => this.props.navigation.navigate('Feedback'),
               },
               {
                 key: '关于我们',

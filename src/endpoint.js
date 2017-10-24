@@ -1,6 +1,6 @@
 import DeviceInfo from 'react-native-device-info'
 
-const devUri = 'http://localhost:3080/'
+const devUri = 'https://pigeon.gtzh-play.51ijk.com/'
 const stgUri = 'https://pigeon.gtzh-play.51ijk.com/'
 const prodUri = 'https://pigeon.ihealthlabs.com.cn/'
 
