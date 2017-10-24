@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { uri } from '../../../endpoint'
 import { measureError, measureSuccess, measureEvent } from '../../../ducks/actions'
 // import Navigation from '../../../modules/Navigator'
-import AppNavigation from '../../Navigator'
+import AppNavigation from '../../../Navigator'
 import {
   startDiscovery,
   stopDiscovery,

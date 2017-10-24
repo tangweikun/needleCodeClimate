@@ -28,8 +28,8 @@ export class _HomeScreen extends Component {
       <TabBarIcon
         source={
           focused
-            ? require('../assets/images/tab-icon-measuring-1.png')
-            : require('../assets/images/tab-icon-measuring-2.png')
+            ? require('../assets/images/icon-tabbar-BG-Active.png')
+            : require('../assets/images/icon-tabbar-BG-Inactive.png')
         }
       />
     ),

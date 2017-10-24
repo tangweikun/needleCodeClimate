@@ -14,8 +14,8 @@ import {
   VerifyMobileScreen,
   FirstScreen,
   AboutMeScreen,
-} from '../screens'
-import { PRIMARY_COLOR } from '../constants'
+} from './screens'
+import { PRIMARY_COLOR, MINI_FONT, GRAY230, REGULAR_FONT } from './constants'
 
 const navigationOptions = {
   headerTintColor: 'white',
@@ -26,6 +26,9 @@ const navigationOptionsWithoutHeader = {
   headerTintColor: 'white',
   headerBackTitle: null,
   header: null,
+  headerTitleStyle: {
+    fontSize: REGULAR_FONT,
+  },
 }
 
 const navigationWithHeaderStyle = {
@@ -35,6 +38,9 @@ const navigationWithHeaderStyle = {
     justifyContent: 'center',
     borderBottomWidth: 0,
     elevation: 0,
+  },
+  headerTitleStyle: {
+    fontSize: REGULAR_FONT,
   },
 }
 
@@ -55,7 +61,11 @@ const MainTabs = TabNavigator(
       activeTintColor: PRIMARY_COLOR,
       showLabel: true,
       labelStyle: {
-        fontSize: 13,
+        fontSize: MINI_FONT,
+      },
+      style: {
+        height: 50,
+        backgroundColor: GRAY230,
       },
     },
   },
@@ -78,7 +88,7 @@ const NeedleStackNavigation = StackNavigator(
       screen: MainTabs,
       navigationOptions: {
         ...navigationWithHeaderStyle,
-        headerTitleStyle: { alignSelf: 'center' },
+        headerTitleStyle: { alignSelf: 'center', fontSize: REGULAR_FONT },
       },
     },
     History: {

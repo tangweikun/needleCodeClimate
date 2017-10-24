@@ -1,5 +1,5 @@
 import React from 'react'
-import { AsyncStorage, View, Text, Image, FlatList, Alert, StyleSheet } from 'react-native'
+import { View, Text, Image, FlatList } from 'react-native'
 import styled from 'styled-components/native'
 import { connect } from 'react-redux'
 import { toggleDevMode, setPatient } from '../../ducks/actions'
@@ -15,20 +15,6 @@ import {
 } from '../../constants'
 
 class _Preferences extends React.Component {
-  // logout = () => {
-  //   this.props.setPatient({})
-  //   AsyncStorage.removeItem('userInfo')
-  //   this.props.navigation.navigate('LoginNavigation')
-  // }
-
-  // introduction = () => {
-  //   this.props.navigation.navigate('Introduction')
-  // }
-
-  // agreement = () => {
-  //   this.props.navigation.navigate('Agreement')
-  // }
-
   render() {
     return (
       <RootView>
@@ -60,64 +46,45 @@ class _Preferences extends React.Component {
             </View>
           </View>
         </TopView>
+
         <MarginTopView>
-          <FlatList
-            data={[
+          <RowWithDisclosureIndicator title="我的门诊" onPress={() => console.log('my clinical')} />
+        </MarginTopView>
+
+        <MarginTopView>
+          <RowWithIcons
+            title="健康数据"
+            icons={[
               {
-                key: '我的门诊',
-                onPress: () => console.log('my clinical'),
+                icon: require('../../assets/images/icon-token.png'),
+                text: '饮食代币',
+                onPress: () => this.props.navigation.navigate('AboutUs'),
               },
               {
-                key: '健康数据',
+                icon: require('../../assets/images/icon-bodydata.png'),
+                text: '身体检查',
+                onPress: () => console.log('1'),
+              },
+              {
+                icon: require('../../assets/images/icon-laboratory.png'),
+                text: '化验检查',
+                onPress: () => console.log('1'),
               },
             ]}
-            renderItem={({ item }) => {
-              if (item.key === '健康数据') {
-                return (
-                  <RowWithIcons
-                    title={item.key}
-                    icons={[
-                      {
-                        icon: require('../../assets/images/icon-token.png'),
-                        text: '饮食代币',
-                        onPress: () => this.props.navigation.navigate('AboutUs'),
-                      },
-                      {
-                        icon: require('../../assets/images/icon-bodydata.png'),
-                        text: '身体检查',
-                        onPress: () => console.log('1'),
-                      },
-                      {
-                        icon: require('../../assets/images/icon-laboratory.png'),
-                        text: '化验检查',
-                        onPress: () => console.log('1'),
-                      },
-                    ]}
-                  />
-                )
-              }
-              return <RowWithDisclosureIndicator title={item.key} onPress={() => item.onPress()} />
-            }}
-            ItemSeparatorComponent={() => <SeparatorLine />}
           />
         </MarginTopView>
+
         <MarginTopView>
           <FlatList
             data={[
               {
                 key: '使用指南',
+                onPress: () => console.log('my guidance'),
+              },
+              {
+                key: '账号绑定',
                 onPress: () => console.log('my clinical'),
               },
-            ]}
-            renderItem={({ item }) => (
-              <RowWithDisclosureIndicator title={item.key} onPress={() => item.onPress()} />
-            )}
-            ItemSeparatorComponent={() => <SeparatorLine />}
-          />
-        </MarginTopView>
-        <MarginTopView>
-          <FlatList
-            data={[
               {
                 key: '意见反馈',
                 onPress: () => console.log('my clinical'),
@@ -156,15 +123,15 @@ const TopView = styled.TouchableOpacity`
   align-items: center;
   flex-direction: row;
   background-color: #fff;
-  height: 110;
-  padding: 25px;
+  height: 100;
+  padding-left: 16px;
   margin-top: 10px;
 `
 
 const ImageView = styled.Image`
   height: 60;
   width: 60;
-  margin-right: 30;
+  margin-right: 26;
   border-radius: 30;
 `
 

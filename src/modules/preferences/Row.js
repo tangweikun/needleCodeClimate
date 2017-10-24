@@ -3,7 +3,7 @@ import { Image, View, Text } from 'react-native'
 import styled from 'styled-components/native'
 import Icon from 'react-native-vector-icons/Entypo'
 
-import { GRAY85, SMALL_FONT, GRAY206, GRAY136 } from '../../constants'
+import { GRAY85, SMALL_FONT, GRAY206, GRAY136, MINI_FONT } from '../../constants'
 
 export const RowWithValueAndDisclosureIndicator = ({ title, value, onPress }) => (
   <Row title={title} onPress={onPress}>
@@ -53,7 +53,7 @@ export const RowWithIcons = ({ title, icons }) => (
       {icons.map(item => (
         <IconWrapper key={item.text} onPress={item.onPress}>
           <ImageView source={item.icon} />
-          <Text>{item.text}</Text>
+          <Text style={{ fontSize: MINI_FONT }}>{item.text}</Text>
         </IconWrapper>
       ))}
     </IconContainer>
@@ -65,14 +65,14 @@ const ChevronRightIcon = () => (
 )
 
 const ImageView = styled.Image`
-  width: 44;
-  height: 38;
+  width: 36;
+  height: 32;
   margin-bottom: 4px;
   resize-mode: contain;
 `
 
 const IconContainer = styled.View`
-  height: 80;
+  height: 70;
   background-color: white;
   flex-direction: row;
   justify-content: space-around;
@@ -88,7 +88,7 @@ const Container = styled.TouchableOpacity`
   background-color: white;
   padding-left: 16;
   padding-right: 16;
-  height: ${({ height }) => height || 50};
+  height: ${({ height }) => height || 44};
   flex-direction: row;
   align-items: center;
 `

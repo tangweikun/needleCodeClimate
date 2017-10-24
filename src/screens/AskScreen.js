@@ -35,8 +35,8 @@ export class _AskScreen extends React.Component {
       <TabBarIcon
         source={
           focused
-            ? require('../assets/images/tab-icon-doctor-2.png')
-            : require('../assets/images/tab-icon-doctor-1.png')
+            ? require('../assets/images/icon-tabbar-ask-Active.png')
+            : require('../assets/images/icon-tabbar-ask-Inactive.png')
         }
       />
     ),
