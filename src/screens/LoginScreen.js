@@ -5,8 +5,8 @@ import { withApollo } from 'react-apollo'
 import { AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 
-import { NickButton } from '../components'
-import { DARK_THEME_BUTTON_TEXT_COLOR, REGULAR_FONT } from '../constants'
+import { Button } from '../components'
+import { GRAY136, REGULAR_FONT, LARGE_FONT, DARK_BLACK } from '../constants'
 import { wechatLoginMutation } from '../graphql'
 import { setPatient } from '../ducks/actions'
 
@@ -38,6 +38,14 @@ class _LoginScreen extends Component {
         avatar,
         patientState,
         didCreateNewPatient,
+        birthday,
+        gender,
+        height,
+        weight,
+        diabetesType,
+        startOfIllness,
+        targetWeight,
+        mobile,
       } = response.data.wechatLoginOrSignUp
 
       if (didCreateNewPatient) {
@@ -45,10 +53,36 @@ class _LoginScreen extends Component {
       } else {
         await AsyncStorage.setItem(
           'userInfo',
-          JSON.stringify({ patientId, nickname, avatar, patientState }),
+          JSON.stringify({
+            patientId,
+            nickname,
+            avatar,
+            patientState,
+            birthday,
+            gender,
+            height,
+            weight,
+            diabetesType,
+            startOfIllness,
+            targetWeight,
+            mobile,
+          }),
         )
         this.props.navigation.navigate('First')
-        this.props.setPatient({ patientId, nickname, avatar, patientState })
+        this.props.setPatient({
+          patientId,
+          nickname,
+          avatar,
+          patientState,
+          birthday,
+          gender,
+          height,
+          weight,
+          diabetesType,
+          startOfIllness,
+          targetWeight,
+          mobile,
+        })
       }
     } catch (e) {
       console.log(e)
@@ -58,27 +92,24 @@ class _LoginScreen extends Component {
   render() {
     return (
       <RootView>
-        <MainView>
-          <LogoView>
-            <Logo source={require('../assets/images/splash-icon.png')} resizeMode="contain" />
-            <LogoText>护血糖</LogoText>
-          </LogoView>
-          <LoginView>
-            {this.state.isWXAppInstalled && (
-              <NickButton
-                dark
-                title="微信登录"
-                withIcon
-                icon={require('../assets/images/icon-wechat.png')}
-                onPress={() => this.onWechatLoginPress()}
-              />
-            )}
-            <NickButton
-              title="手机号登录"
-              onPress={() => this.props.navigation.navigate('VerifyMobile')}
-            />
-          </LoginView>
-        </MainView>
+        <LogoView>
+          <Logo source={require('../assets/images/icon_login_app.png')} resizeMode="contain" />
+          <LargeText>护血糖</LargeText>
+          <SmallText>管理血糖更简单</SmallText>
+        </LogoView>
+        {this.state.isWXAppInstalled && (
+          <Button
+            dark
+            title="微信登录"
+            icon={require('../assets/images/icon_login_wechat.png')}
+            onPress={() => this.onWechatLoginPress()}
+          />
+        )}
+        <Button
+          title="手机号登录"
+          icon={require('../assets/images/icon_login_phone.png')}
+          onPress={() => this.props.navigation.navigate('VerifyMobile')}
+        />
       </RootView>
     )
   }
@@ -90,27 +121,27 @@ const mapDispatchToProps = dispatch => ({ setPatient: g => dispatch(setPatient(g
 
 export const LoginScreen = connect(mapStateToProps, mapDispatchToProps)(_LoginScreen)
 
-const RootView = styled.View`flex: 1;`
-const MainView = styled.View`
-  flex: 9;
-  flex-direction: column;
+const RootView = styled.View``
+
+const SmallText = styled.Text`
+  font-size: ${REGULAR_FONT};
+  text-align: center;
+  color: ${GRAY136};
+`
+
+const LargeText = styled.Text`
+  font-size: ${LARGE_FONT};
+  text-align: center;
+  color: ${DARK_BLACK};
 `
 
 const Logo = styled.Image`
   width: 70;
   height: 70;
-  margin-bottom: 7;
+  margin-bottom: 7px;
 `
 const LogoView = styled.View`
-  flex: 1;
-  justify-content: center;
+  margin-top: 120px;
+  margin-bottom: 56px;
   align-items: center;
-`
-
-const LoginView = styled.View`flex: 2;`
-
-const LogoText = styled.Text`
-  font-size: ${REGULAR_FONT};
-  text-align: center;
-  color: ${DARK_THEME_BUTTON_TEXT_COLOR};
 `

@@ -160,7 +160,15 @@ export const logInOrSignUpMutation = gql`
       patientId
       nickname
       avatar
+      birthday
+      gender
       patientState
+      height
+      weight
+      diabetesType
+      startOfIllness
+      targetWeight
+      mobile
     }
   }
 `
@@ -178,8 +186,22 @@ export const wechatLoginMutation = gql`
       patientId
       nickname
       avatar
+      birthday
+      gender
       patientState
       didCreateNewPatient
+      height
+      weight
+      diabetesType
+      startOfIllness
+      targetWeight
+      mobile
     }
+  }
+`
+
+export const submitFeedbackMutation = gql`
+  mutation submitFeedback($text: String!, $patientId: ID!) {
+    submitFeedback(text: $text, patientId: $patientId)
   }
 `

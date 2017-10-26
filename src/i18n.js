@@ -8,3 +8,8 @@ export const i18n = {
     GOAL: { en: 'GOAL', cn: '控糖目标' },
   },
 }
+
+export const gender = {
+  male: '男',
+  female: '女',
+}

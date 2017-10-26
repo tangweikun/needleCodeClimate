@@ -13,7 +13,7 @@ import {
   SMALL_FONT,
   PRIMARY_COLOR,
 } from '../../../constants'
-import { NickButton, InternetError } from '../../../components'
+import { Button, InternetError } from '../../../components'
 // NOTE: default screen while loading should show todays date and a muted default data state
 
 export class WeeklyProgress extends Component {
@@ -52,8 +52,8 @@ const TreatmentPlan = ({ data, patientId }) => {
           <Margins>
             <Explanation>没有测量作业，可能是因为您还没有在糖尿病共同照护门诊就诊过。</Explanation>
           </Margins>
-          <NickButton
-            light
+          <Button
+            title="我要预约门诊"
             onPress={() =>
               Alert.alert('谢谢，我们已收到您的门诊预约请求，随后将有护士跟您联系确认', '', [
                 {
@@ -61,9 +61,7 @@ const TreatmentPlan = ({ data, patientId }) => {
                   onPress: () => console.log('should make an appointment here'),
                 },
               ])}
-          >
-            我要预约门诊
-          </NickButton>
+          />
         </OuterMargin>
       </Root>
     )
@@ -90,13 +88,6 @@ const TreatmentPlan = ({ data, patientId }) => {
   return (
     <RootView>
       <Flex>
-        <Image
-          style={{
-            height: 28,
-            width: 28,
-          }}
-          source={require('../../../assets/images/icon-calenda.png')}
-        />
         <PlanTitle isToday={isToday} />
       </Flex>
       <FlexThree>
@@ -110,7 +101,7 @@ const Flex = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
-  padding-top: 24;
+  padding-top: 8;
 `
 const FlexThree = styled.View`flex: 3;`
 const RootView = styled.View`

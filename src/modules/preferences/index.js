@@ -34,15 +34,17 @@ class _Preferences extends React.Component {
           >
             <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
               <Text style={{ fontSize: REGULAR_FONT, color: DARK_BLACK }}>
-                {this.props.appData.nickname}
+                {this.props.appData.nickname || '无昵称'}
               </Text>
-              <Image
-                source={require('../../assets/images/icon-identity-outpatient.png')}
-                style={{ width: 64, height: 18, marginTop: 4, marginLeft: 10 }}
-              />
+              {this.props.appData.patientState === 'ACTIVE' && (
+                <Image
+                  source={require('../../assets/images/icon-identity-outpatient.png')}
+                  style={{ width: 64, height: 18, marginTop: 4, marginLeft: 10 }}
+                />
+              )}
             </View>
             <View>
-              <Text style={{ color: GRAY102 }}>138****1822</Text>
+              <Text style={{ color: GRAY102 }}>{this.props.appData.mobile}</Text>
             </View>
           </View>
         </TopView>
@@ -65,8 +67,8 @@ class _Preferences extends React.Component {
               },
               {
                 icon: require('../../assets/images/icon-bodydata.png'),
-                text: '身体检查',
-                onPress: () => this.props.navigation.navigate('PhysicalExamination'),
+                text: '身体档案',
+                onPress: () => this.props.navigation.navigate('BodyFile'),
               },
               {
                 icon: require('../../assets/images/icon-laboratory.png'),

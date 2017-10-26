@@ -88,7 +88,7 @@ export const MeasureSuccess = ({ measureResult, digestiveState, goAskTab, patien
       {patientState === 'ACTIVE' && (
         <StickyBottom>
           <NickButton
-            icon={require('../../../assets/images/icon-chat2.png')}
+            icon={require('../../../assets/images/icon-tabbar-ask-Active-light.png')}
             withIcon
             dark
             title="问医生"

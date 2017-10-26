@@ -95,7 +95,7 @@ export class _AskScreen extends React.Component {
                 <PullLeft>
                   <Image
                     style={{ height: 15, width: 15 }}
-                    source={require('../assets/images/icon-chat.png')}
+                    source={require('../assets/images/icon-tabbar-ask-Active.png')}
                   />
                 </PullLeft>
                 <SomeButtonText>发消息</SomeButtonText>

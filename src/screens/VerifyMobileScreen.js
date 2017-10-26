@@ -15,7 +15,7 @@ import { Observable } from 'rxjs'
 import { get } from 'lodash'
 import { logInOrSignUpMutation, sendVerificationCodeMutation } from '../graphql'
 import { PRIMARY_COLOR, SMALL_FONT } from '../constants'
-import { NickButton } from '../components'
+import { Button } from '../components'
 import { setPatient } from '../ducks/actions'
 
 const cooldown = 60
@@ -61,14 +61,53 @@ class _VerifyMobileScreen extends React.Component {
         mutation: logInOrSignUpMutation,
         variables,
       })
-      const { avatar, nickname, patientId, patientState } = response.data.loginOrSignUp
+      const {
+        avatar,
+        nickname,
+        patientId,
+        patientState,
+        birthday,
+        gender,
+        height,
+        weight,
+        diabetesType,
+        startOfIllness,
+        targetWeight,
+        mobile,
+      } = response.data.loginOrSignUp
 
       await AsyncStorage.setItem(
         'userInfo',
-        JSON.stringify({ patientId, nickname, avatar, patientState }),
+        JSON.stringify({
+          patientId,
+          nickname,
+          avatar,
+          patientState,
+          birthday,
+          gender,
+          height,
+          weight,
+          diabetesType,
+          startOfIllness,
+          targetWeight,
+          mobile,
+        }),
       )
       this.props.navigation.navigate('First')
-      this.props.setPatient({ patientId, nickname, avatar, patientState })
+      this.props.setPatient({
+        patientId,
+        nickname,
+        avatar,
+        patientState,
+        birthday,
+        gender,
+        height,
+        weight,
+        diabetesType,
+        startOfIllness,
+        targetWeight,
+        mobile,
+      })
       this.setState({ loading: false })
     } catch (e) {
       Alert.alert('提示', '请输入正确的手机号和验证码')
@@ -135,9 +174,7 @@ class _VerifyMobileScreen extends React.Component {
               <ActivityIndicator animating size="large" color={PRIMARY_COLOR} />
             </View>
           ) : (
-            <NickButton dark onPress={this.loginPress}>
-              登录
-            </NickButton>
+            <Button dark onPress={this.loginPress} title="登录" />
           )}
         </View>
       </RootView>

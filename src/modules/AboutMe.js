@@ -2,20 +2,22 @@ import React from 'react'
 import { View, FlatList, Alert, AsyncStorage } from 'react-native'
 import styled from 'styled-components/native'
 import { connect } from 'react-redux'
+import moment from 'moment'
+
 import { toggleDevMode, setPatient } from '../ducks/actions'
 import {
   RowWithRightIconAndDisclosureIndicator,
   RowWithValueAndDisclosureIndicator,
   RowWithValue,
 } from './preferences/Row'
-
+import { gender } from '../i18n'
 import {
   defaultUserAvatar,
   LIGHT_THEME_ALT_BACKGROUND_COLOR,
   GRAY230,
   DARK_RED,
 } from '../constants'
-import { NickButton } from '../components'
+import { Button } from '../components'
 
 class _AboutMe extends React.Component {
   render() {
@@ -27,12 +29,10 @@ class _AboutMe extends React.Component {
               {
                 key: '头像',
                 onPress: () => console.log('update avatar'),
-                image: this.props.appData.avatar
-                  ? { uri: this.props.appData.avatar }
-                  : defaultUserAvatar,
+                image: { uri: this.props.appData.avatar || defaultUserAvatar },
               },
               {
-                key: '生日',
+                key: '姓名',
                 onPress: () => console.log('update nickname'),
                 value: this.props.appData.nickname,
               },
@@ -65,12 +65,14 @@ class _AboutMe extends React.Component {
               {
                 key: '性别',
                 onPress: () => console.log('update gender'),
-                value: '女',
+                value: gender[this.props.appData.gender] || '未填',
               },
               {
                 key: '生日',
                 onPress: () => console.log('update birthday'),
-                value: '1996-07-02',
+                value: this.props.appData.birthday
+                  ? moment(this.props.appData.birthday).format('YYYY-MM-DD')
+                  : '未填',
               },
             ]}
             renderItem={({ item }) => (
@@ -88,15 +90,16 @@ class _AboutMe extends React.Component {
           <RowWithValue
             title="门诊认证"
             color={DARK_RED}
-            value="未认证"
+            value={this.props.appData.patientState === 'ACTIVE' ? '已认证' : '未认证'}
             onPress={() => console.log('show alert')}
           />
         </MarginTopView>
 
         <View style={{ marginTop: 'auto', marginBottom: 20 }}>
-          <NickButton
+          <Button
             title="退出登录"
             dark
+            color="red"
             onPress={() =>
               Alert.alert('确定退出登录?', '', [
                 {

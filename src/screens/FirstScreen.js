@@ -2,7 +2,7 @@ import React from 'react'
 import { AsyncStorage, Platform, Alert, Linking, NativeModules, Image } from 'react-native'
 import { connect } from 'react-redux'
 import styled from 'styled-components/native'
-import { setPatient } from '../ducks/actions'
+import { setPatient, allowCheckUpgrade } from '../ducks/actions'
 import { APP_UPGRADE_API } from '../constants'
 import { getUsefulDeviceContext } from '../utils/deviceContext'
 
@@ -12,7 +12,9 @@ class _FirstScreen extends React.Component {
     await AsyncStorage.getItem('userInfo', (err, userInfo) => {
       this.props.setPatient(JSON.parse(userInfo) || {})
     })
-    this.checkAppNewVersion()
+
+    // TODO(tangweikun) for avoid react-navigation navigating to the initial route twice bug
+    if (this.props.appData.isCheckUpgrade) this.checkAppNewVersion()
 
     if (!this.props.appData.patientId) {
       this.props.navigation.navigate('LoginNavigation')
@@ -76,13 +78,17 @@ class _FirstScreen extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+    this.props.allowCheckUpgrade()
+  }
+
   render() {
     return (
       <RootView>
         <Image
           style={{ flex: 1 }}
           resizeMode="contain"
-          source={require('../assets/images/splash.jpg')}
+          source={require('../assets/images/splash.png')}
         />
       </RootView>
     )
@@ -93,6 +99,7 @@ const mapStateToProps = state => ({ appData: state.appData })
 
 const mapDispatchToProps = dispatch => ({
   setPatient: g => dispatch(setPatient(g)),
+  allowCheckUpgrade: () => dispatch(allowCheckUpgrade()),
 })
 
 export const FirstScreen = connect(mapStateToProps, mapDispatchToProps)(_FirstScreen)

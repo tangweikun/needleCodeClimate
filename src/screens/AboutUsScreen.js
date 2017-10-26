@@ -37,7 +37,7 @@ export class _AboutUsScreen extends React.Component {
                 width: 70,
               }}
               resizeMode="contain"
-              source={require('../assets/images/splash-icon.png')}
+              source={require('../assets/images/icon_login_app.png')}
             />
           </View>
         </Touch>

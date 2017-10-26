@@ -22,6 +22,7 @@ const initialState = {
     saturday: [],
     sunday: [],
   },
+  isCheckUpgrade: false,
 }
 export default function bg1Reducer(state = initialState, action) {
   const { type, summary, measureResult, eventName, digestiveState, userInfo, measuredAt } = action
@@ -57,10 +58,7 @@ export default function bg1Reducer(state = initialState, action) {
     case 'SET_PATIENT':
       return {
         ...state,
-        patientId: userInfo.patientId,
-        nickname: userInfo.nickname,
-        avatar: userInfo.avatar,
-        patientState: userInfo.patientState,
+        ...userInfo,
       }
 
     case 'RESET_DEVICE':
@@ -92,6 +90,12 @@ export default function bg1Reducer(state = initialState, action) {
       return {
         ...state,
         manualRecord: {},
+      }
+
+    case 'ALLOW_CHECK_UPGRADE':
+      return {
+        ...state,
+        isCheckUpgrade: true,
       }
 
     default:

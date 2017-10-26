@@ -59,3 +59,9 @@ export function resetManualRecord() {
     type: 'RESET_MANUAL_RECORD',
   }
 }
+
+export function allowCheckUpgrade() {
+  return {
+    type: 'ALLOW_CHECK_UPGRADE',
+  }
+}

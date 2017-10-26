@@ -15,14 +15,14 @@ import {
   FirstScreen,
   AboutMeScreen,
   LaboratoryExaminationScreen,
-  PhysicalExaminationScreen,
+  BodyFileScreen,
   DietTokenScreen,
   OutpatientServiceScreen,
   FeedbackScreen,
   UserGuidanceScreen,
   AccountBindingScreen,
 } from './screens'
-import { PRIMARY_COLOR, MINI_FONT, GRAY230, REGULAR_FONT } from './constants'
+import { PRIMARY_COLOR, MINI_FONT, TABBAR_BACKGROUND_COLOR, REGULAR_FONT } from './constants'
 
 const navigationOptions = {
   headerTintColor: 'white',
@@ -72,7 +72,7 @@ const MainTabs = TabNavigator(
       },
       style: {
         height: 50,
-        backgroundColor: GRAY230,
+        backgroundColor: TABBAR_BACKGROUND_COLOR,
       },
     },
   },
@@ -133,13 +133,13 @@ const NeedleStackNavigation = StackNavigator({
     screen: LaboratoryExaminationScreen,
     navigationOptions: navigationWithHeaderStyle,
   },
-  PhysicalExamination: {
-    screen: PhysicalExaminationScreen,
+  BodyFile: {
+    screen: BodyFileScreen,
     navigationOptions: navigationWithHeaderStyle,
   },
   DietToken: {
     screen: DietTokenScreen,
-    navigationOptions: navigationWithHeaderStyle,
+    navigationOptions,
   },
   OutpatientService: {
     screen: OutpatientServiceScreen,

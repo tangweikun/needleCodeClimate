@@ -3,7 +3,7 @@ import { Text, Image, View, Alert, TouchableWithoutFeedback, Dimensions } from '
 import styled from 'styled-components/native'
 
 import { LIGHT_THEME_ALT_TEXT_COLOR } from '../constants'
-import { NickButton } from '../components'
+import { Button } from '../components'
 
 // const introduction =
 //   '共同照护是一种全新的治疗与管理糖尿病的医疗模式。它加入了营养师，护理师、运动等专家，组成一个医疗专家团队。通过门诊和线上院外服务相结合的方式，为糖友提供综合的、全程的病情管控服务, 目标是希望糖友提高认知，自我管理，自我改善血糖水平。'
@@ -64,8 +64,8 @@ export class IntroductionScreen extends React.Component {
             justifyContent: 'center',
           }}
         >
-          <NickButton
-            light
+          <Button
+            title="我要预约门诊"
             onPress={() =>
               Alert.alert('谢谢，我们已收到您的门诊预约请求，随后将有护士跟您联系确认', '', [
                 {
@@ -73,9 +73,7 @@ export class IntroductionScreen extends React.Component {
                   onPress: () => this.props.navigation.navigate('HomeTab'),
                 },
               ])}
-          >
-            我要预约门诊
-          </NickButton>
+          />
           <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('HomeTab')}>
             <View style={{ marginTop: 10 }}>
               <Text style={{ color: '#fff', textAlign: 'center' }}>随便看看</Text>

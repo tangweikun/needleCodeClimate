@@ -3,11 +3,10 @@ import { Dimensions } from 'react-native'
 const white = '#fff'
 const black = '#000'
 const nickGreen = 'rgb(74, 144, 226)'
-const nickOffWhite = 'rgb(244, 244, 242)'
 const nickGray = 'rgba(0, 0, 0,.25)'
 const lightGray = 'rgb(211, 211, 211)'
-const lightGreen = 'rgb(94 ,179, 0)'
-const darkRed = 'rgb(253, 84, 49)'
+const lightGreen = 'rgb(2 ,179, 68)'
+const darkRed = 'rgb(254, 74, 36)'
 const lightOrange = 'rgb(255, 82, 0)'
 const lightWhite = 'rgba(255, 255, 255, .7)'
 const nickDarkerGray = 'rgb(83, 83, 83)'
@@ -16,6 +15,7 @@ const gray85 = 'rgb(85, 85, 85)'
 const gray206 = 'rgb(206, 206, 206)'
 const gray230 = 'rgb(230, 230, 230)'
 const gray136 = 'rgb(136, 136, 136)'
+const orange = 'rgb(255, 163, 46)'
 
 export const isSmallScreen = Dimensions.get('screen').width < 375
 
@@ -31,7 +31,7 @@ export const REGULAR_FONT_LINE_HEIGHT = 35
 export const PRIMARY_COLOR = nickGreen
 
 export const LIGHT_THEME_BACKGROUND_COLOR = white
-export const LIGHT_THEME_ALT_BACKGROUND_COLOR = nickOffWhite
+export const LIGHT_THEME_ALT_BACKGROUND_COLOR = 'rgb(240, 242, 245)'
 export const LIGHT_THEME_BUTTON_COLOR = PRIMARY_COLOR
 export const LIGHT_THEME_BUTTON_BORDER_COLOR = PRIMARY_COLOR
 export const LIGHT_THEME_TEXT_COLOR = black
@@ -45,6 +45,7 @@ export const DARK_THEME_BUTTON_COLOR = white
 export const DARK_THEME_BUTTON_BORDER_COLOR = PRIMARY_COLOR
 export const DARK_THEME_TEXT_COLOR = white
 export const DARK_THEME_BUTTON_TEXT_COLOR = PRIMARY_COLOR
+export const TABBAR_BACKGROUND_COLOR = white
 
 export const BORDER_COLOR = lightGray
 export const LIGHT_GREEN = lightGreen
@@ -57,6 +58,7 @@ export const GRAY230 = gray230
 export const GRAY206 = gray206
 export const GRAY85 = gray85
 export const GRAY136 = gray136
+export const DIET_TOKEN_ORANGE = orange
 
 export const DigestiveStateLabel = {
   BEFORE_BREAKFAST: '早餐前',
@@ -105,3 +107,7 @@ export const defaultUserAvatar = 'https://api.ihealthlabs.com.cn:8443/images/def
 export const WX_APP_ID = 'wx915efa8b538a4df4'
 
 export const APP_UPGRADE_API = 'https://app-upgrade.internal.ihealthcn.com/upgrade'
+
+export const ScreenWidth = Dimensions.get('screen').width
+
+export const PAGE_MARGIN = 16
