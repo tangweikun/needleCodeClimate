@@ -106,7 +106,7 @@ export const defaultUserAvatar = 'https://api.ihealthlabs.com.cn:8443/images/def
 
 export const WX_APP_ID = 'wx915efa8b538a4df4'
 
-export const APP_UPGRADE_API = 'https://app-upgrade.internal.ihealthcn.com/upgrade'
+export const APP_UPGRADE_API = 'https://calm-cicada.ihealthlabs.com.cn/upgrade'
 
 export const ScreenWidth = Dimensions.get('screen').width
 

@@ -93,7 +93,7 @@ export class _ManualRecord extends Component {
 
   render() {
     const { digestiveState, inputValue, isSave, date } = this.state
-    const { navigation, patientState } = this.props
+    const { navigation, patientState, patientId } = this.props
 
     if (isSave) {
       return (
@@ -102,7 +102,7 @@ export class _ManualRecord extends Component {
           measureResult={inputValue.replace(/\.$/, '')}
           digestiveState={digestiveState}
           measuredAt={date}
-          goAskTab={() => navigation.navigate('Chat', { patientId: this.props.patientId })}
+          goAskTab={routeName => navigation.navigate(routeName, { patientId })}
         />
       )
     }

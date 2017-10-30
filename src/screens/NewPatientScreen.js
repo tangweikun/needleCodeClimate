@@ -5,7 +5,7 @@ import styled from 'styled-components/native'
 import RadioForm from 'react-native-simple-radio-button'
 
 import { PRIMARY_COLOR, REGULAR_FONT, SMALL_FONT } from '../constants'
-import { NickButton } from '../components'
+import { Button } from '../components'
 
 export class NewPatientScreen extends React.Component {
   state = {
@@ -69,9 +69,7 @@ export class NewPatientScreen extends React.Component {
             </Root>
           </Padded>
           <Root>
-            <NickButton dark margin={false}>
-              登录
-            </NickButton>
+            <Button dark title="登录" />
           </Root>
         </Padded>
       </Root>

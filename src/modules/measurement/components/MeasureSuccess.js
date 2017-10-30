@@ -13,7 +13,7 @@ import {
   LIGHT_ORANGE,
   isSmallScreen,
 } from '../../../constants'
-import { NickButton, PlainCircle } from '../../../components'
+import { Button, PlainCircle } from '../../../components'
 import { goal } from '../utils/goal'
 
 const BloodSugarLabel = {
@@ -85,18 +85,18 @@ export const MeasureSuccess = ({ measureResult, digestiveState, goAskTab, patien
           />
         </View>
       )}
-      {patientState === 'ACTIVE' && (
+      {
         <StickyBottom>
-          <NickButton
+          <Button
             icon={require('../../../assets/images/icon-tabbar-ask-Active-light.png')}
-            withIcon
             dark
             title="问医生"
-            onPress={() => goAskTab()}
-            withoutMargin
+            onPress={() => goAskTab(patientState === 'ACTIVE' ? 'Chat' : 'AskTab')}
+            marginLeft={'0px'}
+            marginRight={'0px'}
           />
         </StickyBottom>
-      )}
+      }
     </WhiteView>
   </RootView>
 )

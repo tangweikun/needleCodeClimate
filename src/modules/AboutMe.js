@@ -5,11 +5,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 
 import { toggleDevMode, setPatient } from '../ducks/actions'
-import {
-  RowWithRightIconAndDisclosureIndicator,
-  RowWithValueAndDisclosureIndicator,
-  RowWithValue,
-} from './preferences/Row'
+import { RowWithRightIcon, RowWithValue } from './preferences/Row'
 import { gender } from '../i18n'
 import {
   defaultUserAvatar,
@@ -34,13 +30,13 @@ class _AboutMe extends React.Component {
               {
                 key: '姓名',
                 onPress: () => console.log('update nickname'),
-                value: this.props.appData.nickname,
+                value: this.props.appData.nickname || '- -',
               },
             ]}
             renderItem={({ item }) => {
               if (item.key === '头像') {
                 return (
-                  <RowWithRightIconAndDisclosureIndicator
+                  <RowWithRightIcon
                     title={item.key}
                     onPress={() => item.onPress()}
                     image={item.image}
@@ -48,11 +44,7 @@ class _AboutMe extends React.Component {
                 )
               }
               return (
-                <RowWithValueAndDisclosureIndicator
-                  title={item.key}
-                  value={item.value}
-                  onPress={() => item.onPress()}
-                />
+                <RowWithValue title={item.key} value={item.value} onPress={() => item.onPress()} />
               )
             }}
             ItemSeparatorComponent={() => <SeparatorLine />}
@@ -65,22 +57,18 @@ class _AboutMe extends React.Component {
               {
                 key: '性别',
                 onPress: () => console.log('update gender'),
-                value: gender[this.props.appData.gender] || '未填',
+                value: gender[this.props.appData.gender] || '- -',
               },
               {
                 key: '生日',
                 onPress: () => console.log('update birthday'),
                 value: this.props.appData.birthday
                   ? moment(this.props.appData.birthday).format('YYYY-MM-DD')
-                  : '未填',
+                  : '- -',
               },
             ]}
             renderItem={({ item }) => (
-              <RowWithValueAndDisclosureIndicator
-                title={item.key}
-                value={item.value}
-                onPress={() => item.onPress()}
-              />
+              <RowWithValue title={item.key} value={item.value} onPress={() => item.onPress()} />
             )}
             ItemSeparatorComponent={() => <SeparatorLine />}
           />
@@ -90,7 +78,7 @@ class _AboutMe extends React.Component {
           <RowWithValue
             title="门诊认证"
             color={DARK_RED}
-            value={this.props.appData.patientState === 'ACTIVE' ? '已认证' : '未认证'}
+            value={this.props.appData.patientState === 'ACTIVE' ? '照护门诊' : '未认证'}
             onPress={() => console.log('show alert')}
           />
         </MarginTopView>

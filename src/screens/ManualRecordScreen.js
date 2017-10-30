@@ -1,32 +1,8 @@
 import React, { Component } from 'react'
 import moment from 'moment'
-
-import { goal } from '../modules/measurement/utils/goal'
 import { ManualRecord } from '../modules/measurement/containers/ManualRecord'
-import {
-  PRIMARY_COLOR,
-  DigestiveStateLabel,
-  LIGHT_GREEN,
-  DARK_RED,
-  LIGHT_ORANGE,
-} from '../constants'
-
-const BloodSugarLabel = {
-  lower: DARK_RED,
-  upper: LIGHT_ORANGE,
-  normal: LIGHT_GREEN,
-}
-
-function getBloodSugarLabel(result, digestiveState) {
-  if (!digestiveState || !result) return PRIMARY_COLOR
-
-  const goalUpperLimit = goal[digestiveState].upper
-  const goalLowerLimit = goal[digestiveState].lower
-
-  if (result < goalLowerLimit) return BloodSugarLabel.lower
-  if (result > goalUpperLimit) return BloodSugarLabel.upper
-  return BloodSugarLabel.normal
-}
+import { DigestiveStateLabel } from '../constants'
+import { getColorOfBloodSugarLevel } from '../utils/colorOfBloodSugarLevel'
 
 export class ManualRecordScreen extends Component {
   static navigationOptions = ({ screenProps }) => {
@@ -40,7 +16,7 @@ export class ManualRecordScreen extends Component {
       headerStyle: {
         justifyContent: 'center',
         borderBottomWidth: 0,
-        backgroundColor: getBloodSugarLabel(measureResult, digestiveState),
+        backgroundColor: getColorOfBloodSugarLevel(measureResult, digestiveState),
       },
     }
   }

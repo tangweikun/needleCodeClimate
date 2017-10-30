@@ -34,7 +34,7 @@ class _Preferences extends React.Component {
           >
             <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
               <Text style={{ fontSize: REGULAR_FONT, color: DARK_BLACK }}>
-                {this.props.appData.nickname || '无昵称'}
+                {this.props.appData.nickname || '- -'}
               </Text>
               {this.props.appData.patientState === 'ACTIVE' && (
                 <Image
@@ -44,7 +44,10 @@ class _Preferences extends React.Component {
               )}
             </View>
             <View>
-              <Text style={{ color: GRAY102 }}>{this.props.appData.mobile}</Text>
+              <Text style={{ color: GRAY102 }}>
+                {this.props.appData.mobile &&
+                  this.props.appData.mobile.replace(/(\d{3})\d{4}({\d{4}})/, '$1****$2')}
+              </Text>
             </View>
           </View>
         </TopView>

@@ -19,6 +19,12 @@ export const RowWithRightIconAndDisclosureIndicator = ({ title, image, onPress }
   </Row>
 )
 
+export const RowWithRightIcon = ({ title, image, onPress }) => (
+  <Row title={title} onPress={onPress} height={110}>
+    <Image source={image} style={{ height: 60, width: 60, borderRadius: 30 }} />
+  </Row>
+)
+
 export const RowWithIconAndDisclosureIndicator = ({ iconName, title, onPress }) => (
   <Container onPress={onPress}>
     <Image source={iconName} style={{}} />

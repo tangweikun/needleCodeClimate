@@ -9,7 +9,7 @@ import { RowWithValueAndDisclosureIndicator, RowWithValue } from './preferences/
 import { LIGHT_THEME_ALT_BACKGROUND_COLOR, GRAY230 } from '../constants'
 
 const getBMI = (weight, height) =>
-  (weight && height ? (weight / Math.pow(height / 100, 2)).toFixed(1) : '---')
+  (weight && height ? (weight / Math.pow(height / 100, 2)).toFixed(1) : '- -')
 
 class _BodyFile extends React.Component {
   render() {
@@ -23,12 +23,12 @@ class _BodyFile extends React.Component {
               {
                 key: '身高',
                 onPress: () => console.log('update gender'),
-                value: height ? `${height} CM` : '未填',
+                value: height ? `${height} CM` : '- -',
               },
               {
                 key: '体重',
                 onPress: () => console.log('update birthday'),
-                value: weight ? `${weight} KG` : '未填',
+                value: weight ? `${weight} KG` : '- -',
               },
               {
                 key: 'BMI',
@@ -37,11 +37,7 @@ class _BodyFile extends React.Component {
               },
             ]}
             renderItem={({ item }) => (
-              <RowWithValueAndDisclosureIndicator
-                title={item.key}
-                value={item.value}
-                onPress={() => item.onPress()}
-              />
+              <RowWithValue title={item.key} value={item.value} onPress={() => item.onPress()} />
             )}
             ItemSeparatorComponent={() => <SeparatorLine />}
           />
@@ -50,7 +46,7 @@ class _BodyFile extends React.Component {
         <MarginTopView>
           <RowWithValue
             title="目标体重"
-            value={targetWeight || '未填'}
+            value={targetWeight || '- -'}
             onPress={() => console.log('show alert')}
           />
         </MarginTopView>
@@ -61,22 +57,18 @@ class _BodyFile extends React.Component {
               {
                 key: '糖尿病类型',
                 onPress: () => console.log('update gender'),
-                value: diabetesType || '未填',
+                value: diabetesType || '- -',
               },
               {
                 key: '病程',
                 onPress: () => console.log('update birthday'),
                 value: startOfIllness
                   ? `${startOfIllness.replace('/', '年').replace(/\d$/, '$&月')}-至今`
-                  : '未填',
+                  : '- -',
               },
             ]}
             renderItem={({ item }) => (
-              <RowWithValueAndDisclosureIndicator
-                title={item.key}
-                value={item.value}
-                onPress={() => item.onPress()}
-              />
+              <RowWithValue title={item.key} value={item.value} onPress={() => item.onPress()} />
             )}
             ItemSeparatorComponent={() => <SeparatorLine />}
           />

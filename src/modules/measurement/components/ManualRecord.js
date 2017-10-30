@@ -14,7 +14,7 @@ import {
   LIGHT_WHITE,
   PRIMARY_COLOR,
 } from '../../../constants'
-import { KeyBoard, NickButton, PlainCircle, DigestiveStateButtons } from '../../../components'
+import { KeyBoard, Button, PlainCircle, DigestiveStateButtons } from '../../../components'
 
 export const SelectDigestiveState = ({ onPress, selectedDate, handleChangeDate }) => (
   <RootView>
@@ -78,7 +78,7 @@ export const SelectBloodGlucoseMeasurement = ({
         <ManualInputCircle value={inputValue} />
       </FlexFour>
       <Flex>
-        <NickButton title="保存" small onPress={() => uploadResult()} />
+        <Button title="保存" onPress={() => uploadResult()} />
       </Flex>
     </TopView>
     <BottomView backgroundColor={LIGHT_THEME_BACKGROUND_COLOR}>

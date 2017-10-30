@@ -1,4 +1,4 @@
-export * from './NickButton'
+export * from './Button'
 export * from './StepIndicator'
 export * from './TutorialImage'
 export * from './TestStrip'

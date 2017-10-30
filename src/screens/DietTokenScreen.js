@@ -11,6 +11,7 @@ import {
   GRAY136,
   PAGE_MARGIN,
   LIGHT_GREEN,
+  LIGHT_THEME_BACKGROUND_COLOR,
 } from '../constants'
 import { Button } from '../components'
 
@@ -68,7 +69,10 @@ const VerticalLine = styled.View`
   margin-right: 16px;
 `
 
-const RootView = styled.View`flex: 1;`
+const RootView = styled.View`
+  flex: 1;
+  background-color: ${LIGHT_THEME_BACKGROUND_COLOR};
+`
 
 const TopView = styled.View`
   margin-top: 20;
