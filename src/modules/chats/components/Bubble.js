@@ -3,14 +3,14 @@ import React from 'react'
 import { Text, Clipboard, StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
 import { MessageText, MessageImage, Time, utils } from 'react-native-gifted-chat'
 
-import MessageAudio from './MessageAudio'
+import { MessageAudio } from './MessageAudio'
 
 const { isSameUser, isSameDay, warnDeprecated } = utils
 
 const isSameDayAndSameUser = (currentMessage, nextMessage) =>
   isSameUser(currentMessage, nextMessage) && isSameDay(currentMessage, nextMessage)
 
-export default class Bubble extends React.Component {
+export class Bubble extends React.Component {
   constructor(props) {
     super(props)
     this.onLongPress = this.onLongPress.bind(this)

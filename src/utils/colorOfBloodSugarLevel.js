@@ -7,8 +7,8 @@ const BloodSugarLabel = {
   normal: LIGHT_GREEN,
 }
 
-export const getColorOfBloodSugarLevel = (result, digestiveState) => {
-  if (!digestiveState || !result) return PRIMARY_COLOR
+export const getColorOfBloodSugarLevel = (result, digestiveState, defaultColor) => {
+  if (!digestiveState || !result) return defaultColor || PRIMARY_COLOR
 
   const goalUpperLimit = goal[digestiveState].upper
   const goalLowerLimit = goal[digestiveState].lower

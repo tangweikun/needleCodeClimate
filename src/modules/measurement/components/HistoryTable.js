@@ -2,28 +2,10 @@ import React from 'react'
 import { View, Dimensions, Text } from 'react-native'
 import styled from 'styled-components/native'
 import { convertToMMOLString } from '../utils/convertUnit'
-import { goal } from '../utils/goal'
-import {
-  BORDER_COLOR,
-  LIGHT_GREEN,
-  DARK_RED,
-  DigestiveStateLabel,
-  LIGHT_ORANGE,
-  MINI_FONT,
-} from '../../../constants'
+import { BORDER_COLOR, DigestiveStateLabel, MINI_FONT } from '../../../constants'
+import { getColorOfBloodSugarLevel } from '../../../utils/colorOfBloodSugarLevel'
 
 const MEAL_LABEL = ['早餐', '午餐', '晚餐']
-
-function getColor(result, digestiveState) {
-  if (!result) return '#616161'
-
-  const goalUpperLimit = goal[digestiveState].upper
-  const goalLowerLimit = goal[digestiveState].lower
-
-  if (result < goalLowerLimit) return DARK_RED
-  if (result > goalUpperLimit) return LIGHT_ORANGE
-  return LIGHT_GREEN
-}
 
 function getCellText(digestiveState, dailyMeasurements) {
   const measurement = dailyMeasurements.find(item => item.digestiveState === digestiveState)
@@ -78,7 +60,11 @@ export const HistoryTable = ({ weeklyMeasurements }) => (
               backgroundColor={treatmentPlan.includes(digestiveState) && '#E0EAF4'}
             >
               <CenterText
-                color={getColor(getCellText(digestiveState, dailyMeasurements), digestiveState)}
+                color={getColorOfBloodSugarLevel(
+                  getCellText(digestiveState, dailyMeasurements),
+                  digestiveState,
+                  '#616161',
+                )}
               >
                 {getCellText(digestiveState, dailyMeasurements) ||
                   (treatmentPlan.includes(digestiveState) && '未测')}

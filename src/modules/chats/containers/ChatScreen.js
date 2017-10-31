@@ -6,10 +6,9 @@ import { ActivityIndicator, View } from 'react-native'
 import { withApollo } from 'react-apollo'
 import { GiftedChat } from 'react-native-gifted-chat'
 import { ExpandingView } from 'react-native-jans-common-components'
-import Bubble from './Bubble'
-import Message from './Message'
 import { PRIMARY_COLOR, defaultDoctorAvatar } from '../../../constants'
 import { messagesQuery, sendNeedleTextChatMessage, updateLastSeenAt } from '../../../graphql'
+import { Bubble, Message, InputToolbar } from '../components'
 
 @withApollo
 export class Chat extends React.Component {
@@ -110,6 +109,8 @@ export class Chat extends React.Component {
 
   renderMessage = props => <Message {...props} />
 
+  renderInputToolbar = props => <InputToolbar {...props} />
+
   render() {
     if (this.state.loading) {
       return (
@@ -132,6 +133,7 @@ export class Chat extends React.Component {
           label="发送"
           renderAvatarOnTop
           renderMessage={this.renderMessage}
+          renderInputToolbar={this.renderInputToolbar}
         />
       </ExpandingView>
     )

@@ -1,13 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {
-  Linking,
-  StyleSheet,
-  Text,
-  View,
-  ViewPropTypes,
-  TouchableOpacity,
-} from 'react-native'
+import { StyleSheet, Text, ViewPropTypes, TouchableOpacity } from 'react-native'
+
 const Sound = require('react-native-sound')
 
 import ParsedText from 'react-native-parsed-text'
@@ -15,7 +9,7 @@ import Communications from 'react-native-communications'
 
 const WWW_URL_PATTERN = /^www\./i
 
-export default class MessageAudio extends React.Component {
+export class MessageAudio extends React.Component {
   render() {
     console.log(this.props)
     const linkStyle = StyleSheet.flatten([
@@ -25,31 +19,22 @@ export default class MessageAudio extends React.Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          const sound = new Sound(
-            this.props.currentMessage.audioUrl,
-            undefined,
-            error => {
-              if (error) {
-                console.log(error)
-              } else {
-                sound.play(() => {
-                  sound.release()
-                })
-              }
-            },
-          )
+          const sound = new Sound(this.props.currentMessage.audioUrl, undefined, error => {
+            if (error) {
+              console.log(error)
+            } else {
+              sound.play(() => {
+                sound.release()
+              })
+            }
+          })
         }}
         style={[
           styles[this.props.position].container,
           this.props.containerStyle[this.props.position],
         ]}
       >
-        <Text
-          style={[
-            styles[this.props.position].text,
-            this.props.textStyle[this.props.position],
-          ]}
-        >
+        <Text style={[styles[this.props.position].text, this.props.textStyle[this.props.position]]}>
           🔉
         </Text>
       </TouchableOpacity>

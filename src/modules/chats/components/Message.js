@@ -1,12 +1,12 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { Day, SystemMessage, utils } from 'react-native-gifted-chat'
-import Bubble from './Bubble'
-import Avatar from './Avatar'
+import { Bubble } from './Bubble'
+import { Avatar } from './Avatar'
 
 const { isSameUser, isSameDay } = utils
 
-export default class Message extends React.Component {
+export class Message extends React.Component {
   getInnerComponentProps() {
     const { containerStyle, ...props } = this.props
     return {

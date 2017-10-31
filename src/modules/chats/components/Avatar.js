@@ -4,7 +4,7 @@ import { utils, GiftedAvatar } from 'react-native-gifted-chat'
 
 const { isSameUser, isSameDay, warnDeprecated } = utils
 
-export default class Avatar extends React.Component {
+export class Avatar extends React.Component {
   renderAvatar() {
     if (this.props.renderAvatar) {
       const { renderAvatar, ...avatarProps } = this.props
