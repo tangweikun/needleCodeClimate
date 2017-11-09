@@ -1,26 +1,63 @@
 import * as React from 'react'
 import get from 'lodash/get'
 import orderBy from 'lodash/orderBy'
-import DeviceInfo from 'react-native-device-info'
 import { ActivityIndicator, View } from 'react-native'
-import { withApollo } from 'react-apollo'
+import { withApollo, graphql } from 'react-apollo'
 import { GiftedChat } from 'react-native-gifted-chat'
-import { ExpandingView } from 'react-native-jans-common-components'
+import styled from 'styled-components/native'
 import { PRIMARY_COLOR, defaultDoctorAvatar } from '../../../constants'
-import { messagesQuery, sendNeedleTextChatMessage, updateLastSeenAt } from '../../../graphql'
+import {
+  messagesQuery,
+  sendNeedleTextChatMessage,
+  updateLastSeenAt,
+  subscriptionMessage,
+} from '../../../graphql'
 import { Bubble, Message, InputToolbar } from '../components'
 
 @withApollo
-export class Chat extends React.Component {
+class _Chat extends React.Component {
   state = {
     chatRoomId: '',
     messages: [],
     loading: true,
   }
 
+  componentWillMount() {
+    this.props.subscribeToNewFeedback()
+
+    // this.props.data.subscribeToMore({
+    //   document: subscriptionMessage,
+    //   updateQuery: (prev, { subscriptionData }) => {
+    //     // console.log(44444, prev, subscriptionData.data)
+    //     if (!subscriptionData.data) {
+    //       return prev
+    //     }
+    //     const newMessage = subscriptionData.data.chatMessageAdded
+    //     console.log(newMessage, 4442323, prev.fetchOrCreateNeedleChatRoom.messages)
+    //     // don't double add the message
+    //     if (!prev.fetchOrCreateNeedleChatRoom.messages.find(msg => msg._id === newMessage._id)) {
+    //       console.log(222, prev.fetchOrCreateNeedleChatRoom.messages)
+    //       return {
+    //         ...prev,
+    //         fetchOrCreateNeedleChatRoom: {
+    //           ...prev.fetchOrCreateNeedleChatRoom,
+    //           messages: [...prev.fetchOrCreateNeedleChatRoom.messages, newMessage],
+    //         },
+    //       }
+    //       // return Object.assign({}, prev, {
+    //       //   fetchOrCreateNeedleChatRoom: Object.assign({}, prev.fetchOrCreateNeedleChatRoom, {
+    //       //     messages: [...prev.fetchOrCreateNeedleChatRoom.messages, newMessage],
+    //       //   }),
+    //       // })
+    //     }
+    //     return prev
+    //   },
+    // })
+  }
+
   async componentDidMount() {
     this.fetchMessages()
-    if (!DeviceInfo.isEmulator()) this.intervalId = setInterval(this.fetchMessages, 3000)
+    // if (!DeviceInfo.isEmulator()) this.intervalId = setInterval(this.fetchMessages, 3000)
   }
 
   componentWillUnmount() {
@@ -124,7 +161,9 @@ export class Chat extends React.Component {
         <GiftedChat
           showUserAvatar
           locale="zh-cn"
-          messages={this.state.messages}
+          messages={this.sortMessagesByCreatedAt(
+            get(this.props.MessageList.fetchOrCreateNeedleChatRoom, 'messages', []),
+          )}
           onSend={this.onSend}
           user={{ _id: this.props.patientId }}
           renderChatFooter={this.renderChatFooter}
@@ -139,3 +178,34 @@ export class Chat extends React.Component {
     )
   }
 }
+
+export const Chat = graphql(messagesQuery, {
+  name: 'MessageList',
+  options: props => ({ variables: { userId: props.patientId } }),
+  props: props => ({
+    ...props,
+    subscribeToNewFeedback: () =>
+      props.MessageList.subscribeToMore({
+        document: subscriptionMessage,
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.chatMessageAdded) {
+            return prev
+          }
+          const newMessage = subscriptionData.chatMessageAdded
+          console.log('New Feedback Item', { props, prev }, subscriptionData.chatMessageAdded)
+          if (!prev.fetchOrCreateNeedleChatRoom.messages.find(msg => msg._id === newMessage._id)) {
+            return {
+              ...prev,
+              fetchOrCreateNeedleChatRoom: {
+                ...prev.fetchOrCreateNeedleChatRoom,
+                messages: [...prev.fetchOrCreateNeedleChatRoom.messages, newMessage],
+              },
+            }
+          }
+          return prev
+        },
+      }),
+  }),
+})(_Chat)
+
+const ExpandingView = styled.View`flex: 1;`

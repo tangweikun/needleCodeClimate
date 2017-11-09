@@ -16,6 +16,10 @@ const gray206 = 'rgb(206, 206, 206)'
 const gray230 = 'rgb(230, 230, 230)'
 const gray136 = 'rgb(136, 136, 136)'
 const orange = 'rgb(255, 163, 46)'
+const rgb102 = 'rgb(102, 102, 102)'
+const rgb68 = 'rgb(68, 68, 68)'
+const rgb252 = 'rgb(252, 126, 126)'
+const rgb215 = 'rgb(215, 149, 243)'
 
 export const isSmallScreen = Dimensions.get('screen').width < 375
 
@@ -59,6 +63,10 @@ export const GRAY206 = gray206
 export const GRAY85 = gray85
 export const GRAY136 = gray136
 export const DIET_TOKEN_ORANGE = orange
+export const RGB102 = rgb102
+export const RGB68 = rgb68
+export const RGB252 = rgb252
+export const RGB215 = rgb215
 
 export const DigestiveStateLabel = {
   BEFORE_BREAKFAST: '早餐前',

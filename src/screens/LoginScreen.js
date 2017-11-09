@@ -4,6 +4,7 @@ import * as wechat from 'react-native-wechat'
 import { withApollo } from 'react-apollo'
 import { AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
+import { NavigationActions } from 'react-navigation'
 
 import { Button } from '../components'
 import { GRAY136, REGULAR_FONT, LARGE_FONT, DARK_BLACK } from '../constants'
@@ -68,7 +69,12 @@ class _LoginScreen extends Component {
             mobile,
           }),
         )
-        this.props.navigation.navigate('First')
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'First' })],
+        })
+        this.props.navigation.dispatch(resetAction)
+
         this.props.setPatient({
           patientId,
           nickname,

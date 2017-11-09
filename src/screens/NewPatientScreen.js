@@ -1,108 +1,116 @@
 import * as React from 'react'
-import { Text, Image } from 'react-native'
-import DatePicker from 'react-native-datepicker'
+import { AsyncStorage, Alert } from 'react-native'
 import styled from 'styled-components/native'
-import RadioForm from 'react-native-simple-radio-button'
+import { NavigationActions } from 'react-navigation'
+import { connect } from 'react-redux'
 
-import { PRIMARY_COLOR, REGULAR_FONT, SMALL_FONT } from '../constants'
-import { Button } from '../components'
-
-export class NewPatientScreen extends React.Component {
+import { withApollo } from 'react-apollo'
+import { GRAY230 } from '../constants'
+import { RowWithValue, Button } from '../components'
+import { setPatient } from '../ducks/actions'
+import {
+  ShowPicker,
+  ageRange,
+  heightRange,
+  weightRange,
+  parseBirthDate,
+  displayBirthDate,
+  parseGender,
+  displayGender,
+  genders,
+} from '../utils/pickerContent'
+import { updatePatientDemographicsMutation } from '../graphql'
+@withApollo
+export class _NewPatientScreen extends React.Component {
+  static navigationOptions = () => ({
+    title: '个人信息',
+  })
   state = {
-    name: '',
-    birthDate: '',
+    birthday: '',
+    height: '',
+    weight: '',
     gender: '',
-    radio_props: [{ label: '男', value: 'MALE' }, { label: '女', value: 'FEMALE' }],
   }
+  submitPicker = (type, value) => {
+    this.setState({ [type]: value })
+  }
+  submitForm = async () => {
+    if (!this.state.birthday || !this.state.height || !this.state.weight || !this.state.gender) {
+      Alert.alert('表单未完成，请填写所有信息')
+      return
+    }
+    const original = this.props.navigation.state.params.userInfo
+    const userInfo = { ...original, ...this.state }
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'First' })],
+    })
+    await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
+    this.props.navigation.dispatch(resetAction)
+    this.props.setPatient(userInfo)
+    this.props.client
+      .mutate({
+        mutation: updatePatientDemographicsMutation,
+        variables: { mobile: userInfo.mobile, ...this.state },
+      })
+      .catch(e => console.log('error', e))
+  }
+  height = () => ShowPicker('height', heightRange(), '身高(CM)', [165], this.submitPicker)
+  weight = () => ShowPicker('weight', weightRange(), '体重(KG)', [60], this.submitPicker)
+  gender = () => ShowPicker('gender', genders, '性别', [], this.submitPicker, parseGender)
+  birthday = () =>
+    ShowPicker('birthday', ageRange(), '出生日期', [165], this.submitPicker, parseBirthDate)
   render() {
-    const now = new Date()
-    const dateNow = `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`
     return (
       <Root>
-        <Padded>
-          <Description>请补充您的个人信息，登录后才能获得医生的诊疗服务。</Description>
-          <Padded>
-            <Avatar>
-              <Image
-                style={{ height: 60, width: 60 }}
-                source={require('../assets/images/icon-doctor.png')}
-              />
-            </Avatar>
-            <Root>
-              <Underlined>
-                <Text style={{ color: 'black', fontSize: SMALL_FONT }}>姓名</Text>
-                <NameInput placeholder="输入真实姓名" />
-              </Underlined>
-
-              <Underlined>
-                <Text style={{ color: 'black', fontSize: SMALL_FONT }}>出生日期</Text>
-                <DatePicker
-                  style={{ width: 160 }}
-                  date={this.state.birthDate}
-                  mode="date"
-                  format="YYYY-MM-DD"
-                  minDate="1900-01-01"
-                  maxDate={dateNow}
-                  confirmBtnText="确认"
-                  cancelBtnText="取消"
-                  showIcon={false}
-                  customStyles={{
-                    dateInput: {
-                      borderWidth: 0,
-                    },
-                  }}
-                  onDateChange={birthDate => {
-                    this.setState({ birthDate })
-                  }}
-                />
-              </Underlined>
-              <Row>
-                <RadioForm
-                  radio_props={this.state.radio_props}
-                  initial={-1}
-                  buttonColor={PRIMARY_COLOR}
-                  onPress={gender => {
-                    this.setState({ gender })
-                  }}
-                />
-              </Row>
-            </Root>
-          </Padded>
-          <Root>
-            <Button dark title="登录" />
-          </Root>
-        </Padded>
+        <Root>
+          <ListForm
+            data={[
+              {
+                key: '身高',
+                onPress: () => this.height(),
+                value: this.state.height ? `${this.state.height} CM` : '请选择',
+              },
+              {
+                key: '体重',
+                onPress: () => this.weight(),
+                value: this.state.weight ? `${this.state.weight} KG` : '请选择',
+              },
+              {
+                key: '生日',
+                onPress: () => this.birthday(),
+                value: this.state.birthday ? `${displayBirthDate(this.state.birthday)}` : '请选择',
+              },
+              {
+                key: '性别',
+                onPress: () => this.gender(),
+                value: this.state.gender ? `${displayGender(this.state.gender)}` : '请选择',
+              },
+            ]}
+            renderItem={({ item }) => (
+              <RowWithValue title={item.key} value={item.value} onPress={() => item.onPress()} />
+            )}
+            ItemSeparatorComponent={() => <SeparatorLine />}
+          />
+        </Root>
+        <Root>
+          <Button dark title="下一步" onPress={() => this.submitForm()} />
+        </Root>
       </Root>
     )
   }
 }
+
+const mapStateToProps = () => ({})
+
+const mapDispatchToProps = dispatch => ({ setPatient: g => dispatch(setPatient(g)) })
+
+export const NewPatientScreen = connect(mapStateToProps, mapDispatchToProps)(_NewPatientScreen)
+
 const Root = styled.View`flex: 1;`
 
-const Padded = styled.View`
-  flex: 2;
-  padding: 40px;
+const SeparatorLine = styled.View`
+  height: 1;
+  background-color: ${GRAY230};
 `
-const Row = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 40;
-`
-const Description = styled.Text`font-size: ${REGULAR_FONT};`
-const NameInput = styled.TextInput`
-  flex: 1;
-  height: 40;
-`
-const Avatar = styled.View`
-  flex: 1;
-  max-height: 60;
-  padding-bottom: 20;
-  justify-content: center;
-  align-items: center;
-`
-const Underlined = styled.View`
-  flex-direction: row;
-  align-items: center;
-  border-color: black;
-  border-bottom-width: 1;
-  margin-bottom: 20;
-`
+const ListForm = styled.FlatList`padding-top: 5;`

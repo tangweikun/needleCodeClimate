@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { FlatList, View, StyleSheet, Alert } from 'react-native'
 import { LIGHT_THEME_BACKGROUND_COLOR } from '../../constants'
-import { RowWithIconAndDisclosureIndicator } from './Row'
+import { RowWithIconAndDisclosureIndicator } from '../../components'
 
 export const FlatListWithIcons = ({ onAboutUsPress, onSignOutPress, onIntroductionPress }) => (
   <FlatList

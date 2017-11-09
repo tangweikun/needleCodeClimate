@@ -3,9 +3,10 @@ import { View, FlatList, Alert, AsyncStorage } from 'react-native'
 import styled from 'styled-components/native'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import { NavigationActions } from 'react-navigation'
 
 import { toggleDevMode, setPatient } from '../ducks/actions'
-import { RowWithRightIcon, RowWithValue } from './preferences/Row'
+import { RowWithRightIcon, RowWithValue, Button } from '../components'
 import { gender } from '../i18n'
 import {
   defaultUserAvatar,
@@ -13,7 +14,11 @@ import {
   GRAY230,
   DARK_RED,
 } from '../constants'
-import { Button } from '../components'
+
+const resetAction = NavigationActions.reset({
+  index: 0,
+  actions: [NavigationActions.navigate({ routeName: 'LoginOrSignUp' })],
+})
 
 class _AboutMe extends React.Component {
   render() {
@@ -83,7 +88,7 @@ class _AboutMe extends React.Component {
           />
         </MarginTopView>
 
-        <View style={{ marginTop: 'auto', marginBottom: 20 }}>
+        <View style={{ marginTop: 120 }}>
           <Button
             title="退出登录"
             dark
@@ -98,7 +103,7 @@ class _AboutMe extends React.Component {
                   onPress: () => {
                     this.props.setPatient({})
                     AsyncStorage.removeItem('userInfo')
-                    this.props.navigation.navigate('LoginNavigation')
+                    this.props.navigation.dispatch(resetAction)
                   },
                 },
               ])}
@@ -118,7 +123,7 @@ const mapDispatchToProps = dispatch => ({
 
 export const AboutMe = connect(mapStateToProps, mapDispatchToProps)(_AboutMe)
 
-const RootView = styled.View`
+const RootView = styled.ScrollView`
   background-color: ${LIGHT_THEME_ALT_BACKGROUND_COLOR};
   flex: 1;
 `

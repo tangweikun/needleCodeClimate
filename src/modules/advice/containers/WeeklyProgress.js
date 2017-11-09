@@ -29,16 +29,16 @@ export class WeeklyProgress extends Component {
 const TreatmentPlan = ({ data, patientId }) => {
   if (data.error) {
     return (
-      <RootView>
+      <Flex>
         <InternetError error={JSON.stringify(data.error.message)} />
-      </RootView>
+      </Flex>
     )
   }
   if (data.loading) {
     return (
-      <RootView>
+      <Flex>
         <ActivityIndicator animating size="large" color={PRIMARY_COLOR} />
-      </RootView>
+      </Flex>
     )
   }
   if (

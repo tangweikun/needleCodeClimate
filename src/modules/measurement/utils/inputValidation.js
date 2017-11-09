@@ -18,3 +18,11 @@ const hasMoreThanOneNumberAfterDecimalPoint = input =>
   input && input.split('.')[1] && input.split('.')[1].length > 1
 
 const containsDecimalPoint = input => input && input.includes('.')
+
+export const heightWeightInputValidator = (initial, inputToValidate) => {
+  if (inputToValidate.includes('.')) return initial
+  if (inputToValidate.includes(',')) return initial
+  return inputToValidate
+}
+
+export const heightWeightReasonableNumberValidator = n => !isNaN(parseFloat(n)) && isFinite(n) && +n < 500 && +n > 0

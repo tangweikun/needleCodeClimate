@@ -3,7 +3,7 @@ import { View, Text, Image, FlatList } from 'react-native'
 import styled from 'styled-components/native'
 import { connect } from 'react-redux'
 import { toggleDevMode, setPatient } from '../../ducks/actions'
-import { RowWithDisclosureIndicator, RowWithIcons } from './Row'
+import { RowWithDisclosureIndicator, RowWithIcons } from '../../components'
 
 import {
   DARK_BLACK,
@@ -46,7 +46,7 @@ class _Preferences extends React.Component {
             <View>
               <Text style={{ color: GRAY102 }}>
                 {this.props.appData.mobile &&
-                  this.props.appData.mobile.replace(/(\d{3})\d{4}({\d{4}})/, '$1****$2')}
+                  this.props.appData.mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}
               </Text>
             </View>
           </View>
@@ -66,7 +66,7 @@ class _Preferences extends React.Component {
               {
                 icon: require('../../assets/images/icon-token.png'),
                 text: '饮食代币',
-                onPress: () => this.props.navigation.navigate('DietToken'),
+                onPress: () => this.props.navigation.navigate('DietTab'),
               },
               {
                 icon: require('../../assets/images/icon-bodydata.png'),

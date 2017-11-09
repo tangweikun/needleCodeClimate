@@ -13,6 +13,8 @@ import { withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import { Observable } from 'rxjs'
 import { get } from 'lodash'
+import { NavigationActions } from 'react-navigation'
+
 import { logInOrSignUpMutation, sendVerificationCodeMutation } from '../graphql'
 import { PRIMARY_COLOR, SMALL_FONT } from '../constants'
 import { Button } from '../components'
@@ -41,7 +43,7 @@ class _VerifyMobileScreen extends React.Component {
       .catch(() => null)
 
     this.setState({ delayUntilNextSend: cooldown })
-
+    this.verificationCodeInput.focus()
     Observable.interval(1000)
       .take(cooldown)
       .subscribe(x => this.setState({ delayUntilNextSend: cooldown - x - 1 }))
@@ -61,53 +63,21 @@ class _VerifyMobileScreen extends React.Component {
         mutation: logInOrSignUpMutation,
         variables,
       })
-      const {
-        avatar,
-        nickname,
-        patientId,
-        patientState,
-        birthday,
-        gender,
-        height,
-        weight,
-        diabetesType,
-        startOfIllness,
-        targetWeight,
-        mobile,
-      } = response.data.loginOrSignUp
+      const userInfo = response.data.loginOrSignUp
+      const { birthday, gender, height, weight, didCreateNewPatient } = userInfo
+      if (didCreateNewPatient || !height || !weight || !gender || !birthday) {
+        this.setState({ loading: false })
+        this.props.navigation.navigate('NewPatient', { userInfo })
+      } else {
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'First' })],
+        })
 
-      await AsyncStorage.setItem(
-        'userInfo',
-        JSON.stringify({
-          patientId,
-          nickname,
-          avatar,
-          patientState,
-          birthday,
-          gender,
-          height,
-          weight,
-          diabetesType,
-          startOfIllness,
-          targetWeight,
-          mobile,
-        }),
-      )
-      this.props.navigation.navigate('First')
-      this.props.setPatient({
-        patientId,
-        nickname,
-        avatar,
-        patientState,
-        birthday,
-        gender,
-        height,
-        weight,
-        diabetesType,
-        startOfIllness,
-        targetWeight,
-        mobile,
-      })
+        await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo))
+        this.props.navigation.dispatch(resetAction)
+        this.props.setPatient(userInfo)
+      }
       this.setState({ loading: false })
     } catch (e) {
       Alert.alert('提示', '请输入正确的手机号和验证码')
@@ -132,6 +102,8 @@ class _VerifyMobileScreen extends React.Component {
             underlineColorAndroid="transparent"
             selectionColor="white"
             keyboardType="numeric"
+            autoFocus
+            maxLength={11}
             value={this.state.mobile}
             onChangeText={mobile => mobile.length < 12 && this.setState({ mobile })}
           />
@@ -145,6 +117,7 @@ class _VerifyMobileScreen extends React.Component {
             }}
           >
             <TextInput
+              ref={view => (this.verificationCodeInput = view)}
               style={{
                 flex: 1,
                 height: 40,

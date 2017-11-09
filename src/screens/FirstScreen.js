@@ -2,6 +2,7 @@ import React from 'react'
 import { AsyncStorage, Platform, Alert, Linking, NativeModules, Image } from 'react-native'
 import { connect } from 'react-redux'
 import styled from 'styled-components/native'
+import { NavigationActions } from 'react-navigation'
 import { setPatient, allowCheckUpgrade } from '../ducks/actions'
 import { APP_UPGRADE_API } from '../constants'
 import { getUsefulDeviceContext } from '../utils/deviceContext'
@@ -13,18 +14,23 @@ class _FirstScreen extends React.Component {
       this.props.setPatient(JSON.parse(userInfo) || {})
     })
 
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'First' })],
+    })
+
+    const resetAction2 = NavigationActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'LoginOrSignUp' })],
+    })
+
     // TODO(tangweikun) for avoid react-navigation navigating to the initial route twice bug
     if (this.props.appData.isCheckUpgrade) this.checkAppNewVersion()
 
     if (!this.props.appData.patientId) {
-      this.props.navigation.navigate('LoginNavigation')
+      this.props.navigation.dispatch(resetAction2)
     } else {
-      this.props.navigation.navigate('HomeTab', {
-        patientId: this.props.appData.patientId,
-        manualRecord: this.props.appData.manualRecord,
-        digestiveState: this.props.appData.digestiveState,
-        measureResult: this.props.appData.measureResult,
-      })
+      this.props.navigation.dispatch(resetAction)
     }
   }
 
@@ -60,14 +66,14 @@ class _FirstScreen extends React.Component {
       })
   }
 
-  allowUpgrade = responeaData => {
+  allowUpgrade = response => {
     if (Platform.OS === 'ios') {
       Linking.openURL('https://itunes.apple.com/us/app/护血糖/id1284007492?l=zh&ls=1&mt=8')
     } else {
-      NativeModules.upgrade.upgrade(responeaData.target_link)
+      NativeModules.upgrade.upgrade(response.target_link)
     }
 
-    if (responeaData.required_version === 1) {
+    if (response.required_version === 1) {
       console.log('close app')
     }
   }

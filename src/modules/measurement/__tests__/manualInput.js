@@ -28,7 +28,7 @@ describe('when zero is pressed', () => {
 })
 describe('when zero is pressed', () => {
   it('and initial value is 0 should remove 0', () => {
-    expect(inputValidation(0, 0)).toBe(0)
+    expect(inputValidation(0, 0)).toBe('0')
   })
 })
 describe('when number is pressed', () => {

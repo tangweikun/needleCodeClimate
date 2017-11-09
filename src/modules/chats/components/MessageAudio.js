@@ -96,20 +96,20 @@ MessageAudio.defaultProps = {
   parsePatterns: () => [],
 }
 
-MessageAudio.propTypes = {
-  position: PropTypes.oneOf(['left', 'right']),
-  currentMessage: PropTypes.object,
-  containerStyle: PropTypes.shape({
-    left: ViewPropTypes.style,
-    right: ViewPropTypes.style,
-  }),
-  textStyle: PropTypes.shape({
-    left: Text.propTypes.style,
-    right: Text.propTypes.style,
-  }),
-  linkStyle: PropTypes.shape({
-    left: Text.propTypes.style,
-    right: Text.propTypes.style,
-  }),
-  parsePatterns: PropTypes.func,
-}
+// MessageAudio.propTypes = {
+//   position: PropTypes.oneOf(['left', 'right']),
+//   currentMessage: PropTypes.object,
+//   containerStyle: PropTypes.shape({
+//     left: ViewPropTypes.style,
+//     right: ViewPropTypes.style,
+//   }),
+//   textStyle: PropTypes.shape({
+//     left: Text.propTypes.style,
+//     right: Text.propTypes.style,
+//   }),
+//   linkStyle: PropTypes.shape({
+//     left: Text.propTypes.style,
+//     right: Text.propTypes.style,
+//   }),
+//   parsePatterns: PropTypes.func,
+// }

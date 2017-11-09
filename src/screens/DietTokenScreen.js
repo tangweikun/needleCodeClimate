@@ -49,7 +49,7 @@ export class DietTokenScreen extends React.Component {
           </View>
           <View style={{ marginTop: 16, alignItems: 'flex-start' }}>
             <SmallText>代币：一种食物货币，用于计算每日饮食。</SmallText>
-            <SmallText>今日代币：根据您的一日能量需求（包括碳水化合物、蛋白质、脂肪）换算成的代币数量，代表了今天可用的饮食代币数。</SmallText>
+            <SmallText>今日代币：根据您的一日能量需求（包括碳水化合物、蛋白质、油脂）换算成的代币数量，代表了今天可用的饮食代币数。</SmallText>
             <SmallText>一日能量需求：根据您的身高体重自动计算出。</SmallText>
           </View>
         </BottomView>

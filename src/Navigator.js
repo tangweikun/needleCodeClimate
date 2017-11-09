@@ -21,6 +21,12 @@ import {
   FeedbackScreen,
   UserGuidanceScreen,
   AccountBindingScreen,
+  DietHomePageScreen,
+  SelectDigestiveStateScreen,
+  SelectFoodScreen,
+  SquaringUpScreen,
+  DietRecordScreen,
+  NewPatientScreen,
 } from './screens'
 import { PRIMARY_COLOR, MINI_FONT, TABBAR_BACKGROUND_COLOR, REGULAR_FONT } from './constants'
 
@@ -54,6 +60,7 @@ const navigationWithHeaderStyle = {
 const MainTabs = TabNavigator(
   {
     HomeTab: { screen: HomeScreen },
+    DietTab: { screen: DietHomePageScreen },
     AskTab: { screen: AskScreen },
     PreferencesTab: { screen: PreferencesScreen },
   },
@@ -78,7 +85,22 @@ const MainTabs = TabNavigator(
   },
 )
 
-const LoginNavigation = StackNavigator({
+// const LoginNavigation = StackNavigator({
+//   LoginOrSignUp: {
+//     screen: LoginScreen,
+//     navigationOptions: navigationOptionsWithoutHeader,
+//   },
+//   VerifyMobile: {
+//     screen: VerifyMobileScreen,
+//     navigationOptions: { ...navigationWithHeaderStyle, headerBackTitle: null },
+//   },
+// })
+
+const NeedleStackNavigation = StackNavigator({
+  Initial: {
+    screen: FirstScreen,
+    navigationOptions: navigationOptionsWithoutHeader,
+  },
   LoginOrSignUp: {
     screen: LoginScreen,
     navigationOptions: navigationOptionsWithoutHeader,
@@ -87,9 +109,6 @@ const LoginNavigation = StackNavigator({
     screen: VerifyMobileScreen,
     navigationOptions: { ...navigationWithHeaderStyle, headerBackTitle: null },
   },
-})
-
-const NeedleStackNavigation = StackNavigator({
   First: {
     screen: MainTabs,
     navigationOptions: {
@@ -157,32 +176,53 @@ const NeedleStackNavigation = StackNavigator({
     screen: AccountBindingScreen,
     navigationOptions: navigationWithHeaderStyle,
   },
+  SelectDigestiveState: {
+    screen: SelectDigestiveStateScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  SelectFood: {
+    screen: SelectFoodScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  SquaringUp: {
+    screen: SquaringUpScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  DietRecord: {
+    screen: DietRecordScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
+  NewPatient: {
+    screen: NewPatientScreen,
+    navigationOptions: navigationWithHeaderStyle,
+  },
 })
 
-const InitialNavigation = StackNavigator(
-  {
-    Initial: { screen: FirstScreen },
-  },
-  {
-    headerMode: 'none',
-  },
-)
+// const InitialNavigation = StackNavigator(
+//   {
+//     Initial: { screen: FirstScreen },
+//   },
+//   {
+//     headerMode: 'none',
+//   },
+// )
 
-const AppNavigation = TabNavigator(
-  {
-    InitialScreen: { screen: InitialNavigation },
-    LoginNavigation: { screen: LoginNavigation },
-    MainStackNavigator: { screen: NeedleStackNavigation },
-  },
-  {
-    animationEnabled: false,
-    swipeEnabled: false,
-    navigationOptions: {
-      tabBarVisible: false,
-    },
-    // backBehavior: 'none',
-  },
-)
+// const AppNavigation = StackNavigator(
+//   {
+//     InitialScreen: { screen: InitialNavigation },
+//     LoginNavigation: { screen: LoginNavigation },
+//     MainStackNavigator: { screen: NeedleStackNavigation },
+//   },
+//   {
+//     headerMode: 'none',
+//     animationEnabled: false,
+//     swipeEnabled: false,
+//     navigationOptions: {
+//       tabBarVisible: false,
+//     },
+//     // backBehavior: 'none',
+//   },
+// )
 
 // Prevents double taps navigating twice (just work on ios)
 const navigateOnce = getStateForAction => (action, state) => {
@@ -193,6 +233,8 @@ const navigateOnce = getStateForAction => (action, state) => {
     ? state
     : getStateForAction(action, state)
 }
-AppNavigation.router.getStateForAction = navigateOnce(AppNavigation.router.getStateForAction)
+NeedleStackNavigation.router.getStateForAction = navigateOnce(
+  NeedleStackNavigation.router.getStateForAction,
+)
 
-export default AppNavigation
+export default NeedleStackNavigation

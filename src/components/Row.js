@@ -3,7 +3,7 @@ import { Image, View, Text } from 'react-native'
 import styled from 'styled-components/native'
 import Icon from 'react-native-vector-icons/Entypo'
 
-import { GRAY85, SMALL_FONT, GRAY206, GRAY136, MINI_FONT } from '../../constants'
+import { GRAY85, SMALL_FONT, GRAY206, GRAY136, MINI_FONT } from '../constants'
 
 export const RowWithValueAndDisclosureIndicator = ({ title, value, onPress }) => (
   <Row title={title} onPress={onPress}>

@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { connect } from 'react-redux'
 
 import { toggleDevMode, setPatient } from '../ducks/actions'
-import { RowWithValueAndDisclosureIndicator, RowWithValue } from './preferences/Row'
+import { RowWithValue } from '../components'
 
 import { LIGHT_THEME_ALT_BACKGROUND_COLOR, GRAY230 } from '../constants'
 
@@ -87,7 +87,7 @@ const mapDispatchToProps = dispatch => ({
 
 export const BodyFile = connect(mapStateToProps, mapDispatchToProps)(_BodyFile)
 
-const RootView = styled.View`
+const RootView = styled.ScrollView`
   background-color: ${LIGHT_THEME_ALT_BACKGROUND_COLOR};
   flex: 1;
 `

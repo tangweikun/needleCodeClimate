@@ -1,4 +1,4 @@
-import { gql } from 'react-apollo'
+import gql from 'graphql-tag'
 
 export const saveBloodGlucoseMeasurement = gql`
   mutation saveBloodGlucoseMeasurement(
@@ -121,6 +121,48 @@ export const unreadMessagesQuery = gql`
     unreadMessages(userId: $userId)
   }
 `
+export const updatePatientDemographicsMutation = gql`
+  mutation updatePatientDemographics(
+    $mobile: String!
+    $height: String!
+    $weight: String!
+    $gender: String!
+    $birthday: Date!
+  ) {
+    updatePatientDemographics(
+      mobile: $mobile
+      height: $height
+      weight: $weight
+      gender: $gender
+      birthday: $birthday
+    )
+  }
+`
+export const subscriptionMessage = gql`
+  subscription chatMessageAdded {
+    chatMessageAdded {
+      _id
+      ... on NeedleTextMessage {
+        text
+      }
+      ... on NeedleImageMessage {
+        imageUrl
+      }
+      ... on NeedleAudioMessage {
+        audioUrl
+      }
+      sender {
+        _id
+        nickname
+        avatar
+      }
+      createdAt
+      needleChatRoom {
+        _id
+      }
+    }
+  }
+`
 
 export const bloodGlucosesAndTreatmentPlansQuery = gql`
   query bloodGlucosesAndTreatmentPlansQuery($patientId: ID!) {
@@ -203,5 +245,26 @@ export const wechatLoginMutation = gql`
 export const submitFeedbackMutation = gql`
   mutation submitFeedback($text: String!, $patientId: ID!) {
     submitFeedback(text: $text, patientId: $patientId)
+  }
+`
+
+export const saveMealsMutation = gql`
+  mutation saveMeals($mealTime: String!, $patientId: ID!, $food: [FoodInput!]!) {
+    saveMeals(mealTime: $mealTime, patientId: $patientId, food: $food)
+  }
+`
+
+export const mealQuery = gql`
+  query fetchDiets($patientId: ID!) {
+    fetchDiets(patientId: $patientId) {
+      _id
+      items {
+        mealTime
+        food {
+          key
+          portionSize
+        }
+      }
+    }
   }
 `
