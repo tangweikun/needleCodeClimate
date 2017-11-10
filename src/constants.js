@@ -109,6 +109,8 @@ export const DayLabel = {
 }
 
 export const defaultDoctorAvatar = require('./assets/images/icon-doctor.png')
+export const defaultMaleAvatar = require('./assets/images/avatar_default_male.png')
+export const defaultFemaleAvatar = require('./assets/images/avatar_default_female.png')
 
 export const defaultUserAvatar = 'https://api.ihealthlabs.com.cn:8443/images/default/Avatar.png'
 

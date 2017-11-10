@@ -128,7 +128,7 @@ export class _AskScreen extends React.Component {
     return (
       <RootView>
         <View style={{ margin: 40 }}>
-          <GrayText1>您还没有在糖尿病共同照护门诊就诊过，还不能与医生聊天，如果您或您的家人有糖尿病方面问题，拨打我们的客服电话，预约共同照护门诊。</GrayText1>
+          <GrayText1>您还没有在糖尿病共同照护门诊就诊过，还不能与医疗团队进行沟通，如果您或您的家人有糖尿病方面问题，拨打我们的客服电话，预约共同照护门诊。</GrayText1>
         </View>
         <View style={{ margin: 15 }}>
           <GrayText2>门诊预约电话</GrayText2>

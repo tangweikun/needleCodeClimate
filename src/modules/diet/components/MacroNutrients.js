@@ -1,6 +1,7 @@
 import styled from 'styled-components/native'
 import React from 'react'
-import { RGB102, REGULAR_FONT } from '../../../constants'
+import { View } from 'react-native'
+import { RGB102, MINI_FONT } from '../../../constants'
 
 export const MacroNutrients = ({ numberColor, textColor, data }) => (
   <RootView>
@@ -18,8 +19,12 @@ export const MacroNutrients = ({ numberColor, textColor, data }) => (
 
 const Detail = ({ name, value, numberColor, textColor }) => (
   <DetailView>
-    <NumberContent color={numberColor}>{Math.round(value)}</NumberContent>
-    <TextContent color={textColor}>{name}</TextContent>
+    <NumberView>
+      <NumberContent color={numberColor}>{Math.round(value)}</NumberContent>
+    </NumberView>
+    <View style={{ top: 2 }}>
+      <TextContent color={textColor}>{name}</TextContent>
+    </View>
   </DetailView>
 )
 
@@ -29,11 +34,17 @@ const DetailView = styled.View`
   margin-right: 6;
 `
 
-const TextContent = styled.Text`color: ${p => p.color || RGB102};`
+const NumberView = styled.View`margin-right: 4;`
+
+const TextContent = styled.Text`
+  color: ${p => p.color || RGB102};
+  text-align-vertical: bottom;
+  font-size: ${MINI_FONT};
+`
 
 const NumberContent = styled.Text`
   color: ${p => p.color || RGB102};
-  font-size: ${REGULAR_FONT};
+  font-size: 18;
 `
 
 const RootView = styled.View`

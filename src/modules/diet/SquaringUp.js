@@ -96,33 +96,12 @@ class _SquaringUp extends React.Component {
                 marginRight: 4,
               }}
             >
-              <Text style={{ color: RGB102 }}>{`共${this.foodSum()}份食物`}</Text>
-              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: RGB102 }}>小计:</Text>
-              </View>
+              <Text style={{ color: RGB102 }}>{`共${this.foodSum()}份食物,小计:`}</Text>
             </View>
             <Right>
-              {this.props.navigation.state.params.macroNutrients.map(item => (
-                <Detail value={item.value} name={item.name} key={item.key} />
-              ))}
+              <MacroNutrients data={this.props.navigation.state.params.macroNutrients} />
             </Right>
           </RowContainer2>
-
-          {/* <RowContainer3>
-            <Center>
-              <View>
-                <Text style={{ fontSize: SMALL_FONT, color: darkBlack }}>推荐方案</Text>
-              </View>
-              <View>
-                <Text style={{ fontSize: MINI_FONT, color: DIET_TOKEN_ORANGE }}>根据三餐配比计算得出</Text>
-              </View>
-            </Center>
-            <Right>
-              <Detail value={12} color={RGB102} name="碳水" />
-              <Detail value={3} color={RGB102} name="蛋白" />
-              <Detail value={5} color={RGB102} name="油脂" />
-            </Right>
-          </RowContainer3> */}
         </Body>
 
         <Footer>
@@ -136,7 +115,7 @@ class _SquaringUp extends React.Component {
 
           <TouchableWithoutFeedback onPress={this.saveMeals}>
             <Flex1>
-              <Text style={{ fontSize: REGULAR_FONT, color: '#fff' }}>去结算</Text>
+              <Text style={{ fontSize: 18, color: '#fff' }}>去结算</Text>
             </Flex1>
           </TouchableWithoutFeedback>
         </Footer>
@@ -208,8 +187,7 @@ const Footer = styled.View`
 
 const Right = styled.View`
   flex-direction: row;
-  justify-content: space-between;
-  align-items: flex-start;
+  justify-content: flex-end;
   flex: 1;
 `
 
@@ -234,7 +212,7 @@ const SeparatorLine = styled.View`
 const Body = styled.ScrollView`background-color: ${LIGHT_THEME_ALT_BACKGROUND_COLOR};`
 
 const RowContainer = styled.View`
-  height: 64;
+  height: 44;
   padding-left: 16;
   padding-right: 16;
   flex-direction: row;
@@ -244,7 +222,7 @@ const RowContainer = styled.View`
 `
 
 const RowContainer2 = styled.View`
-  height: 44;
+  height: 64;
   padding-left: 16;
   padding-right: 16;
   flex-direction: row;

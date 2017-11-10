@@ -8,10 +8,10 @@ import { mealQuery } from '../../graphql'
 import { InternetError } from '../../components'
 import {
   PRIMARY_COLOR,
-  LIGHT_GRAY,
   PAGE_MARGIN,
   GRAY230,
   SMALL_FONT,
+  LIGHT_THEME_ALT_BACKGROUND_COLOR,
   GRAY136,
 } from '../../constants'
 import { foods, MEAL_TIME } from './constants'
@@ -91,9 +91,9 @@ class _DietRecord extends React.Component {
     }
 
     return (
-      <ScrollView>
+      <ScrollView style={{ backgroundColor: LIGHT_THEME_ALT_BACKGROUND_COLOR }}>
         {data.fetchDiets.map(x => (
-          <View key={Math.random()}>
+          <View key={Math.random()} style={{ backgroundColor: '#fff' }}>
             <DateRow date={x._id} />
             {x.items.map(k => (
               <View key={Math.random()}>
@@ -102,9 +102,11 @@ class _DietRecord extends React.Component {
                   <View
                     key={Math.random()}
                     style={{
+                      borderColor: 'blue',
+                      // borderWidth: 2,
                       flexDirection: 'row',
                       alignItems: 'center',
-                      height: 36,
+                      height: 32,
                       justifyContent: 'space-between',
                       paddingLeft: PAGE_MARGIN,
                       paddingRight: PAGE_MARGIN,
@@ -140,7 +142,7 @@ class _DietRecord extends React.Component {
 
 const DateRow = ({ date }) => (
   <DateView>
-    <Text>{date}</Text>
+    <Text style={{ fontSize: SMALL_FONT }}>{date}</Text>
   </DateView>
 )
 
@@ -156,10 +158,11 @@ const MealTimeView = styled.View`
   justify-content: center;
   border-bottom-color: ${GRAY230};
   border-bottom-width: 1;
+  margin-bottom: 4;
 `
 
 const DateView = styled.View`
-  background-color: ${LIGHT_GRAY};
+  background-color: ${LIGHT_THEME_ALT_BACKGROUND_COLOR};
   height: 44;
   flex-direction: row;
   align-items: center;

@@ -5,11 +5,12 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import { NavigationActions } from 'react-navigation'
 
-import { toggleDevMode, setPatient } from '../ducks/actions'
+import { setPatient } from '../ducks/actions'
 import { RowWithRightIcon, RowWithValue, Button } from '../components'
 import { gender } from '../i18n'
 import {
-  defaultUserAvatar,
+  defaultMaleAvatar,
+  defaultFemaleAvatar,
   LIGHT_THEME_ALT_BACKGROUND_COLOR,
   GRAY230,
   DARK_RED,
@@ -22,6 +23,10 @@ const resetAction = NavigationActions.reset({
 
 class _AboutMe extends React.Component {
   render() {
+    const { avatar, nickname, birthday, patientState } = this.props.appData
+    const defaultAvatar =
+      this.props.appData.gender === 'female' ? defaultFemaleAvatar : defaultMaleAvatar
+
     return (
       <RootView>
         <MarginTopView>
@@ -30,12 +35,12 @@ class _AboutMe extends React.Component {
               {
                 key: '头像',
                 onPress: () => console.log('update avatar'),
-                image: { uri: this.props.appData.avatar || defaultUserAvatar },
+                image: avatar ? { uri: avatar } : defaultAvatar,
               },
               {
                 key: '姓名',
                 onPress: () => console.log('update nickname'),
-                value: this.props.appData.nickname || '- -',
+                value: nickname || '- -',
               },
             ]}
             renderItem={({ item }) => {
@@ -67,9 +72,7 @@ class _AboutMe extends React.Component {
               {
                 key: '生日',
                 onPress: () => console.log('update birthday'),
-                value: this.props.appData.birthday
-                  ? moment(this.props.appData.birthday).format('YYYY-MM-DD')
-                  : '- -',
+                value: birthday ? moment(birthday).format('YYYY-MM-DD') : '- -',
               },
             ]}
             renderItem={({ item }) => (
@@ -83,7 +86,7 @@ class _AboutMe extends React.Component {
           <RowWithValue
             title="门诊认证"
             color={DARK_RED}
-            value={this.props.appData.patientState === 'ACTIVE' ? '照护门诊' : '未认证'}
+            value={patientState === 'ACTIVE' ? '照护门诊' : '未认证'}
             onPress={() => console.log('show alert')}
           />
         </MarginTopView>
@@ -117,7 +120,6 @@ class _AboutMe extends React.Component {
 const mapStateToProps = state => ({ appData: state.appData })
 
 const mapDispatchToProps = dispatch => ({
-  toggleDevMode: () => dispatch(toggleDevMode()),
   setPatient: g => dispatch(setPatient(g)),
 })
 

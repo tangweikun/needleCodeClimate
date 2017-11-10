@@ -2,28 +2,32 @@ import React from 'react'
 import { View, Text, Image, FlatList } from 'react-native'
 import styled from 'styled-components/native'
 import { connect } from 'react-redux'
-import { toggleDevMode, setPatient } from '../../ducks/actions'
+import Icon from 'react-native-vector-icons/Entypo'
 import { RowWithDisclosureIndicator, RowWithIcons } from '../../components'
 
 import {
   DARK_BLACK,
-  defaultUserAvatar,
   LIGHT_THEME_ALT_BACKGROUND_COLOR,
   REGULAR_FONT,
   GRAY230,
   GRAY102,
+  defaultMaleAvatar,
+  defaultFemaleAvatar,
+  GRAY206,
 } from '../../constants'
 
 class _Preferences extends React.Component {
   render() {
+    const { gender, nickname, patientState, mobile, avatar } = this.props.appData
+    const defaultAvatar = gender === 'female' ? defaultFemaleAvatar : defaultMaleAvatar
+    const ChevronRightIcon = () => (
+      <Icon style={{ marginRight: 7 }} name="chevron-small-right" size={25} color={GRAY206} />
+    )
+
     return (
       <RootView>
         <TopView onPress={() => this.props.navigation.navigate('AboutMe')}>
-          <ImageView
-            source={{
-              uri: this.props.appData.avatar || defaultUserAvatar,
-            }}
-          />
+          <ImageView source={avatar ? { uri: avatar } : defaultAvatar} />
           <View
             style={{
               justifyContent: 'space-between',
@@ -33,10 +37,8 @@ class _Preferences extends React.Component {
             }}
           >
             <View style={{ justifyContent: 'flex-start', flex: 1, flexDirection: 'row' }}>
-              <Text style={{ fontSize: REGULAR_FONT, color: DARK_BLACK }}>
-                {this.props.appData.nickname || '- -'}
-              </Text>
-              {this.props.appData.patientState === 'ACTIVE' && (
+              <Text style={{ fontSize: REGULAR_FONT, color: DARK_BLACK }}>{nickname || '- -'}</Text>
+              {patientState === 'ACTIVE' && (
                 <Image
                   source={require('../../assets/images/icon-identity-outpatient.png')}
                   style={{ width: 64, height: 18, marginTop: 4, marginLeft: 10 }}
@@ -45,11 +47,11 @@ class _Preferences extends React.Component {
             </View>
             <View>
               <Text style={{ color: GRAY102 }}>
-                {this.props.appData.mobile &&
-                  this.props.appData.mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}
+                {mobile && mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')}
               </Text>
             </View>
           </View>
+          <ChevronRightIcon />
         </TopView>
 
         <MarginTopView>
@@ -115,10 +117,7 @@ class _Preferences extends React.Component {
 
 const mapStateToProps = state => ({ appData: state.appData })
 
-const mapDispatchToProps = dispatch => ({
-  toggleDevMode: () => dispatch(toggleDevMode()),
-  setPatient: g => dispatch(setPatient(g)),
-})
+const mapDispatchToProps = () => ({})
 
 export const Preferences = connect(mapStateToProps, mapDispatchToProps)(_Preferences)
 
@@ -143,7 +142,7 @@ const ImageView = styled.Image`
   border-radius: 30;
 `
 
-const MarginTopView = styled.View`margin-top: 10px;`
+const MarginTopView = styled.View`margin-top: 10;`
 
 const SeparatorLine = styled.View`
   height: 1;

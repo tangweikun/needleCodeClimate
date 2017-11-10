@@ -18,7 +18,7 @@ import {
   DARK_BLACK,
   REGULAR_FONT,
   DIET_TOKEN_ORANGE,
-  MINI_FONT,
+  SMALL_FONT,
   ScreenWidth,
 } from '../../constants'
 import { foods } from './constants'
@@ -145,7 +145,7 @@ class _SelectFood extends React.Component {
                   })}
               >
                 <Flex1>
-                  <Text style={{ fontSize: REGULAR_FONT, color: '#fff' }}>选好了</Text>
+                  <Text style={{ fontSize: 18, color: '#fff' }}>选好了</Text>
                 </Flex1>
               </TouchableWithoutFeedback>
             </Bottom>
@@ -172,7 +172,7 @@ const ModalView = ({
       </TouchableWithoutFeedback>
       <Footer>
         <Title>
-          <RegularText>已选食物</RegularText>
+          <RegularText color={RGB102}>已选食物</RegularText>
         </Title>
         <ScrollView style={{ maxHeight: 200, width: '100%' }}>
           <FlatList
@@ -221,9 +221,17 @@ const Title = styled.View`
 
 const Row = ({ item, macroNutrients }) => (
   <RowContainer height={50}>
-    <RegularText>{item.name}</RegularText>
-    <MacroNutrients data={macroNutrients} />
-    <Operation foodKey={item.key} />
+    <View style={{ flex: 3, paddingRight: 5 }}>
+      <Text numberOfLines={1} style={{ fontSize: SMALL_FONT }}>
+        {item.name}
+      </Text>
+    </View>
+    <View style={{ flex: 4 }}>
+      <MacroNutrients data={macroNutrients} />
+    </View>
+    <View style={{ flex: 2, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+      <Operation foodKey={item.key} />
+    </View>
   </RowContainer>
 )
 
@@ -305,6 +313,7 @@ const Right = styled.View`
 const FoodImage = styled.Image`
   height: 60;
   width: 60;
+  border-radius: 2;
   margin-right: 12;
 `
 
@@ -316,7 +325,7 @@ const SeparatorLine = styled.View`
 const Body = styled.ScrollView`background-color: ${LIGHT_THEME_ALT_BACKGROUND_COLOR};`
 
 const RowContainer = styled.View`
-  height: ${p => p.height || 100};
+  height: ${p => p.height || 80};
   padding-left: 16;
   padding-right: 16;
   flex-direction: row;
@@ -326,6 +335,6 @@ const RowContainer = styled.View`
 `
 
 const RegularText = styled.Text`
-  font-size: ${REGULAR_FONT};
-  color: ${DARK_BLACK};
+  font-size: ${SMALL_FONT};
+  color: ${p => p.color || DARK_BLACK};
 `

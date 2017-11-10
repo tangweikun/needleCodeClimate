@@ -1,7 +1,7 @@
 import styled from 'styled-components/native'
 import React from 'react'
 import { connect } from 'react-redux'
-import { Text, Image, TouchableWithoutFeedback } from 'react-native'
+import { Text, Image, TouchableWithoutFeedback, View } from 'react-native'
 import { GRAY102 } from '../../../constants'
 import { addFood, subtractFood } from '../action'
 
@@ -20,23 +20,40 @@ export class _Operation extends React.Component {
             key="touchableWithFeedback"
             onPress={() => this.props.subtractFood(foodKey)}
           >
-            <Image
-              resizeMode="contain"
-              source={require('../../../assets/images/icon_delete.png')}
-              style={{ ...widthAndHeight, marginRight: 8 }}
-            />
+            <View
+              style={{
+                width: 30,
+                height: 30,
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+              }}
+            >
+              <Image
+                resizeMode="contain"
+                source={require('../../../assets/images/icon_delete.png')}
+                style={{ ...widthAndHeight, marginRight: 8 }}
+              />
+            </View>
           </TouchableWithoutFeedback>,
-          <Text key="text" style={{ color: GRAY102 }}>
-            {diet[foodKey]}
-          </Text>,
+          <View key="view" style={{ width: 18, alignItems: 'center' }}>
+            <Text style={{ color: GRAY102, textAlign: 'center' }}>{diet[foodKey]}</Text>
+          </View>,
         ]}
 
         <TouchableWithoutFeedback onPress={() => this.props.addFood(foodKey)}>
-          <Image
-            resizeMode="contain"
-            source={require('../../../assets/images/icon_add.png')}
-            style={{ ...widthAndHeight, marginLeft: 8 }}
-          />
+          <View
+            style={{
+              width: 30,
+              height: 30,
+              justifyContent: 'center',
+            }}
+          >
+            <Image
+              resizeMode="contain"
+              source={require('../../../assets/images/icon_add.png')}
+              style={{ ...widthAndHeight, marginLeft: 8 }}
+            />
+          </View>
         </TouchableWithoutFeedback>
       </OperationView>
     )
@@ -56,5 +73,7 @@ const OperationView = styled.View`
   justify-content: flex-end;
   flex-direction: row;
   align-items: center;
-  width: 64;
+  width: 80;
+  height: 40;
+  flex: 1;
 `
