@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import appData from './ducks/reducer'
-import diet from './modules/diet/reducer'
+import foodBasket from './modules/diet/reducer'
 
 const rootReducer = combineReducers({
   appData,
-  diet,
+  foodBasket,
 })
 
 export default rootReducer

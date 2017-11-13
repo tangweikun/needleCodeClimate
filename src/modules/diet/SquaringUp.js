@@ -9,7 +9,6 @@ import {
   LIGHT_THEME_ALT_BACKGROUND_COLOR,
   LIGHT_THEME_BACKGROUND_COLOR,
   GRAY230,
-  REGULAR_FONT,
   DIET_TOKEN_ORANGE,
 } from '../../constants'
 import { saveMealsMutation, mealQuery } from '../../graphql'
@@ -24,7 +23,7 @@ class _SquaringUp extends React.Component {
       variables: {
         mealTime: this.props.navigation.state.params.mealTime,
         patientId: this.props.patientId,
-        food: Object.entries(this.props.diet).map(([key, value]) => ({
+        food: Object.entries(this.props.foodBasket).map(([key, value]) => ({
           key,
           portionSize: value,
         })),
@@ -41,36 +40,18 @@ class _SquaringUp extends React.Component {
   }
 
   calculate2 = foo => {
-    let macroNutrients = [
-      {
-        key: 'carbohydrate',
-        name: '碳水',
-        value: 0,
-      },
-      {
-        key: 'protein',
-        name: '蛋白',
-        value: 0,
-      },
-      {
-        key: 'fat',
-        name: '油脂',
-        value: 0,
-      },
-    ]
-
+    console.log('calculate2-selectFood')
     const result = foods.find(({ key }) => key === foo.key)
-
-    macroNutrients = macroNutrients.map(x => ({
-      ...x,
-      value: x.value + result[x.key] * (this.props.diet[foo.key] || 1),
-    }))
-
-    return macroNutrients
+    return {
+      carbohydrate: result.carbohydrate * (this.props.foodBasket[foo.key] || 1),
+      protein: result.protein * (this.props.foodBasket[foo.key] || 1),
+      fat: result.fat * (this.props.foodBasket[foo.key] || 1),
+    }
   }
 
   foodSum = () =>
-    Object.values(this.props.diet).length && Object.values(this.props.diet).reduce((x, a) => x + a)
+    Object.values(this.props.foodBasket).length &&
+    Object.values(this.props.foodBasket).reduce((x, a) => x + a)
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -81,7 +62,7 @@ class _SquaringUp extends React.Component {
               <Row
                 item={item}
                 macroNutrients={this.calculate2(item)}
-                portionSize={this.props.diet[item.key]}
+                portionSize={this.props.foodBasket[item.key]}
               />
             )}
             ItemSeparatorComponent={() => <SeparatorLine />}
@@ -107,9 +88,11 @@ class _SquaringUp extends React.Component {
         <Footer>
           <Flex3>
             <View style={{ flexDirection: 'row', alignItems: 'center', marginLeft: 18 }}>
-              {this.props.navigation.state.params.macroNutrients.map(item => (
-                <Detail value={item.value} name={item.name} key={item.key} color="#fff" />
-              ))}
+              <MacroNutrients
+                data={this.props.navigation.state.params.macroNutrients}
+                numberColor="#fff"
+                textColor="#fff"
+              />
             </View>
           </Flex3>
 
@@ -137,7 +120,10 @@ const SquaringUpWithSave = graphql(saveMealsMutation, {
   }),
 })(_SquaringUp)
 
-const mapStateToProps = state => ({ patientId: state.appData.patientId, diet: state.diet })
+const mapStateToProps = state => ({
+  patientId: state.appData.patientId,
+  foodBasket: state.foodBasket,
+})
 
 const mapDispatchToProps = dispatch => ({
   resetDiet: () => dispatch(resetDiet()),
@@ -152,13 +138,6 @@ const Row = ({ item, macroNutrients, portionSize }) => (
     </View>
     <MacroNutrients data={macroNutrients} />
   </RowContainer>
-)
-
-const Detail = ({ name, value, color }) => (
-  <DetailView>
-    <NumberContent color={color}>{Math.round(value)}</NumberContent>
-    <TextContent color={color}>{name}</TextContent>
-  </DetailView>
 )
 
 const Flex3 = styled.View`
@@ -190,19 +169,6 @@ const Right = styled.View`
   justify-content: flex-end;
   flex: 1;
 `
-
-const DetailView = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-right: 6;
-`
-
-const NumberContent = styled.Text`
-  color: ${p => p.color || DIET_TOKEN_ORANGE};
-  font-size: ${REGULAR_FONT};
-`
-
-const TextContent = styled.Text`color: ${p => p.color || RGB102};`
 
 const SeparatorLine = styled.View`
   height: 1;

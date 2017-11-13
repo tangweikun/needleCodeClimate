@@ -6,15 +6,40 @@ import {
   PAGE_MARGIN,
   LIGHT_THEME_BACKGROUND_COLOR,
   SMALL_FONT,
+  RGB215,
+  RGB252,
+  DIET_TOKEN_ORANGE,
 } from '../../../constants'
+import { getMealMacroTokens, LUNCH_PROPORTION } from '../utils/getDailyDietToken'
 
-export function DietTokenCard({ dietTokenData, onPress }) {
+export const MacroNutrientGoal = ({ height, weight, onPress }) => {
+  const lunch = getMealMacroTokens({ weight, height, mealTime: LUNCH_PROPORTION })
+  const lunchMacros = [
+    {
+      value: lunch.carbohydrates,
+      name: '碳水',
+      icon: require('../../../assets/images/icon_carbohydrate.png'),
+      color: RGB215,
+    },
+    {
+      value: lunch.protein,
+      name: '蛋白质',
+      icon: require('../../../assets/images/icon_protein.png'),
+      color: RGB252,
+    },
+    {
+      value: lunch.fat,
+      name: '油脂',
+      icon: require('../../../assets/images/icon_fat.png'),
+      color: DIET_TOKEN_ORANGE,
+    },
+  ]
   return (
     <TouchView onPress={onPress}>
       <RootView>
         <SmallText>今日午餐代币</SmallText>
         <DetailView>
-          {dietTokenData.map(({ color, name, icon, value }) => (
+          {lunchMacros.map(({ color, name, icon, value }) => (
             <HorizontalView key={name}>
               <TopView>
                 <LargeText color={color}>{Math.round(value)}</LargeText>

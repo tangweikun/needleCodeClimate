@@ -18,6 +18,8 @@ import {
   parseGender,
   displayGender,
   genders,
+  DEFAULT_HEIGHT,
+  DEFAULT_WEIGHT,
 } from '../utils/pickerContent'
 import { updatePatientDemographicsMutation } from '../graphql'
 @withApollo
@@ -55,8 +57,8 @@ export class _NewPatientScreen extends React.Component {
       })
       .catch(e => console.log('error', e))
   }
-  height = () => ShowPicker('height', heightRange(), '身高(CM)', [165], this.submitPicker)
-  weight = () => ShowPicker('weight', weightRange(), '体重(KG)', [60], this.submitPicker)
+  height = () => ShowPicker('height', heightRange(), '身高(CM)', [DEFAULT_HEIGHT], this.submitPicker)
+  weight = () => ShowPicker('weight', weightRange(), '体重(KG)', [DEFAULT_WEIGHT], this.submitPicker)
   gender = () => ShowPicker('gender', genders, '性别', [], this.submitPicker, parseGender)
   birthday = () =>
     ShowPicker('birthday', ageRange(), '出生日期', [165], this.submitPicker, parseBirthDate)

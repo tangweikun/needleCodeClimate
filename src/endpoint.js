@@ -12,7 +12,7 @@ const prodWsuri = 'wss://pigeon.ihealthlabs.com.cn/feedback'
 const getDefaultEnv = {
   uri: DeviceInfo.isEmulator() ? stgUri : stgUri,
   env: DeviceInfo.isEmulator() ? 'LOCAL' : 'STAGING',
-  wsuri: DeviceInfo.isEmulator() ? stgWsuri : stgWsuri,
+  wsuri: DeviceInfo.isEmulator() ? stgUri : stgWsuri,
 }
 // NOTE: production
 // const getDefaultEnv = {

@@ -16,68 +16,10 @@ import {
 } from '../../constants'
 import { foods, MEAL_TIME } from './constants'
 import { MacroNutrients } from './components'
+import { getMacrosFromJSON } from './utils/calculateSumOfDietToken'
 
 @withApollo
 class _DietRecord extends React.Component {
-  calculate = food => {
-    let macroNutrients = [
-      {
-        key: 'carbohydrate',
-        name: '碳水',
-        value: 0,
-      },
-      {
-        key: 'protein',
-        name: '蛋白',
-        value: 0,
-      },
-      {
-        key: 'fat',
-        name: '油脂',
-        value: 0,
-      },
-    ]
-
-    food.forEach(item => {
-      const result = foods.find(({ key }) => key === item.key) || {}
-      macroNutrients = macroNutrients.map(x => ({
-        ...x,
-        value: x.value + (result[x.key] || 0) * item.portionSize,
-      }))
-    })
-
-    return macroNutrients
-  }
-
-  calculate2 = foo => {
-    let macroNutrients = [
-      {
-        key: 'carbohydrate',
-        name: '碳水',
-        value: 0,
-      },
-      {
-        key: 'protein',
-        name: '蛋白',
-        value: 0,
-      },
-      {
-        key: 'fat',
-        name: '油脂',
-        value: 0,
-      },
-    ]
-
-    const result = foods.find(({ key }) => key === foo.key)
-
-    macroNutrients = macroNutrients.map(x => ({
-      ...x,
-      value: x.value + result[x.key] * foo.portionSize,
-    }))
-
-    return macroNutrients
-  }
-
   render() {
     const { data } = this.props
 
@@ -92,53 +34,57 @@ class _DietRecord extends React.Component {
 
     return (
       <ScrollView style={{ backgroundColor: LIGHT_THEME_ALT_BACKGROUND_COLOR }}>
-        {data.fetchDiets.map(x => (
+        {data.fetchDiets.map(oneDay => (
           <View key={Math.random()} style={{ backgroundColor: '#fff' }}>
-            <DateRow date={x._id} />
-            {x.items.map(k => (
-              <View key={Math.random()}>
-                <MealTimeRow mealTime={MEAL_TIME[k.mealTime]} />
-                {k.food.map(f => (
-                  <View
-                    key={Math.random()}
-                    style={{
-                      borderColor: 'blue',
-                      // borderWidth: 2,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      height: 32,
-                      justifyContent: 'space-between',
-                      paddingLeft: PAGE_MARGIN,
-                      paddingRight: PAGE_MARGIN,
-                    }}
-                  >
-                    <Text style={{ color: GRAY136 }}>
-                      {`${get(foods.find(y => y.key === f.key), 'name')} X ${f.portionSize}`}
-                    </Text>
-                    <MacroNutrients data={this.calculate2(f)} />
-                  </View>
-                ))}
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    paddingLeft: PAGE_MARGIN,
-                    paddingRight: PAGE_MARGIN,
-                    justifyContent: 'space-between',
-                    height: 40,
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text style={{ color: GRAY136 }}>合计</Text>
-                  <MacroNutrients data={this.calculate(k.food)} />
-                </View>
-              </View>
-            ))}
+            <DateRow date={oneDay._id} />
+            {oneDay.items.map(meal => <OneMealOfFoods key={Math.random()} meal={meal} />)}
           </View>
         ))}
       </ScrollView>
     )
   }
 }
+const OneMealOfFoods = ({ meal }) => (
+  <View>
+    <MealTimeRow mealTime={MEAL_TIME[meal.mealTime]} />
+    {meal.food.map(oneFoodItem => (
+      <SumOfItemMacrosNutrients key={Math.random()}>
+        <GreyText>
+          {getFoodNameAndPortionCounter(oneFoodItem.key, oneFoodItem.portionSize)}
+        </GreyText>
+        <MacroNutrients data={getMacrosFromJSON([oneFoodItem])} />
+      </SumOfItemMacrosNutrients>
+    ))}
+    <TotalMacroNutrientsPerDay oneMealsWorthOfFood={getMacrosFromJSON(meal.food)} />
+  </View>
+)
+const getFoodNameAndPortionCounter = (key, portion) =>
+  `${get(foods.find(y => y.key === key), 'name')} X ${portion}`
+
+const TotalMacroNutrients = styled.View`
+  flex-direction: row;
+  padding-left: ${PAGE_MARGIN};
+  padding-right: ${PAGE_MARGIN};
+  justify-content: space-between;
+  height: 40;
+  align-items: center;
+`
+const TotalMacroNutrientsPerDay = ({ oneMealsWorthOfFood }) => (
+  <TotalMacroNutrients>
+    <Text style={{ color: GRAY136 }}>合计</Text>
+    <MacroNutrients data={oneMealsWorthOfFood} />
+  </TotalMacroNutrients>
+)
+const SumOfItemMacrosNutrients = styled.View`
+  border-color: blue;
+  flex-direction: row;
+  padding-left: ${PAGE_MARGIN};
+  padding-right: ${PAGE_MARGIN};
+  justify-content: space-between;
+  height: 32;
+  align-items: center;
+`
+const GreyText = styled.Text`color: ${GRAY136};`
 
 const DateRow = ({ date }) => (
   <DateView>

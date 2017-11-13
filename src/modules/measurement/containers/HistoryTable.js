@@ -108,14 +108,14 @@ export default class MeasurementHistory extends Component {
         </View>
       )
     }
-
+    const treatmentPlan = getTreatmentPlan(
+      data.bloodGlucoseMeasurementsAndTreatmentPlans.treatmentPlans,
+      startOfWeek,
+      endOfWeek,
+    )
     const weeklyMeasurements = getWeeklyMeasurements({
       originMeasurements: data.bloodGlucoseMeasurementsAndTreatmentPlans.bloodGlucoseMeasurements,
-      treatmentPlan: getTreatmentPlan(
-        data.bloodGlucoseMeasurementsAndTreatmentPlans.treatmentPlans,
-        startOfWeek,
-        endOfWeek,
-      ),
+      treatmentPlan,
       startOfWeek,
       endOfWeek,
     })

@@ -1,6 +1,8 @@
 import Picker from 'react-native-picker'
 import moment from 'moment'
 
+export const DEFAULT_HEIGHT = 165
+export const DEFAULT_WEIGHT = 60
 export const ShowPicker = (type, pickerData, pickerTitleText, selectedValue, submit, parser) => {
   Picker.init({
     pickerData,
@@ -58,14 +60,14 @@ export const ageRange = () => {
 }
 export const heightRange = () => {
   const range = []
-  for (let i = 20; i < 250; i++) {
+  for (let i = 50; i < 270; i++) {
     range.push(i)
   }
   return range
 }
 export const weightRange = () => {
   const range = []
-  for (let i = 50; i < 300; i++) {
+  for (let i = 20; i < 250; i++) {
     range.push(i)
   }
   return range
