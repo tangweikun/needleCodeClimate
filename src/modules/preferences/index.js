@@ -132,7 +132,8 @@ const TopView = styled.TouchableOpacity`
   background-color: #fff;
   height: 100;
   padding-left: 16px;
-  margin-top: 10px;
+  margin-top: 10;
+  margin-bottom: 10;
 `
 
 const ImageView = styled.Image`
@@ -142,7 +143,7 @@ const ImageView = styled.Image`
   border-radius: 30;
 `
 
-const MarginTopView = styled.View`margin-top: 10;`
+const MarginTopView = styled.View`margin-bottom: 10;`
 
 const SeparatorLine = styled.View`
   height: 1;

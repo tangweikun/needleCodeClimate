@@ -55,7 +55,7 @@ const TreatmentPlan = ({ data, patientId }) => {
           <Button
             title="我要预约门诊"
             onPress={() =>
-              Alert.alert('谢谢，我们已收到您的门诊预约请求，随后将有护士跟您联系确认', '', [
+              Alert.alert('谢谢', '我们已收到您的门诊预约请求，随后将有护士跟您联系确认', [
                 {
                   text: '知道了',
                   onPress: () => console.log('should make an appointment here'),

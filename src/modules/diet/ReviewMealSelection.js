@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components/native'
-import { FlatList, View, Text, TouchableWithoutFeedback, Alert } from 'react-native'
+import { FlatList, View, Text, TouchableOpacity, Alert } from 'react-native'
 import { withApollo, graphql } from 'react-apollo'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -17,7 +17,7 @@ import { MacroNutrients } from './components'
 import { resetDiet } from './action'
 
 @withApollo
-class _SquaringUp extends React.Component {
+class _ReviewMealSelection extends React.Component {
   saveMeals = async () => {
     await this.props.mutate({
       variables: {
@@ -96,18 +96,18 @@ class _SquaringUp extends React.Component {
             </View>
           </Flex3>
 
-          <TouchableWithoutFeedback onPress={this.saveMeals}>
+          <TouchableOpacity onPress={this.saveMeals}>
             <Flex1>
               <Text style={{ fontSize: 18, color: '#fff' }}>去结算</Text>
             </Flex1>
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
         </Footer>
       </View>
     )
   }
 }
 
-const SquaringUpWithSave = graphql(saveMealsMutation, {
+const ReviewMealSelectionWithSave = graphql(saveMealsMutation, {
   options: props => ({
     refetchQueries: [
       {
@@ -118,7 +118,7 @@ const SquaringUpWithSave = graphql(saveMealsMutation, {
       },
     ],
   }),
-})(_SquaringUp)
+})(_ReviewMealSelection)
 
 const mapStateToProps = state => ({
   patientId: state.appData.patientId,
@@ -129,7 +129,9 @@ const mapDispatchToProps = dispatch => ({
   resetDiet: () => dispatch(resetDiet()),
 })
 
-export const SquaringUp = connect(mapStateToProps, mapDispatchToProps)(SquaringUpWithSave)
+export const ReviewMealSelection = connect(mapStateToProps, mapDispatchToProps)(
+  ReviewMealSelectionWithSave,
+)
 
 const Row = ({ item, macroNutrients, portionSize }) => (
   <RowContainer>

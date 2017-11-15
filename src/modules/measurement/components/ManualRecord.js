@@ -71,12 +71,12 @@ export const SelectBloodGlucoseMeasurement = ({
 }) => (
   <RootView>
     <TopView>
-      <Flex>
+      <View style={{ backgroundColor: DARK_THEME_BACKGROUND_COLOR }}>
         <DateAndDigestiveState digestiveState={digestiveState} selectedDate={selectedDate} />
-      </Flex>
-      <FlexFour>
+      </View>
+      <FlexThree>
         <ManualInputCircle value={inputValue} />
-      </FlexFour>
+      </FlexThree>
       <Flex>
         <Button title="保存" onPress={() => uploadResult()} />
       </Flex>
@@ -100,8 +100,8 @@ const Flex = styled.View`
   flex: 1;
   background-color: ${DARK_THEME_BACKGROUND_COLOR};
 `
-const FlexFour = styled.View`
-  flex: 4;
+const FlexThree = styled.View`
+  flex: 3;
   justify-content: center;
   background-color: ${DARK_THEME_BACKGROUND_COLOR};
 `

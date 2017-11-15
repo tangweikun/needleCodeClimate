@@ -25,4 +25,5 @@ export const heightWeightInputValidator = (initial, inputToValidate) => {
   return inputToValidate
 }
 
-export const heightWeightReasonableNumberValidator = n => !isNaN(parseFloat(n)) && isFinite(n) && +n < 500 && +n > 0
+export const heightWeightReasonableNumberValidator = n =>
+  !isNaN(parseFloat(n)) && isFinite(n) && +n < 500 && +n > 0

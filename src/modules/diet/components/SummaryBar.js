@@ -26,7 +26,11 @@ export const SummaryBar = ({
     <TouchableWithoutFeedback
       onPress={() => {
         if (shouldChangeModalState) changeModalState()
-        navigation.navigate('SquaringUp', { macroNutrients, mealTime, foodInBasketWithData })
+        navigation.navigate('ReviewMealSelection', {
+          macroNutrients,
+          mealTime,
+          foodInBasketWithData,
+        })
       }}
     >
       <Right>

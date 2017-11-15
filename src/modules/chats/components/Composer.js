@@ -31,7 +31,7 @@ export class Composer extends React.Component {
         onContentSizeChange={e => this.onContentSizeChange(e)}
         onChangeText={text => this.onChangeText(text)}
         onSubmitEditing={() => this.props.onSend({ text: this.props.text.trim() }, true)}
-        returnKeyType="done"
+        returnKeyType="send"
         style={[styles.textInput, this.props.textInputStyle, { height: this.props.composerHeight }]}
         autoFocus={this.props.textInputAutoFocus}
         value={this.props.text}

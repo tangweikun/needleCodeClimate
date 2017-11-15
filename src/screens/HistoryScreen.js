@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import styled from 'styled-components/native'
-import { graphql } from 'react-apollo'
 import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { TouchableWithoutFeedback, View } from 'react-native'
 import { NavigationActions } from 'react-navigation'
-import MeasurementHistory from '../modules/measurement/containers/HistoryTable'
+import { MeasurementHistory } from '../modules/measurement/containers/HistoryTable'
 import { PRIMARY_COLOR } from '../constants'
-import { bloodGlucosesAndTreatmentPlansQuery } from '../graphql'
 
 function getStartOfWeek(page) {
   return moment()
@@ -37,21 +35,6 @@ export class HistoryScreen extends Component {
     )
   }
   render() {
-    const ViewWithData = graphql(bloodGlucosesAndTreatmentPlansQuery, {
-      options: { variables: { patientId: this.state.patientId } },
-    })(MeasurementHistory)
-
-    // const ViewWithData = compose(
-    //   graphql(treatmentPlanQuery, {
-    //     options: { variables: { patientId: this.state.patientId } },
-    //     name: 'treatmentPlanQuery',
-    //   }),
-    //   graphql(bloodGlucoseQuery, {
-    //     options: { variables: { patientId: this.state.patientId } },
-    //     name: 'bloodGlucoseQuery',
-    //   }),
-    // )(MeasurementHistory)
-
     const { page } = this.state
 
     return (
@@ -79,7 +62,7 @@ export class HistoryScreen extends Component {
             </IconContainerView>
           </TouchableWithoutFeedback>
         </SecondHeader>
-        <ViewWithData startOfWeek={getStartOfWeek(page)} endOfWeek={getEndOfWeek(page)} />
+        <MeasurementHistory startOfWeek={getStartOfWeek(page)} endOfWeek={getEndOfWeek(page)} />
       </RootView>
     )
   }

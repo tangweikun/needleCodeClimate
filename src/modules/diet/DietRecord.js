@@ -25,11 +25,7 @@ class _DietRecord extends React.Component {
 
     if (data.error) return <InternetError error={JSON.stringify(data.error.message)} />
     if (data.loading) {
-      return (
-        <View>
-          <ActivityIndicator animating size="large" color={PRIMARY_COLOR} />
-        </View>
-      )
+      return <ActivityIndicator animating size="large" color={PRIMARY_COLOR} />
     }
 
     return (

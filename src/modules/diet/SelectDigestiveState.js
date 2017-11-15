@@ -56,4 +56,4 @@ const TopView = styled.View`
 
 const LargeText = styled.Text`font-size: ${LARGE_FONT};`
 
-const TouchButton = styled.TouchableWithoutFeedback``
+const TouchButton = styled.TouchableOpacity``

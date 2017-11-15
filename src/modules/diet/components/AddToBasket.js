@@ -73,20 +73,20 @@ const OperationView = styled.View`
   flex-direction: row;
   align-items: center;
   width: 80;
-  height: 40;
+  height: 50;
   flex: 1;
 `
 const AddButton = styled.View`
   justify-content: center;
   width: 30;
-  height: 30;
+  height: 50;
 `
 
 const SubtractButton = styled.View`
   justify-content: center;
   align-items: flex-end;
   width: 30;
-  height: 30;
+  height: 50;
 `
 const PortionCount = styled.View`
   align-items: center;

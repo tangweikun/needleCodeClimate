@@ -24,7 +24,7 @@ import {
   DietHomePageScreen,
   SelectDigestiveStateScreen,
   SelectFoodScreen,
-  SquaringUpScreen,
+  ReviewMealSelectionScreen,
   DietRecordScreen,
   NewPatientScreen,
 } from './screens'
@@ -184,8 +184,8 @@ const NeedleStackNavigation = StackNavigator({
     screen: SelectFoodScreen,
     navigationOptions: navigationWithHeaderStyle,
   },
-  SquaringUp: {
-    screen: SquaringUpScreen,
+  ReviewMealSelection: {
+    screen: ReviewMealSelectionScreen,
     navigationOptions: navigationWithHeaderStyle,
   },
   DietRecord: {

@@ -143,9 +143,7 @@ class _VerifyMobileScreen extends React.Component {
         </Green>
         <View style={{ paddingTop: 25 }}>
           {this.state.loading ? (
-            <View>
-              <ActivityIndicator animating size="large" color={PRIMARY_COLOR} />
-            </View>
+            <ActivityIndicator animating size="large" color={PRIMARY_COLOR} />
           ) : (
             <Button dark onPress={this.loginPress} title="登录" />
           )}

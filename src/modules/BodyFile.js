@@ -2,8 +2,6 @@ import React from 'react'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 import { connect } from 'react-redux'
-
-import { toggleDevMode, setPatient } from '../ducks/actions'
 import { RowWithValue } from '../components'
 
 import { LIGHT_THEME_ALT_BACKGROUND_COLOR, GRAY230 } from '../constants'
@@ -80,10 +78,7 @@ class _BodyFile extends React.Component {
 
 const mapStateToProps = state => ({ appData: state.appData })
 
-const mapDispatchToProps = dispatch => ({
-  toggleDevMode: () => dispatch(toggleDevMode()),
-  setPatient: g => dispatch(setPatient(g)),
-})
+const mapDispatchToProps = () => ({})
 
 export const BodyFile = connect(mapStateToProps, mapDispatchToProps)(_BodyFile)
 

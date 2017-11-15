@@ -8,11 +8,12 @@ const devWsuri = 'ws://localhost:3080/feedback'
 const stgWsuri = 'wss://pigeon.gtzh-play.51ijk.com/feedback'
 const prodWsuri = 'wss://pigeon.ihealthlabs.com.cn/feedback'
 
+const isEmu = false // DeviceInfo.isEmulator()
 // NOTE: should default to prod not staging here, but need to check async storage first
 const getDefaultEnv = {
-  uri: DeviceInfo.isEmulator() ? stgUri : stgUri,
-  env: DeviceInfo.isEmulator() ? 'LOCAL' : 'STAGING',
-  wsuri: DeviceInfo.isEmulator() ? stgUri : stgWsuri,
+  uri: isEmu ? devUri : stgUri,
+  env: isEmu ? 'LOCAL' : 'STAGING',
+  wsuri: isEmu ? devWsuri : stgWsuri,
 }
 // NOTE: production
 // const getDefaultEnv = {

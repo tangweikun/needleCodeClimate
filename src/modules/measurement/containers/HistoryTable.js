@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
 import { View, ActivityIndicator } from 'react-native'
 import moment from 'moment'
+import { graphql } from 'react-apollo'
+import { connect } from 'react-redux'
 
 import { HistoryTable } from '../components'
 import { InternetError } from '../../../components'
 import { PRIMARY_COLOR } from '../../../constants'
+import { bloodGlucosesAndTreatmentPlansQuery } from '../../../graphql'
 
 function getWeeklyMeasurements({ originMeasurements, treatmentPlan, startOfWeek, endOfWeek }) {
   const weeklyMeasurements = [
@@ -97,16 +100,12 @@ function getTreatmentPlan(treatmentPlan, startOfWeek, endOfWeek) {
   return testTimes
 }
 
-export default class MeasurementHistory extends Component {
+class _MeasurementHistory extends Component {
   render() {
     const { data, startOfWeek, endOfWeek } = this.props
     if (data.error) return <InternetError error={JSON.stringify(data.error.message)} />
     if (data.loading) {
-      return (
-        <View>
-          <ActivityIndicator animating size="large" color={PRIMARY_COLOR} />
-        </View>
-      )
+      return <ActivityIndicator animating size="large" color={PRIMARY_COLOR} />
     }
     const treatmentPlan = getTreatmentPlan(
       data.bloodGlucoseMeasurementsAndTreatmentPlans.treatmentPlans,
@@ -122,3 +121,17 @@ export default class MeasurementHistory extends Component {
     return <HistoryTable weeklyMeasurements={weeklyMeasurements} />
   }
 }
+
+const mapStateToProps = state => ({ patientId: state.appData.patientId })
+
+const mapDispatchToProps = () => ({})
+
+const HistoryScreenWithData = graphql(bloodGlucosesAndTreatmentPlansQuery, {
+  options: props => ({
+    variables: { patientId: props.patientId },
+  }),
+})(_MeasurementHistory)
+
+export const MeasurementHistory = connect(mapStateToProps, mapDispatchToProps)(
+  HistoryScreenWithData,
+)

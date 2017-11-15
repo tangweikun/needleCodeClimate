@@ -6,7 +6,7 @@ import { DietHomePage } from '../modules/diet/DietHomePage'
 export class DietHomePageScreen extends React.Component {
   static navigationOptions = ({ navigation }) => ({
     title: '饮食',
-    headerLeft: null,
+    headerLeft: <View />,
     headerRight: (
       <TouchableWithoutFeedback onPress={() => navigation.navigate('DietRecord')}>
         <View style={{ alignItems: 'center', padding: 15 }}>
