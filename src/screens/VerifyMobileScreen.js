@@ -1,13 +1,5 @@
 import * as React from 'react'
-import {
-  View,
-  TouchableOpacity,
-  TextInput,
-  AsyncStorage,
-  Alert,
-  ActivityIndicator,
-  Keyboard,
-} from 'react-native'
+import { TouchableOpacity, AsyncStorage, Alert, ActivityIndicator, Keyboard } from 'react-native'
 import styled from 'styled-components/native'
 import { withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
@@ -88,15 +80,8 @@ class _VerifyMobileScreen extends React.Component {
   render() {
     return (
       <RootView>
-        <Green>
-          <TextInput
-            style={{
-              height: 40,
-              borderBottomWidth: 1,
-              borderColor: 'rgba(255, 255, 255, 0.75)',
-              marginBottom: 20,
-              color: 'white',
-            }}
+        <TopView>
+          <MobileInput
             placeholder="手机号"
             placeholderTextColor="rgba(255, 255, 255, 0.75)"
             underlineColorAndroid="transparent"
@@ -107,22 +92,10 @@ class _VerifyMobileScreen extends React.Component {
             value={this.state.mobile}
             onChangeText={mobile => mobile.length < 12 && this.setState({ mobile })}
           />
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              borderBottomWidth: 1,
-              borderColor: 'rgba(255, 255, 255, 0.75)',
-              marginBottom: 40,
-            }}
-          >
-            <TextInput
+
+          <VerificationCodeView>
+            <VerificationCodeInput
               ref={view => (this.verificationCodeInput = view)}
-              style={{
-                flex: 1,
-                height: 40,
-                color: 'white',
-              }}
               placeholder="输入验证码"
               placeholderTextColor="rgba(255, 255, 255, 0.75)"
               selectionColor="white"
@@ -139,15 +112,16 @@ class _VerifyMobileScreen extends React.Component {
                 {this.state.delayUntilNextSend ? `${this.state.delayUntilNextSend}秒` : '获取验证码'}
               </TextButton>
             </TouchableOpacity>
-          </View>
-        </Green>
-        <View style={{ paddingTop: 25 }}>
+          </VerificationCodeView>
+        </TopView>
+
+        <BottomView>
           {this.state.loading ? (
             <ActivityIndicator animating size="large" color={PRIMARY_COLOR} />
           ) : (
             <Button dark onPress={this.loginPress} title="登录" />
           )}
-        </View>
+        </BottomView>
       </RootView>
     )
   }
@@ -160,7 +134,8 @@ const mapDispatchToProps = dispatch => ({ setPatient: g => dispatch(setPatient(g
 export const VerifyMobileScreen = connect(mapStateToProps, mapDispatchToProps)(_VerifyMobileScreen)
 
 const RootView = styled.View`flex: 1;`
-const Green = styled.View`
+
+const TopView = styled.View`
   background-color: ${PRIMARY_COLOR};
   padding-left: 50;
   padding-right: 50;
@@ -169,3 +144,26 @@ const TextButton = styled.Text`
   color: ${p => (p.muted ? 'rgba(255,255,255,.6)' : 'white')};
   font-size: ${SMALL_FONT};
 `
+
+const VerificationCodeInput = styled.TextInput`
+  flex: 1;
+  height: 40;
+  color: white;
+`
+const MobileInput = styled.TextInput`
+  height: 40;
+  border-bottom-width: 1;
+  border-color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 20;
+  color: white;
+`
+
+const VerificationCodeView = styled.View`
+  flex-direction: row;
+  align-items: center;
+  border-bottom-width: 1;
+  border-color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 40;
+`
+
+const BottomView = styled.View`padding-top: 25;`

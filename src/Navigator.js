@@ -85,17 +85,6 @@ const MainTabs = TabNavigator(
   },
 )
 
-// const LoginNavigation = StackNavigator({
-//   LoginOrSignUp: {
-//     screen: LoginScreen,
-//     navigationOptions: navigationOptionsWithoutHeader,
-//   },
-//   VerifyMobile: {
-//     screen: VerifyMobileScreen,
-//     navigationOptions: { ...navigationWithHeaderStyle, headerBackTitle: null },
-//   },
-// })
-
 const NeedleStackNavigation = StackNavigator({
   Initial: {
     screen: FirstScreen,
@@ -197,32 +186,6 @@ const NeedleStackNavigation = StackNavigator({
     navigationOptions: navigationWithHeaderStyle,
   },
 })
-
-// const InitialNavigation = StackNavigator(
-//   {
-//     Initial: { screen: FirstScreen },
-//   },
-//   {
-//     headerMode: 'none',
-//   },
-// )
-
-// const AppNavigation = StackNavigator(
-//   {
-//     InitialScreen: { screen: InitialNavigation },
-//     LoginNavigation: { screen: LoginNavigation },
-//     MainStackNavigator: { screen: NeedleStackNavigation },
-//   },
-//   {
-//     headerMode: 'none',
-//     animationEnabled: false,
-//     swipeEnabled: false,
-//     navigationOptions: {
-//       tabBarVisible: false,
-//     },
-//     // backBehavior: 'none',
-//   },
-// )
 
 // Prevents double taps navigating twice (just work on ios)
 const navigateOnce = getStateForAction => (action, state) => {

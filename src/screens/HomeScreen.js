@@ -12,12 +12,10 @@ import {
 } from '../constants'
 
 export class _HomeScreen extends Component {
-  static navigationOptions = ({ navigation, screenProps }) => ({
+  static navigationOptions = ({ navigation }) => ({
     headerLeft: <View />,
     headerRight: (
-      <TouchableWithoutFeedback
-        onPress={() => navigation.navigate('History', { patientId: screenProps.patientId })}
-      >
+      <TouchableWithoutFeedback onPress={() => navigation.navigate('History')}>
         <View style={{ alignItems: 'center', padding: 15 }}>
           <Text style={{ color: '#fff' }}>血糖历史</Text>
         </View>

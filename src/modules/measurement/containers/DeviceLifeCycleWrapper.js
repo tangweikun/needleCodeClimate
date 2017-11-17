@@ -168,7 +168,6 @@ class _Wrapper extends React.Component {
         <StatusBar />
         <AppNavigation
           screenProps={{
-            patientId: this.props.appData.patientId,
             manualRecord: this.props.appData.manualRecord,
             digestiveState: this.props.appData.digestiveState,
             measureResult: this.props.appData.measureResult,

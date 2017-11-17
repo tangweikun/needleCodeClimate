@@ -4,6 +4,7 @@ import moment from 'moment'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import { TouchableWithoutFeedback, View } from 'react-native'
 import { NavigationActions } from 'react-navigation'
+
 import { MeasurementHistory } from '../modules/measurement/containers/HistoryTable'
 import { PRIMARY_COLOR } from '../constants'
 
@@ -24,7 +25,7 @@ export class HistoryScreen extends Component {
     title: '血糖历史',
   })
 
-  state = { patientId: this.props.navigation.state.params.patientId, page: 0 }
+  state = { page: 0 }
 
   reset() {
     return this.props.navigation.dispatch(
